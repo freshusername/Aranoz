@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Mime;
 using System.Threading.Tasks;
+using HotelsBooking.Mapping;
 using Infrastructure.EF;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -34,11 +35,17 @@ namespace HotelsBooking
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
-            services.AddDbContext<ApplicationDbContext>();
-      //(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            var config = new AutoMapper.MapperConfiguration(c =>
+            {
+              c.AddProfile(new ApplicationMappingProfile());
+            });
 
+            var mapper = config.CreateMapper();
+            services.AddSingleton(mapper);
 
-      services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+      services.AddDbContext<ApplicationDbContext>();
+
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
