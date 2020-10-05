@@ -1,0 +1,65 @@
+﻿@model HotelsBooking.Models.LoginViewModel
+@using System.Collections.Generic
+@using System.Linq
+@using Microsoft.AspNetCore.Identity
+@using Infrastructure.Entities
+@using Microsoft.AspNetCore.Http
+@using Microsoft.AspNetCore.Http.Authentication
+@inject SignInManager<AppUser> SignInManager
+@{
+    ViewData["Title"] = "Log in";
+}
+<section class="login_part padding_top">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6 col-md-6">
+                <div class="login_part_text text-center">
+                    <div class="login_part_text_iner">
+                        <h2>New to our Shop?</h2>
+                        <p>
+                            There are advances being made in science and technology
+                            everyday, and a good example of this is the
+                        </p>
+                        <a asp-controller="Account" asp-action="Register" class="btn_3">Create an account</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 col-md-6">
+                <div class="login_part_form">
+                    <div class="login_part_form_iner">
+                        <h3 class="text-center">
+
+                            Welcome Back !</br>
+                            Please Sign in now
+                        </h3>
+
+                        <form asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="row contact_form">
+                            <div class="col-md-12 text-danger" asp-validation-summary="All"></div>
+                            <div class="col-md-12 form-group p_star">
+                                <input asp-for="Email" type="email" class="form-control" id="email" name="email" value=""
+                                       placeholder="Email">
+                            </div>
+                            <div class="col-md-12 form-group p_star">
+                                <input asp-for="Password" type="password" class="form-control" id="password" name="password" value=""
+                                       placeholder="Password">
+                            </div>
+                            <div class="col-md-12 form-group">
+                                <div class="creat_account d-flex align-items-center">
+                                    <input type="checkbox" id="f-option" name="selector">
+                                    <label for="f-option">@Html.DisplayNameFor(m => m.RememberMe)</label>
+                                </div>
+                                <button type="submit" value="submit" class="btn_3">
+                                    Login
+                                </button>
+                                <a class="lost_pass" href="#">Forget password?</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+}

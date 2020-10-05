@@ -7,13 +7,18 @@ namespace Infrastructure.Entities
 {
     public class OrderDetail
     {
-        public int Id { get; set; }
-        public Order Order { get; set; }
-        public HotelRoom HotelRoom { get; set; }
-        public ICollection<OrderConv> OrderConvs { get; set; }
-        public DateTime OrderDate { get; set; }
-        public DateTime CheckInDate { get; set; }
-        public DateTime CheckOutDate { get; set; }
+        public int Id { get; set; }       
+        public DateTimeOffset OrderDate { get; set; }
+        public DateTimeOffset CheckInDate { get; set; }
+        public DateTimeOffset CheckOutDate { get; set; }
         public decimal TotalPrice { get; set; }
+
+
+        public int HotelRoomId { get; set; }
+        public virtual HotelRoom HotelRoom { get; set; }   
+
+        public int OrderId { get; set; }
+        public virtual Order Order { get; set; }
+      
     }
 }
