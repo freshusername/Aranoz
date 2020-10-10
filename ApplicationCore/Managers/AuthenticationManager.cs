@@ -85,7 +85,11 @@ namespace ApplicationCore.Managers
             var userToVerify = await UserManager.FindByNameAsync(userName);
                if (userToVerify == null)
                  return await Task.FromResult<ClaimsIdentity>(null);
-                                     
+               if (UserManager.CheckPasswordAsync(userToVerify, password).Result)
+               {
+                  return await Task.FromResult(new ClaimsIdentity());
+               }         
+               
             return await Task.FromResult<ClaimsIdentity>(null);
         }
     }

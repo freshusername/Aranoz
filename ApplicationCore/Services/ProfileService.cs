@@ -9,6 +9,7 @@ using Infrastructure.EF;
 using Infrastructure.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 
 namespace ApplicationCore.Services
 {
@@ -33,10 +34,11 @@ namespace ApplicationCore.Services
       return profile;
     }
 
-    public async Task<IEnumerable<ProfileDTO>> GetAllProfilesAsync()
+    public IEnumerable<AppUser> GetAllProfilesAsync()
     {
-      var users = await _context.Users.;
-
+      var users = _context.Users;
+      //var profiles = _mapper.Map<IEnumerable<AppUser>, IEnumerable<ProfileDTO>>(users);
+      return users; 
     }
   }
 }

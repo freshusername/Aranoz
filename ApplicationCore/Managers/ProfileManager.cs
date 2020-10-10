@@ -14,6 +14,11 @@ namespace ApplicationCore.Managers
       throw new NotImplementedException();
     }
 
+    public async Task<IActionResult> DetailAsync(string id)
+    {
+      throw new NotImplementedException();
+    }
+
     public async Task<IActionResult> UploadProfileImageAsync()
     {
       throw new NotImplementedException();

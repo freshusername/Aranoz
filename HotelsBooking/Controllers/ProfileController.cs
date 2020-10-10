@@ -3,7 +3,10 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using ApplicationCore.DTOs;
+using ApplicationCore.Services;
 using AutoMapper;
+using HotelsBooking.Models;
 using Infrastructure.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -16,94 +19,40 @@ namespace HotelsBooking.Controllers
   {
     private readonly IMapper _mapper;
     private readonly UserManager<AppUser> _userManager;
-    //private readonly IApplicationUser _userService;
-    //private readonly IUpload _uploadService;
-    //private readonly IConfiguration _configuration;
+    private readonly IProfileService _profileService;
 
-    public ProfileController(
-      UserManager<AppUser> userManager
-      //IApplicationUser userService, 
-      //IUpload uploadService, 
-      //IConfiguration configuration
-      )
+    public ProfileController(IMapper mapper, UserManager<AppUser> userManager, IProfileService profileService)
     {
+      _mapper = mapper;
       _userManager = userManager;
-      //_userService = userService;
-      //_uploadService = uploadService;
-      //_configuration = configuration;
+      _profileService = profileService;
     }
 
-  //  [Authorize]
-  //  public async Task<IActionResult> Detail(string id)
-  //  {
-  //    var user = await _userManager.FindByIdAsync(id);
-  //    var userRoles = _userManager.GetRolesAsync(user).Result;
+    public async Task<IActionResult> Detail([FromRouteAttribute] string id)
+    {
+      var profile = await _profileService.GetByIdAsync(id);
+      var result = _mapper.Map<ProfileDTO, ProfileViewModel>(profile);
+      return View(result);
+    }
 
-  //    var model = new ProfileModel()
-  //    {
-  //      UserId = user.Id,
-  //      Username = user.UserName,
-  //      UserRating = user.Rating.ToString(),
-  //      Email = user.Email,
-  //      ProfileImageUrl = user.ProfileImageUrl,
-  //      DateJoined = user.MemberSince,
-  //      IsActive = user.IsActive,
-  //      IsAdmin = userRoles.Contains("Admin")
-  //    };
+    public async Task<IActionResult> Index()
+    {
+      var profiles = _profileService
+        .GetAllProfilesAsync()
+        .Select(pr => new ProfileViewModel
+        {
+          Email = pr.Email,
+          FirstName = pr.FirstName,
+          LastName = pr.LastName
+        });
+      
+      //var result = _mapper.Map<IEnumerable<ProfileDTO>, IEnumerable<AllProfilesViewModel>>(profiles);
+      var model = new AllProfilesViewModel
+      {
+        profilesList = profiles
+      };
 
-  //    return View(model);
-  //  }
-
-  //  /*
-  //   * Files uploaded using the IFormFile technique are buffered in memory or on disk on the web server 
-  //   * before being processed. Inside the action method, the IFormFile contents are accessible as a stream. 
-  //   * In addition to the local file system, files can be streamed to Azure Blob storage or Entity Framework.
-  //   */
-
-  //  [HttpPost]
-  //  public async Task<IActionResult> UploadProfileImage(IFormFile file)
-  //  {
-  //    var userId = _userManager.GetUserId(User);
-  //    var connectionString = _configuration.GetConnectionString("AzureStorageAccountConnectionString");
-  //    var container = _uploadService.GetBlobContainer(connectionString);
-
-  //    var parsedContentDisposition = ContentDispositionHeaderValue.Parse(file.ContentDisposition);
-  //    var filename = Path.Combine(parsedContentDisposition.FileName.Trim('"'));
-
-  //    var blockBlob = container.GetBlockBlobReference(filename);
-
-  //    await blockBlob.UploadFromStreamAsync(file.OpenReadStream());
-  //    await _userService.SetProfileImage(userId, blockBlob.Uri);
-
-  //    return RedirectToAction("Detail", "Profile", new { id = userId });
-  //  }
-
-  //  public IActionResult Index()
-  //  {
-  //    var profiles = _userService.GetAll()
-  //        .OrderByDescending(user => user.Rating)
-  //        .Select(u => new ProfileModel
-  //        {
-  //          Email = u.Email,
-  //          ProfileImageUrl = u.ProfileImageUrl,
-  //          UserRating = u.Rating.ToString(),
-  //          DateJoined = u.MemberSince,
-  //          IsActive = u.IsActive
-  //        });
-
-  //    var model = new ProfileListModel
-  //    {
-  //      Profiles = profiles
-  //    };
-
-  //    return View(model);
-  //  }
-
-  //  public IActionResult Deactivate(string userId)
-  //  {
-  //    var user = _userService.GetById(userId);
-  //    _userService.Deactivate(user);
-  //    return RedirectToAction("Index", "Profile");
-  //  }
+      return View(model);
+    }
   }
 }
