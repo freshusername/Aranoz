@@ -22,13 +22,17 @@ namespace HotelsBooking.Mapping
 
             {
 
-                CreateMap<RegisterViewModel, UserDTO>().ForMember(au => au.UserName, map => map.MapFrom(vm => vm.Email));
-                CreateMap<UserDTO, AppUser>().ForMember(au => au.UserName, map => map.MapFrom(vm => vm.Email));
+                CreateMap<RegisterViewModel, UserDTO>()
+                  .ForMember(au => au.UserName, map => map.MapFrom(vm => vm.Email));
+                CreateMap<UserDTO, AppUser>()
+                  .ForMember(au => au.UserName, map => map.MapFrom(vm => vm.Email));
 
-                CreateMap<LoginViewModel, UserDTO>().ForMember(au => au.UserName, map => map.MapFrom(vm => vm.Email));
-                CreateMap<UserDTO, AppUser>().ForMember(au => au.UserName, map => map.MapFrom(vm => vm.Email));
+                CreateMap<LoginViewModel, UserDTO>()
+                  .ForMember(au => au.UserName, map => map.MapFrom(vm => vm.Email));
+                CreateMap<UserDTO, AppUser>()
+                  .ForMember(au => au.UserName, map => map.MapFrom(vm => vm.Email));
 
-
+                CreateMap<AppUser, ProfileDTO>().ReverseMap();
 
             }
 

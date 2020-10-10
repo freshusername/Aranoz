@@ -22,7 +22,11 @@ namespace ApplicationCore.Managers
         private readonly ApplicationDbContext _context;
         private readonly IMapper _mapper;
 
-        public AuthenticationManager(ApplicationDbContext contex, UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, ApplicationDbContext context, IMapper mapper)
+        public AuthenticationManager(
+          UserManager<AppUser> userManager, 
+          SignInManager<AppUser> signInManager, 
+          ApplicationDbContext context, 
+          IMapper mapper)
         {
             UserManager = userManager;
             SignInManager = signInManager;
@@ -39,7 +43,7 @@ namespace ApplicationCore.Managers
 
             {
                 var userIdentity = _mapper.Map<UserDTO, AppUser>(userDTO);
-               var result = await UserManager.CreateAsync(userIdentity, userDTO.Password);
+                var result = await UserManager.CreateAsync(userIdentity, userDTO.Password);
 
                 if (result.Errors.Count() > 0)
                     return new OperationDetails(false, result.Errors.FirstOrDefault().ToString(), "");
@@ -79,10 +83,10 @@ namespace ApplicationCore.Managers
                 return await Task.FromResult<ClaimsIdentity>(null);
           
             var userToVerify = await UserManager.FindByNameAsync(userName);
-               if (userToVerify == null) return await Task.FromResult<ClaimsIdentity>(null);
+               if (userToVerify == null)
+                 return await Task.FromResult<ClaimsIdentity>(null);
                                      
             return await Task.FromResult<ClaimsIdentity>(null);
         }
-
     }
 }

@@ -11,6 +11,7 @@ using Infrastructure.EF;
 using Infrastructure.Entities;
 using ApplicationCore.Interfaces;
 using ApplicationCore.Managers;
+using ApplicationCore.Services;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -92,9 +93,11 @@ namespace HotelsBooking
             services.AddAutoMapper(typeof(AutoMapperProfile).GetTypeInfo().Assembly);
             services.AddMvc();
             services.AddTransient<IAuthenticationManager, AuthenticationManager>();
+            services.AddTransient<IProfileManager, ProfileManager>();
+            services.AddTransient<IProfileService, ProfileService>();
 
 
-        }
+    }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
