@@ -1,16 +1,31 @@
-﻿@model HotelsBooking.Models.ProfileViewModel
-
-<h1>Profile</h1>
-
-<table class="table table-hover">
-    <tbody>
-    <tr>
-        <td>
-            @Model.FirstName
-        </td>
-        <td>
-            @Model.LastName
-        </td>
-    </tr>
-    </tbody>
-</table>
+﻿
+<body>
+    <section id="content">
+        <div class="container">
+            <div class="row">
+                <div class="profile-info_wrap">
+                    <div class="profile-info d-flex flex-column">
+                        <div class="profile-name">
+                            <b>@Model.FirstName @Model.LastName</b>
+                        </div>
+                        <div class="profile-address">
+                            <div class="address_wrap">
+                                <div class="mail-address">@Model.Email</div>
+                                <div class="real-address">Washington, <b>USA</b></div>
+                            </div>
+                        </div>
+                        <div class="profile-role_wrap">
+                            <div class="profile-role_block">
+                                <span>customer</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="profile-img">
+                        <img src="https://i.imgur.com/f2kiwyi.png" alt="profile-img">
+                    </div>
+                </div>
+                <div class="available-hotel-list"></div>
+            </div>
+        </div>
+    </section>
+</body>
