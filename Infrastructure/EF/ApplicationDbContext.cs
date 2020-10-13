@@ -22,7 +22,9 @@ namespace Infrastructure.EF
         public DbSet<OrderDetail> OrderDetails { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
-        { Database.Migrate(); }
+        {
+          //Database.Migrate();
+        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

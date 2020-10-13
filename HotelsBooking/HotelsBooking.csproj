@@ -16,6 +16,13 @@
 
   <ItemGroup>
     <Folder Include="Extensions\" />
+    <Folder Include="Views\Home\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="Views\Profile\Index.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
   </ItemGroup>
 
 </Project>

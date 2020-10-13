@@ -12,6 +12,7 @@ namespace ApplicationCore.Infrastructure
             Message = message;
             Property = prop;
         }
+
         public bool Succedeed { get; private set; }
         public string Message { get; private set; }
         public string Property { get; private set; }

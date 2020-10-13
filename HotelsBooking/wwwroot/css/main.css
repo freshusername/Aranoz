@@ -1,0 +1,111 @@
+﻿p {
+    margin: 0;
+    padding: 0;
+}
+
+#content {
+    color: white;
+    font-family: 'Poppins', serif;
+    margin-top: 8%
+}
+
+.profile-info_wrap {
+    height: 408px;
+    width: 455px;
+    padding: 30px;
+    background: linear-gradient(45deg, #ff0f52, #ff4d35);
+    border-radius: 8px;
+    position: relative;
+}
+
+.profile-info_wrap .profile-name {
+    height: 36px;
+    color: #ffffff;
+    font-size: 44px;
+    font-weight: 700;
+    text-align: center;
+    line-height: 30px;
+    margin-bottom: 52px;
+    line-height: .8;
+}
+
+.real-address, .mail-address {
+    height: 34px;
+    color: #ffffff;
+    font-size: 22px;
+    font-weight: 300 important!;
+    padding: 20px 0px;
+}
+
+.profile-role_wrap {
+    position: absolute;
+    bottom: 0;
+}
+
+.profile-role_block {
+    width: 270px;
+    height: 90px;
+    background: linear-gradient(45deg, #ff4d35,#ff0f52);
+    border-radius: 12px;
+    box-shadow: -5px 9px 3.95px 1.05px rgba(0, 0, 0, 0.18);
+    margin-bottom: 51px;
+    display: flex;
+    padding-left: 29px;
+    float: left;
+    align-items: center;
+}
+
+    .profile-role_block span {
+        text-transform: uppercase;
+        font-weight: 500;
+        font-size: 30px;
+    }
+
+.profile-info_wrap .profile-img {
+    position: absolute;
+    left: 250px;
+    bottom: 25px;
+}
+
+.profile-img img {
+    width: 270px;
+    height: 270px;
+    box-shadow: -5px 9px 3.95px 1.05px rgba(0, 0, 0, 0.18);
+    border-radius: 50%;
+}
+
+.order {
+    margin-bottom: 30px;
+}
+
+.order .order-photo img {
+    width: 234px;
+    height: 158px;
+    box-shadow: -5px 9px 3.95px 1.05px rgba(0, 0, 0, 0.18);
+    border-radius: 10px;
+}
+
+.order .order-info {
+    background-color: #acacac;
+    height: 120px !important;
+    position: relative;
+    top: -8px;
+    width: 100%;
+    border-radius: 0 10px 10px 0;
+}
+
+    .order .order-info.active-order {
+        background-color: #1dd17a !important;
+    }
+
+    .order .order-info .hotel-title {
+        font-size: 25px;
+    }
+
+    .order .order-info .order-date {
+        text-align: center;
+    }
+
+    .order .order-info .order-price {
+        font-size: 22px;
+    }
