@@ -95,6 +95,7 @@ namespace HotelsBooking
             services.AddTransient<IAuthenticationManager, AuthenticationManager>();
             services.AddTransient<IProfileManager, ProfileManager>();
             services.AddTransient<IProfileService, ProfileService>();
+            services.AddTransient<IPhotoManager, PhotoManager>();
 
 
     }

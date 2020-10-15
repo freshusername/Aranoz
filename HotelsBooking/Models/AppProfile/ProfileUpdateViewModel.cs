@@ -1,16 +1,16 @@
 ﻿using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
+using System.Threading.Tasks;
 
-namespace ApplicationCore.DTOs
+namespace HotelsBooking.Models.AppProfile
 {
-  public class ProfileDTO
+  public class ProfileUpdateViewModel
   {
-    public string Id { get; set; }
     public string FirstName { get; set; }
     public string LastName { get; set; }
     public string Email { get; set; }
-    public byte[] ProfileImage { get; set; }
+    public IFormFile ProfileImage { get; set; }
   }
 }
