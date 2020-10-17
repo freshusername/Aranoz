@@ -1,19 +1,54 @@
 ﻿@model HotelsBooking.Models.AllProfilesViewModel
 
-<h1>Profiles</h1>
 
-<table class="table table-hover" id="profileIndexTable">
-    <tbody>
-        @foreach(var profile in Model.profilesList)
+<body>
+
+    <section id="content">
+        <h1>Profiles</h1>
+        <div class="review_list">
+        @foreach (var profile in Model.profilesList)
         {
-            <tr>
-                <td>
-                    @profile.FirstName
-                </td>
-                <td>
-                    @profile.LastName
-                </td>
-            </tr>
+            <div class="review_item">
+                <div class="media">
+                    <div class="d-flex">
+                        <img src="img/product/single-product/review-3.png" alt="">
+                    </div>
+                    <div class="media-body">
+                        <h4>Blake Ruiz</h4>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                    </div>
+                </div>
+                <p>
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit,
+                    sed do eiusmod tempor incididunt ut labore et dolore magna
+                    aliqua. Ut enim ad minim veniam, quis nostrud exercitation
+                    ullamco laboris nisi ut aliquip ex ea commodo
+                </p>
+            </div>
         }
-    </tbody>
-</table>
+        </div>
+        <div class="d-flex justify-content-around align-items-start">
+            <table class="table table-hover" id="profileIndexTable">
+                <tbody>
+                    @foreach (var profile in Model.profilesList)
+                    {
+                        <tr>
+                            <a asp-controller="Profile" asp-action="Index" class="nav-link">Profile</a>
+                            <td>
+                                @profile.FirstName
+                            </td>
+                            <td>
+                                @profile.LastName
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+    </section>
+</body>
