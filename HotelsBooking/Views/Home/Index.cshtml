@@ -1,0 +1,31 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Index</h2>
+
+
+<section class="feature_part padding_top">
+    <div class="container">
+        <div class="row align-items-center justify-content-between">
+            <div class="col-lg-7 col-sm-6">
+                <div style="background: url('img/banner/hotels_index.jpeg'); background-size: cover; " class="single_feature_post_text">
+                    <p class="home-index-text">hotels list</p>
+                    <h3 class="home-index-text">Hotels</h3>
+                    <a asp-controller="Hotel" asp-action="ShowHotels" class="feature_btn home-index-text">EXPLORE NOW<i class="fas fa-play"></i></a>
+     
+                </div>
+            </div>
+            <div class="col-lg-5 col-sm-6">
+                <div class="col-lg-7 col-sm-6">
+                    <div style="background: url('img/banner/profile.jpeg'); background-size: cover; " class="single_feature_post_text">
+                        <p class="home-index-text">profiles list</p>
+                        <h3 class="home-index-text">Profiles</h3>
+                        <a asp-controller="Profile" asp-action="Index" class="feature_btn home-index-text">EXPLORE NOW<i class="fas fa-play"></i></a>
+     
+                    </div>
+            </div>
+        </div>
+    </div>
+</section>
