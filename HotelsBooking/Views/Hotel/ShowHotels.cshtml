@@ -1,0 +1,48 @@
+﻿@using ApplicationCore.DTOs;
+@model IEnumerable<HotelDto>
+
+@{
+    ViewData["Title"] = "Hotels page";
+
+    <html>
+    <head>
+        <link href=" " rel="stylesheet" />
+    </head>
+    <body>
+        <h1>All hotels</h1>
+        <div class="features">
+            <a asp-controller="Hotel" asp-action="AddHotel" class="btn btn-success">Add new hotel</a>
+
+            <ul class="features__list">
+
+                @foreach (var item in Model)
+                {
+                    <li class="features__item">
+                        <div class="content">
+
+                            <h4>
+                                @Html.DisplayNameFor(model => model.Name) : @Html.DisplayFor(modelItem => item.Name)
+                            </h4>
+                            <h4>
+                                @Html.DisplayNameFor(model => model.Location) : @Html.DisplayFor(modelItem => item.Location)
+                            </h4>
+                            <h4>
+                                @Html.DisplayNameFor(model => model.Season) : @Html.DisplayFor(modelItem => item.Season)
+                            </h4>
+
+
+                            <div scope="col" class="">
+                                @if (!User.IsInRole("BlockedUser"))
+                                {
+                                    <a class="btn btn-danger" asp-controller="Hotel" asp-action="HotelMain" asp-route-Id="@item.Id"><em>Details</em></a>
+                                }
+                            </div>
+                        </div>
+                    </li>
+                }
+
+            </ul>
+        </div>
+    </body>
+</html>
+}

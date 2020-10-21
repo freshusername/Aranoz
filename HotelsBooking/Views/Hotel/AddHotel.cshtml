@@ -1,0 +1,39 @@
+﻿@using ApplicationCore.DTOs
+@model HotelDto
+@{
+    <div class="container">
+
+        <h2>Add new hotel</h2>
+        <hr />
+
+        <div class="row">
+            <div class="col-md-4">
+                <form asp-action="AddHotel">
+
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-group">
+                        <label asp-for="@Model.Name" class="control-label"></label>
+                        <input asp-for="@Model.Name" class="form-control" placeholder="Enter name please" />
+
+                        <label asp-for="@Model.Location" class="control-label"></label>
+                        <input asp-for="@Model.Location" class="form-control" placeholder="Enter lcation please" />
+
+                        <select data-val="true" data-val-required="The Hotel Season field is required."
+                                id="Season" name="Season">
+                            <option value="0">Hot</option>
+                            <option value="1">Cold</option>
+                            <option value="2">Demiseason</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <input type="submit" value="AddHotel" class="btn btn-success" />
+                        <a class="btn btn-primary" asp-action="ShowCars"><em class="glyphicon glyphicon-arrow-left"></em> Back to List</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    </div>
+
+}
