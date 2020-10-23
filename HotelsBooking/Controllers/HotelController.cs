@@ -14,23 +14,23 @@ namespace HotelsBooking.Controllers
     [Route("[controller]/[action]")]
     public class HotelController : Controller
     {
-        private readonly IHotelService _hotelService;
-        public HotelController(IHotelService hotelService)
+        private readonly IHotelManager _hotelManager;
+        public HotelController(IHotelManager hotelManager)
         {
-            this._hotelService = hotelService;
+            this._hotelManager = hotelManager;
         }
 
         [HttpGet]
         public IActionResult ShowHotels()
         {
-            var hotels = _hotelService.GetHotels();
+            var hotels = _hotelManager.GetHotels();
             return View(hotels);
         }
 
         [HttpPost]
-        public IActionResult AddHotel(HotelDto hotel)
+        public IActionResult AddHotel(HotelDTO hotel)
         {
-            _hotelService.Insert(hotel);
+            _hotelManager.Create(hotel);
             return RedirectToAction("ShowHotels", "Hotel");
         }
 
@@ -39,45 +39,11 @@ namespace HotelsBooking.Controllers
             return View();
         }
 
-        public int GetHotelsCount(string searchValue)
+        public async Task<IActionResult> HotelMain(int hotelId)
         {
-            if (searchValue == null)
-            {
-                searchValue = "";
-            }
-            //if (!User.Identity.IsAuthenticated)   // when we will have users with role claims
-            //{
-            //    return 0;
-            //}
-            return _hotelService.GetHotelCount(searchValue);
-        }
-
-        public IEnumerable<HotelDto> Get(int page, int countOnPage, string searchValue)
-        {
-            if (searchValue == null)
-            {
-                searchValue = "";
-            }
-
-            //if (User.Identity.IsAuthenticated && User.IsInRole("Moderator"))    //again, when we will have users with role claims
-            //{
-            //    var moderatorId = moderatorManager.GetThisModerator(this.User.FindFirstValue(ClaimTypes.NameIdentifier)).Id;
-            //    return _hotelService.GetHotels(page, countOnPage, searchValue);
-            //}
-            else
-            {
-                return _hotelService.GetHotels(page, countOnPage, searchValue);
-            }
-            return _hotelService.GetHotels(page, countOnPage, searchValue);
-        }
-
-        public IActionResult HotelMain(int hotelId)
-        {
-            var hotel = _hotelService.Get(hotelId);
+            HotelDTO hotel = await _hotelManager.GetHotelById(hotelId);
             return View(hotel);
         }
-
-
 
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
