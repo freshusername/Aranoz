@@ -18,5 +18,7 @@ namespace ApplicationCore.DTOs
 
         public string UserName { get; set; }
 
+        public bool RememberMe { get; set; }
+
     }
 }
