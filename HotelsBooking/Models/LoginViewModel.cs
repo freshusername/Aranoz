@@ -17,10 +17,8 @@ namespace HotelsBooking.Models
         [DataType(DataType.Password)]
         public string Password { get; set; }
 
-        [Display(Name = "Запомнить?")]
+        [Display(Name = "Remember?")]
         public bool RememberMe { get; set; }
-
-        public string ReturnUrl { get; set; }
 
     }
 }
