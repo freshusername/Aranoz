@@ -30,7 +30,7 @@ namespace HotelsBooking.Controllers
                                          .ThenInclude(hr => hr.Room)
                                     .Include(h => h.HotelRooms)
                                          .ThenInclude(hr => hr.RoomConvs)
-                                    .FirstOrDefault(x => x.Id == id);
+                                    .FirstOrDefault(h => h.Id == id);
             return View(hotel);
         }
     }
