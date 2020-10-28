@@ -17,9 +17,13 @@ namespace ApplicationCore.DTOs
         [Display(Name = "Located in")]
         public string Location { get; set; }
 
+        [Display(Name = "Description")]
+        public string Description { get; set; }
+
         [Display(Name = "Season")]
         public Season Season { get; set; } 
 
+        public ICollection<HotelRoom> HotelRooms { get; set; }
         public ICollection<HotelPhoto> HotelPhotos { get; set; }
 
     }

@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace ApplicationCore.Interfaces
 {
-    public interface IPhotoManager
+    interface IPhotoManager
     {
-        Task<byte[]> GetPhotoFromFile(IFormFile uploadedFile, int width, int height);
-        Task Delete(string id);
+        Task<HotelPhoto> AddPhoto(IFormFile uploadedFile);
+        Task Delete(Guid id);
     }
 }
