@@ -1,76 +1,51 @@
 ﻿using ApplicationCore.DTOs;
+using ApplicationCore.Infrastructure;
 using ApplicationCore.Interfaces;
 using AutoMapper;
 using Infrastructure.EF;
 using Infrastructure.Entities;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Query;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Text;
+using System.Threading.Tasks;
 
-namespace ApplicationCore.Services
+namespace ApplicationCore.Managers
 {
     public class HotelManager : IHotelManager
     {
-        protected readonly ApplicationDbContext _context;
-        private readonly IMapper _mapper;
-        public HotelManager(ApplicationDbContext context, IMapper mapper)
+        private readonly ApplicationDbContext _context;
+        private IMapper _mapper;
+        private readonly DbSet<Hotel> _hotels;
+        public HotelManager(ApplicationDbContext context,IMapper mapper)
         {
             _context = context;
+            _hotels = _context.Hotels;
             _mapper = mapper;
         }
-
-        //load data from relative tables(available hotel convs, etc.)
-        public HotelDto Get(int hotelId)
+        public List<Hotel> GetHotels() => _hotels.ToList();
+        public async Task<OperationDetails> Create(HotelDTO hotelDTO)
         {
-            Hotel hotel = _context.Hotels.Include(h => h.HotelRooms)
-                                            .ThenInclude(hr => hr.Room)
-                                        .Include(h => h.HotelRooms)
-                                                .ThenInclude(hr => hr.RoomConvs)
-                                        .Include(h => h.HotelPhotos)
-                                        .FirstOrDefault(h => h.Id == hotelId);
-            return _mapper.Map<Hotel, HotelDto>(hotel);
-        }
-
-       
-        public IEnumerable<HotelDto> GetHotels()
-        {
-            IEnumerable<Hotel> hotels = _context.Hotels.ToList();
-            return _mapper.Map<IEnumerable<Hotel>, IEnumerable<HotelDto>>(hotels);
-        }
-        
-        public void Insert(HotelDto hotel)
-        {
-            Hotel hotel_to_add = _mapper.Map<HotelDto, Hotel>(hotel);
-            _context.Hotels.Add(hotel_to_add);
-            _context.SaveChanges();
-        }
-
-        public void Update(HotelDto hotel)
-        {
-            Hotel hotel_to_update = _mapper.Map<HotelDto, Hotel>(hotel);
-            try
+            Hotel hotelCheck = _hotels.FirstOrDefault(x => x.Name == hotelDTO.Name);
+            if (hotelCheck == null)
             {
-                _context.Hotels.Attach(hotel_to_update);
+                Hotel hotel = _mapper.Map<HotelDTO, Hotel>(hotelDTO);
+                await _hotels.AddAsync(hotel);
+                await _context.SaveChangesAsync();
+                return new OperationDetails(true, "Hotel added", "Name");
             }
-            catch { }
-            finally
-            {
-                _context.Hotels.Update(hotel_to_update);
-            }
-            _context.SaveChanges();
+            return new OperationDetails(false, "Hotel with the same name already exists", "Name");
         }
-        public void Delete(int id)
+        public async Task Delete(int Id)
         {
-            Hotel hotel_to_delete = _context.Hotels.Find(id);
-            if (_context.Entry(hotel_to_delete).State == EntityState.Detached)
-            {
-                _context.Hotels.Attach(hotel_to_delete);
-            }
-            _context.Hotels.Remove(hotel_to_delete);
+            Hotel hotel = _hotels.Find(Id);
+            _hotels.Remove(hotel);
+            await _context.SaveChangesAsync();
+        }
+        public void Dispose()
+        {
+            
         }
     }
 }

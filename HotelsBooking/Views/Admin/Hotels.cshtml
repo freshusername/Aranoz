@@ -1,0 +1,42 @@
+﻿@model IEnumerable<Infrastructure.Entities.Hotel>
+<link href="~/css/Admin.css" rel="stylesheet" />
+<link href="~/css/ForTable.css" rel="stylesheet" />
+<body>
+    <div id="viewport">
+        @await Html.PartialAsync("_AdminPartial")
+        <div id="content">
+            <div class="row">
+                <table class="table table-dark rwd-table">
+                    <tr><th>List of Hotels</th><th></th><th></th></tr>
+                    <tr><th>Name</th><th>Location</th><th>Season</th><th>Actions</th></tr>
+                    @if (!Model.Any())
+                    {
+                        <tr><td colspan="4">No Hotels</td></tr>
+                    }
+                    else
+                    {
+                        @foreach (var hotel in Model)
+                        {
+                            <tr>
+                                <td>@hotel.Name</td>
+                                <td>@hotel.Location</td>
+                                <td>@hotel.Season</td>
+                                <td>
+                                    <form asp-action="DeleteHotel" asp-controller="Admin">
+                                        <a class="btn btn-sm btn-warning" asp-action="EditHotel">Edit</a>
+                                        <a class="btn btn-sm btn-primary" asp-action="Conveniences">Conveniences</a>
+                                        <a class="btn btn-sm btn-primary" asp-action="Rooms">Rooms</a>
+                                        <button type="submit" class="btn btn-sm btn-danger" asp-action="DeleteHotel" asp-route-id="@hotel.Id">Delete</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        }
+                    }
+                </table>
+                <div class="text-center">
+                    <a asp-action="CreateHotel" class="btn btn-success" style="width:20%;">Add new hotel</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>

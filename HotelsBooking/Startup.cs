@@ -4,12 +4,12 @@ using System.Linq;
 using System.Net.Mime;
 using System.Reflection;
 using System.Threading.Tasks;
-using ApplicationCore.Interfaces;
-using ApplicationCore.Services;
 using AutoMapper;
 using HotelsBooking.Mapping;
 using Infrastructure.EF;
 using Infrastructure.Entities;
+using ApplicationCore.Interfaces;
+using ApplicationCore.Managers;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -20,7 +20,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using ApplicationCore.Managers;
 
 namespace HotelsBooking
 {
@@ -82,23 +81,18 @@ namespace HotelsBooking
                 options.SlidingExpiration = true;
             });
 
-            var config = new AutoMapper.MapperConfiguration(c =>
+            services.Configure<CookiePolicyOptions>(options =>
             {
-                c.AddProfile(new ApplicationMappingProfile());
+                // This lambda determines whether user consent for non-essential cookies is needed for a given request.
+                options.CheckConsentNeeded = context => true;
+                options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
             services.AddAutoMapper(typeof(AutoMapperProfile).GetTypeInfo().Assembly);
+            services.AddMvc();
             services.AddTransient<IAuthenticationManager, AuthenticationManager>();
-            services.AddTransient<IEmailSender, EmailSender>();
+            services.AddTransient<IAdminManager, AdminManager>();
             services.AddTransient<IHotelManager, HotelManager>();
-
-            var mapper = config.CreateMapper();
-
-
-            services.AddDbContext<ApplicationDbContext>(options =>
-            options.UseMySql(
-                Configuration.GetConnectionString("DefaultConnection")));
-
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
