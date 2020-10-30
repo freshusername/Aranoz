@@ -23,5 +23,12 @@ namespace ApplicationCore.Interfaces
         Task<OperationDetails> CreateHotel(HotelDTO hotelDTO);
         Task DeleteHotel(int Id);
         #endregion
+
+        #region Orders
+        List<Order> Orders();
+        Task<OperationDetails> CreateOrder(OrderDTO orderDTO);
+        Task DeleteOrder(int id);
+        #endregion
+
     }
 }

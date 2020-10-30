@@ -18,13 +18,14 @@ namespace ApplicationCore.Managers
         private readonly UserManager<AppUser> _userManager;
         private IAuthenticationManager _authenticationManager;
         private IHotelManager _hotelManager;
-        public AdminManager(ApplicationDbContext applicationDbContext, UserManager<AppUser> userManager, IAuthenticationManager authenticationManager, IHotelManager hotelManager)
+        private IOrderManager _orderManager;
+        public AdminManager(ApplicationDbContext applicationDbContext, UserManager<AppUser> userManager, IAuthenticationManager authenticationManager, IHotelManager hotelManager, IOrderManager orderManager)
         {
             _applicationDbContext = applicationDbContext;
             _userManager = userManager;
             _authenticationManager = authenticationManager;
             _hotelManager = hotelManager;
-
+            _orderManager = orderManager;
         }
         #region Users
         public List<AppUser> Users()
@@ -99,9 +100,27 @@ namespace ApplicationCore.Managers
             await _hotelManager.Delete(Id);
         }
         #endregion
+       
         public void Dispose()
         {
 
         }
+
+        #region Orders
+        public List<Order> Orders()
+        {
+            return _orderManager.GetOrders();
+        }
+
+        public async Task<OperationDetails> CreateOrder(OrderDTO orderDTO)
+        {
+            return await _orderManager.CreateOrder(orderDTO);
+        }
+
+        public async Task DeleteOrder(int id)
+        {
+            await _orderManager.DeleteOrder(id);
+        }
+        #endregion
     }
 }

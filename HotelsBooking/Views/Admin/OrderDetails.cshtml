@@ -1,0 +1,43 @@
+﻿@model IEnumerable<Infrastructure.Entities.OrderDetail>
+<link href="~/css/Admin.css" rel="stylesheet" />
+<link href="~/css/ForTable.css" rel="stylesheet" />
+<body>
+    <div id="viewport">
+        @await Html.PartialAsync("_AdminPartial")
+        <div id="content">
+            <div class="row">
+                <table class="table table-dark rwd-table">
+                    <tr><th>Order details</th><th></th><th></th></tr>
+                    <tr><th>Check-in</th><th>Check-out</th><th>Hotel</th><th>Room</th><th>Total Price</th><th>Actions</th></tr>
+                    @if (!Model.Any())
+                    {
+                        <tr><td colspan="4">No details</td></tr>
+                    }
+                    else
+                    {
+                        @foreach (var detail in Model)
+                        {
+                <tr>
+                    <td>@detail.CheckInDate</td>
+                    <td>@detail.CheckOutDate</td>
+                    <td>@detail.HotelRoom.Hotel.Name</td>
+                    <td>@detail.HotelRoom.Room.Id</td>
+                    <td>@detail.TotalPrice</td>     
+                    <td>
+                        <form asp-action="DeleteOrder" asp-controller="Admin" asp-route-id="@detail.Id">
+                            <a class="btn btn-sm btn-warning" asp-action="EditOrder" asp-route-id="@detail.Id">Edit</a>
+                            <a class="btn btn-sm btn-primary" asp-action="OpenDetails" asp-route-id="@detail.Id">Open details</a>
+                            <button type="submit" class="btn btn-sm btn-danger" asp-action="DeleteOrder" asp-route-id="@detail.Id">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+                        }
+                    }
+                </table>
+                <div class="text-center">
+                    <a asp-action="CreateOrder" class="btn btn-success" style="width:30%;">Add new order</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>

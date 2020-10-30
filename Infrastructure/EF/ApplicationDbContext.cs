@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using static Infrastructure.Enums;
 
 namespace Infrastructure.EF
 {
@@ -29,7 +30,12 @@ namespace Infrastructure.EF
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-
+            modelBuilder
+                .Entity<Hotel>()
+                .Property(p => p.Season)
+                .HasConversion(
+                v => v.ToString(),
+                v => (Season)Enum.Parse(typeof(Season), v));
             //modelBuilder.Entity<HotelRoom>()
             //    .HasOne(pt => pt.Hotel)
             //    .WithMany(p => p.HotelRooms)

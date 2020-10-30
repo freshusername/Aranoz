@@ -24,6 +24,7 @@ namespace HotelsBooking.Controllers
             _userManager = userManager;
             _mapper = mapper;
         }
+
         #region Users
         public IActionResult Users()
         {
@@ -122,12 +123,56 @@ namespace HotelsBooking.Controllers
         {
             return View(_adminManager.Hotels());
         }
+        public IActionResult CreateHotel()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateHotel(CreateHotelViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+            var hotel = _mapper.Map<CreateHotelViewModel, HotelDTO>(model);
+            var res = await _adminManager.CreateHotel(hotel);
+            if (res.Succedeed)
+                return RedirectToAction("Hotels");
+            else
+                ModelState.AddModelError(res.Property, res.Message);
+
+            return View(model);
+        }
         [HttpPost]
         public async Task<IActionResult> DeleteHotel(int Id)
         {
             await _adminManager.DeleteHotel(Id);
             return RedirectToAction("Hotels");
         }
+        #endregion
+        #region Order
+        public IActionResult Orders()
+        {
+            return View(_adminManager.Orders());
+        }
+
+        public IActionResult CreateOrder()
+        {
+            return View();
+        }
+
+        public async Task<IActionResult> DeleteOrder(int Id)
+        {
+            await _adminManager.DeleteOrder(Id);
+            return RedirectToAction("Orders");
+        }
+
+        public IActionResult OrderDetails(int id)
+        {
+            return View();
+        }
+
         #endregion
     }
 }
