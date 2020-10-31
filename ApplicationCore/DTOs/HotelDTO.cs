@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Infrastructure.Entities;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using static Infrastructure.Enums;
@@ -12,5 +13,6 @@ namespace ApplicationCore.DTOs
         public string Location { get; set; }
         public Season Season { get; set; }
 
+        public IEnumerable<HotelConv> HotelConvs;
     }
 }

@@ -94,6 +94,7 @@ namespace HotelsBooking
             services.AddTransient<IAdminManager, AdminManager>();
             services.AddTransient<IHotelManager, HotelManager>();
             services.AddTransient<IOrderManager, OrderManager>();
+            services.AddTransient<IAdditionalConvManager, AdditionalConvManager>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

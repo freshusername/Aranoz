@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Infrastructure.Entities.Hotel>
+﻿@model IEnumerable<HotelsBooking.Models.CreateOrEditHotelViewModel>
 <link href="~/css/Admin.css" rel="stylesheet" />
 <link href="~/css/ForTable.css" rel="stylesheet" />
 <link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
@@ -27,8 +27,8 @@
                                         <td data-label="Season">@hotel.Season</td>
                                         <td data-label="Actions">
                                             <form asp-action="DeleteHotel" asp-controller="Admin">
-                                                <a class="btn btn-sm btn-warning" asp-action="EditHotel">Edit</a>
-                                                <a class="btn btn-sm btn-primary" asp-action="Conveniences">Conveniences</a>
+                                                <a class="btn btn-sm btn-warning" asp-action="EditHotel" asp-route-id="@hotel.Id">Edit</a>
+                                                <a class="btn btn-sm btn-primary" asp-action="HotelConvs" asp-route-id="@hotel.Id">Conveniences</a>
                                                 <a class="btn btn-sm btn-primary" asp-action="Rooms">Rooms</a>
                                                 <button type="submit" class="btn btn-sm btn-danger" asp-action="DeleteHotel" asp-route-id="@hotel.Id">Delete</button>
                                             </form>

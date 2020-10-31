@@ -28,7 +28,8 @@ namespace HotelsBooking.Controllers
         #region Users
         public IActionResult Users()
         {
-            return View(_adminManager.Users());
+            List<UsersViewModel> users = _mapper.Map<List<AdminUserDTO>, List<UsersViewModel>>(_adminManager.Users());
+            return View(users);
         }
 
         public async Task<IActionResult> EditUser(string Id)
@@ -121,7 +122,8 @@ namespace HotelsBooking.Controllers
         #region Hotels
         public IActionResult Hotels()
         {
-            return View(_adminManager.Hotels());
+            List<CreateOrEditHotelViewModel> hotels = _mapper.Map< List < HotelDTO > ,List <CreateOrEditHotelViewModel>>(_adminManager.Hotels());
+            return View(hotels);
         }
         public IActionResult CreateHotel()
         {
@@ -129,13 +131,13 @@ namespace HotelsBooking.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateHotel(CreateHotelViewModel model)
+        public async Task<IActionResult> CreateHotel(CreateOrEditHotelViewModel model)
         {
             if (!ModelState.IsValid)
             {
                 return View(model);
             }
-            var hotel = _mapper.Map<CreateHotelViewModel, HotelDTO>(model);
+            var hotel = _mapper.Map<CreateOrEditHotelViewModel, HotelDTO>(model);
             var res = await _adminManager.CreateHotel(hotel);
             if (res.Succedeed)
                 return RedirectToAction("Hotels");
@@ -144,6 +146,43 @@ namespace HotelsBooking.Controllers
 
             return View(model);
         }
+
+        public async Task<IActionResult> EditHotel(int Id)
+        {
+            CreateOrEditHotelViewModel hotel = _mapper.Map<HotelDTO,CreateOrEditHotelViewModel>(await _adminManager.GetHotelById(Id));
+            if (hotel == null)
+            {
+                return NotFound();
+            }
+            return View(hotel);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditHotel(CreateOrEditHotelViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+            HotelDTO hotel = _mapper.Map<CreateOrEditHotelViewModel, HotelDTO>(model);
+            var res = await _adminManager.EditHotel(hotel);
+            if (res.Succedeed)
+            {
+                return RedirectToAction("Hotels");
+            }
+            else
+            {
+                ModelState.AddModelError(res.Property, res.Message);
+            }
+            return View(model);
+        }
+
+        public async Task<IActionResult> HotelConvs(int Id)
+        {
+            IEnumerable<HotelConvsViewModel> hotelConvs = _mapper.Map<IEnumerable<HotelConvDTO>, IEnumerable<HotelConvsViewModel>>(_adminManager.HotelConvs().Where(hc => hc.HotelId == Id));
+            return View(hotelConvs);
+        }
+
         [HttpPost]
         public async Task<IActionResult> DeleteHotel(int Id)
         {
