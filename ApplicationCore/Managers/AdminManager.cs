@@ -95,12 +95,12 @@ namespace ApplicationCore.Managers
         #region Hotels
         public async Task<HotelDTO> GetHotelById(int Id)
         {
-            HotelDTO hotel = _mapper.Map<Hotel, HotelDTO>(await _hotelManager.GetHotelById(Id));
+            HotelDTO hotel = await _hotelManager.GetHotelById(Id);
             return hotel;
         }
-        public List<HotelDTO> Hotels()
+        public IEnumerable<HotelDTO> Hotels()
         {
-            List<HotelDTO> hotels =_mapper.Map<List<Hotel>,List<HotelDTO>>(_hotelManager.GetHotels());
+            IEnumerable<HotelDTO> hotels =_hotelManager.GetHotels();
             return hotels;
         }
 
@@ -119,6 +119,11 @@ namespace ApplicationCore.Managers
         public IEnumerable<HotelConvDTO> HotelConvs() => _hotelManager.GetHotelConvs();
 
         public Task<OperationDetails> CreateHotelConv(HotelConvDTO hotelConvDTO) => _hotelManager.CreateHotelConv(hotelConvDTO);
+
+        public async Task DeleteHotelConv(int Id)
+        {
+            await _hotelManager.DeleteHotelConv(Id);
+        }
         #endregion
         #region AddConvs
         public Task<OperationDetails> CreateAdditionalConv(AdditionalConvDTO additionalConvDTO) => _additionalConvManager.Create(additionalConvDTO);

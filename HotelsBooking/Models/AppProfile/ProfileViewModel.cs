@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Infrastructure.Entities;
 
-namespace HotelsBooking.Models
+namespace HotelsBooking.Models.AppProfile
 {
   public class ProfileViewModel
   {

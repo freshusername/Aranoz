@@ -13,7 +13,7 @@ namespace HotelsBooking.Mapping
         {
             CreateMap<AppUser, UserDTO>().ReverseMap();
 
-            CreateMap<Hotel, HotelDto>().ReverseMap();
+            CreateMap<Hotel, HotelDTO>().ReverseMap();
         }
     }
 }

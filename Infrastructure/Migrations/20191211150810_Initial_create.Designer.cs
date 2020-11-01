@@ -9,14 +9,14 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20191211102243_zzz")]
-    partial class zzz
+    [Migration("20191211150810_Initial_create")]
+    partial class Initial_create
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.1.8-servicing-32085")
+                .HasAnnotation("ProductVersion", "2.1.4-rtm-31024")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
             modelBuilder.Entity("Infrastructure.Entities.AdditionalConv", b =>
@@ -90,6 +90,8 @@ namespace Infrastructure.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<string>("Description");
+
                     b.Property<string>("Location");
 
                     b.Property<string>("Name");
@@ -120,6 +122,22 @@ namespace Infrastructure.Migrations
                     b.HasIndex("HotelId");
 
                     b.ToTable("HotelConvs");
+                });
+
+            modelBuilder.Entity("Infrastructure.Entities.HotelPhoto", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("HotelId");
+
+                    b.Property<byte[]>("Image");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("HotelId");
+
+                    b.ToTable("HotelPhotos");
                 });
 
             modelBuilder.Entity("Infrastructure.Entities.HotelRoom", b =>
@@ -189,11 +207,9 @@ namespace Infrastructure.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<int>("RoomTypeId");
+                    b.Property<int>("RoomType");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("RoomTypeId");
 
                     b.ToTable("Rooms");
                 });
@@ -218,18 +234,6 @@ namespace Infrastructure.Migrations
                     b.HasIndex("HotelRoomId");
 
                     b.ToTable("RoomConvs");
-                });
-
-            modelBuilder.Entity("Infrastructure.Entities.RoomType", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("Description");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("RoomTypes");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -352,6 +356,14 @@ namespace Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
+            modelBuilder.Entity("Infrastructure.Entities.HotelPhoto", b =>
+                {
+                    b.HasOne("Infrastructure.Entities.Hotel", "Hotel")
+                        .WithMany("HotelPhotos")
+                        .HasForeignKey("HotelId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
             modelBuilder.Entity("Infrastructure.Entities.HotelRoom", b =>
                 {
                     b.HasOne("Infrastructure.Entities.Hotel", "Hotel")
@@ -382,14 +394,6 @@ namespace Infrastructure.Migrations
                     b.HasOne("Infrastructure.Entities.Order", "Order")
                         .WithMany("OrderDetails")
                         .HasForeignKey("OrderId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("Infrastructure.Entities.Room", b =>
-                {
-                    b.HasOne("Infrastructure.Entities.RoomType", "RoomType")
-                        .WithMany("Rooms")
-                        .HasForeignKey("RoomTypeId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

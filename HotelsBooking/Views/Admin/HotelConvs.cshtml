@@ -27,7 +27,7 @@
                                     <td data-label="Actions">
                                         <form asp-action="DeleteHotelConv" asp-controller="Admin">
                                             <a class="btn btn-sm btn-warning" asp-action="EditHotelConv">Edit</a>
-                                            <button type="submit" class="btn btn-sm btn-danger" asp-action="DeleteHotelConv">Delete</button>
+                                            <button type="submit" class="btn btn-sm btn-danger" asp-action="DeleteHotelConv" asp-route-id="@addConv.Id">Delete</button>
                                         </form>
                                     </td>
                                 </tr>

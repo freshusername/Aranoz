@@ -9,14 +9,14 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20191210131643_init")]
-    partial class init
+    [Migration("20191211130701_test")]
+    partial class test
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.1.14-servicing-32113")
+                .HasAnnotation("ProductVersion", "2.1.8-servicing-32085")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
             modelBuilder.Entity("Infrastructure.Entities.AdditionalConv", b =>
@@ -90,13 +90,12 @@ namespace Infrastructure.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("Description");
-
                     b.Property<string>("Location");
 
                     b.Property<string>("Name");
 
-                    b.Property<int>("Season");
+                    b.Property<string>("Season")
+                        .IsRequired();
 
                     b.HasKey("Id");
 
@@ -121,22 +120,6 @@ namespace Infrastructure.Migrations
                     b.HasIndex("HotelId");
 
                     b.ToTable("HotelConvs");
-                });
-
-            modelBuilder.Entity("Infrastructure.Entities.HotelPhoto", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<int>("HotelId");
-
-                    b.Property<byte[]>("image");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("HotelId");
-
-                    b.ToTable("HotelPhotos");
                 });
 
             modelBuilder.Entity("Infrastructure.Entities.HotelRoom", b =>
@@ -206,9 +189,11 @@ namespace Infrastructure.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<int>("RoomType");
+                    b.Property<int>("RoomTypeId");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("RoomTypeId");
 
                     b.ToTable("Rooms");
                 });
@@ -233,6 +218,18 @@ namespace Infrastructure.Migrations
                     b.HasIndex("HotelRoomId");
 
                     b.ToTable("RoomConvs");
+                });
+
+            modelBuilder.Entity("Infrastructure.Entities.RoomType", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Description");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("RoomTypes");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -350,15 +347,7 @@ namespace Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("Infrastructure.Entities.Hotel", "Hotel")
-                        .WithMany()
-                        .HasForeignKey("HotelId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("Infrastructure.Entities.HotelPhoto", b =>
-                {
-                    b.HasOne("Infrastructure.Entities.Hotel", "Hotel")
-                        .WithMany("HotelPhotos")
+                        .WithMany("HotelConvs")
                         .HasForeignKey("HotelId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
@@ -393,6 +382,14 @@ namespace Infrastructure.Migrations
                     b.HasOne("Infrastructure.Entities.Order", "Order")
                         .WithMany("OrderDetails")
                         .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Infrastructure.Entities.Room", b =>
+                {
+                    b.HasOne("Infrastructure.Entities.RoomType", "RoomType")
+                        .WithMany("Rooms")
+                        .HasForeignKey("RoomTypeId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

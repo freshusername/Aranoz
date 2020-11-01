@@ -122,7 +122,7 @@ namespace HotelsBooking.Controllers
         #region Hotels
         public IActionResult Hotels()
         {
-            List<CreateOrEditHotelViewModel> hotels = _mapper.Map< List < HotelDTO > ,List <CreateOrEditHotelViewModel>>(_adminManager.Hotels());
+            IEnumerable<CreateOrEditHotelViewModel> hotels = _mapper.Map< IEnumerable < HotelDTO > ,IEnumerable <CreateOrEditHotelViewModel>>(_adminManager.Hotels());
             return View(hotels);
         }
         public IActionResult CreateHotel()
@@ -184,6 +184,14 @@ namespace HotelsBooking.Controllers
         }
 
         [HttpPost]
+        public async Task<IActionResult> DeleteHotelConv(int Id)
+        {
+            await _adminManager.DeleteHotelConv(Id);
+            int HotelId = Id;
+            return RedirectToAction("HotelConvs", new { Id= HotelId});
+        }
+
+        [HttpPost]
         public async Task<IActionResult> DeleteHotel(int Id)
         {
             await _adminManager.DeleteHotel(Id);
@@ -201,6 +209,32 @@ namespace HotelsBooking.Controllers
             return View();
         }
 
+        [HttpPost]
+        public async Task<IActionResult> CreateOrder(CreateOrderViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+            
+            OrderDTO orderDTO = _mapper.Map<CreateOrderViewModel, OrderDTO>(model);
+            var res = await _adminManager.CreateOrder(orderDTO);
+            if (res.Succedeed)
+                return RedirectToAction("Orders");
+            else
+                ModelState.AddModelError(res.Property, res.Message);
+
+            return View(model);
+        }
+
+        public IActionResult EditOrder(EditOrderViewModel model)
+        { 
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+            return View();
+        }
         public async Task<IActionResult> DeleteOrder(int Id)
         {
             await _adminManager.DeleteOrder(Id);
@@ -209,7 +243,31 @@ namespace HotelsBooking.Controllers
 
         public IActionResult OrderDetails(int id)
         {
-            return View();
+            return View(_adminManager.OrderDetails(id));
+        }
+
+        public async Task<IActionResult> DeleteOrderDetails(int Id)
+        {
+            await _adminManager.DeleteOrderDetails(Id);
+            return RedirectToAction("OrderDetails");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateOrderDetails(CreateOrderViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            OrderDTO orderDTO = _mapper.Map<CreateOrderViewModel, OrderDTO>(model);
+            var res = await _adminManager.CreateOrder(orderDTO);
+            if (res.Succedeed)
+                return RedirectToAction("Orders");
+            else
+                ModelState.AddModelError(res.Property, res.Message);
+
+            return View(model);
         }
 
         #endregion

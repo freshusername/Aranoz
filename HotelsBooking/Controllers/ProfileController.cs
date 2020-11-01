@@ -8,6 +8,7 @@ using ApplicationCore.Services;
 using AutoMapper;
 using HotelsBooking.Models;
 using Infrastructure.Entities;
+using HotelsBooking.Models.AppProfile;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -28,7 +29,7 @@ namespace HotelsBooking.Controllers
       _profileService = profileService;
     }
 
-    public async Task<IActionResult> Detail([FromRouteAttribute] string id)
+    public async Task<IActionResult> Detail([FromRoute] string id)
     {
       var profile = await _profileService.GetByIdAsync(id);
       var result = _mapper.Map<ProfileDTO, ProfileViewModel>(profile);

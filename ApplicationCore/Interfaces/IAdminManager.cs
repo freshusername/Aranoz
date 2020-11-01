@@ -20,12 +20,13 @@ namespace ApplicationCore.Interfaces
 
         #region Hotels
         Task<HotelDTO> GetHotelById(int Id);
-        List<HotelDTO> Hotels();
+        IEnumerable<HotelDTO> Hotels();
         Task<OperationDetails> CreateHotel(HotelDTO hotelDTO);
         Task<OperationDetails> EditHotel(HotelDTO hotelDTO);
         Task DeleteHotel(int Id);
         IEnumerable<HotelConvDTO> HotelConvs();
         Task<OperationDetails> CreateHotelConv(HotelConvDTO hotelConvDTO);
+        Task DeleteHotelConv(int Id);
         #endregion
         #region AddConv
         Task<OperationDetails> CreateAdditionalConv(AdditionalConvDTO additionalConvDTO);
@@ -33,7 +34,13 @@ namespace ApplicationCore.Interfaces
         #region Orders
         List<Order> Orders();
         Task<OperationDetails> CreateOrder(OrderDTO orderDTO);
+        Task<OperationDetails> EditOrder(OrderDTO orderDTO);
         Task DeleteOrder(int id);
+
+        List<OrderDetail> OrderDetails(int id);
+        Task<OperationDetails> CreateOrderDetails(OrderDetailDTO orderDTO);
+        Task<OperationDetails> EditOrderDetails(OrderDetailDTO orderDTO);
+        Task DeleteOrderDetails(int id);
         #endregion
 
     }

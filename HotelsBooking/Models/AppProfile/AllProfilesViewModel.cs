@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using ApplicationCore.DTOs;
 
-namespace HotelsBooking.Models
+namespace HotelsBooking.Models.AppProfile
 {
   public class AllProfilesViewModel
   {
