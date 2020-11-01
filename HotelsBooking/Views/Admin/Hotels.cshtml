@@ -1,0 +1,47 @@
+﻿@model IEnumerable<HotelsBooking.Models.CreateOrEditHotelViewModel>
+<link href="~/css/Admin.css" rel="stylesheet" />
+<link href="~/css/ForTable.css" rel="stylesheet" />
+<link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
+<body>
+    <div id="viewport">
+        @await Html.PartialAsync("_AdminPartial")
+        <div id="content">
+            <div class="row">
+                    <table class="table table-striped table-dark">
+                        <thead>
+                            <tr><th>List of Hotels</th><th></th><th></th><th></th></tr>
+                            <tr><th data-breakpoints="mobile">Name</th><th data-breakpoints="mobile tablet">Location</th><th data-breakpoints="mobile tablet">Season</th><th data-breakpoints="mobile tablet">Actions</th></tr>
+                        </thead>
+                        <tbody>
+                            @if (!Model.Any())
+                            {
+                                <tr><td colspan="4">No Hotels</td></tr>
+                            }
+                            else
+                            {
+                                @foreach (var hotel in Model)
+                                {
+                                    <tr>
+                                        <td data-label="Name">@hotel.Name</td>
+                                        <td data-label="Location">@hotel.Location</td>
+                                        <td data-label="Season">@hotel.Season</td>
+                                        <td data-label="Actions">
+                                            <form asp-action="DeleteHotel" asp-controller="Admin">
+                                                <a class="btn btn-sm btn-warning" asp-action="EditHotel" asp-route-id="@hotel.Id">Edit</a>
+                                                <a class="btn btn-sm btn-primary" asp-action="HotelConvs" asp-route-id="@hotel.Id">Conveniences</a>
+                                                <a class="btn btn-sm btn-primary" asp-action="Rooms">Rooms</a>
+                                                <button type="submit" class="btn btn-sm btn-danger" asp-action="DeleteHotel" asp-route-id="@hotel.Id">Delete</button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                <div class="text-center">
+                    <a asp-action="CreateHotel" class="btn btn-success">Add new hotel</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>

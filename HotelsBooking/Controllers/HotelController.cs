@@ -28,9 +28,9 @@ namespace HotelsBooking.Controllers
         }
 
         [HttpPost]
-        public IActionResult AddHotel(HotelDto hotel)
+        public IActionResult AddHotel(HotelDTO hotel)
         {
-            _hotelManager.Insert(hotel);
+            _hotelManager.Create(hotel);
             return RedirectToAction("ShowHotels", "Hotel");
         }
 
@@ -39,9 +39,9 @@ namespace HotelsBooking.Controllers
             return View();
         }
 
-        public IActionResult HotelMain(int hotelId)
+        public async Task<IActionResult> HotelMain(int hotelId)
         {
-            HotelDto hotel = _hotelManager.Get(hotelId);
+            HotelDTO hotel = await _hotelManager.GetHotelById(hotelId);
             return View(hotel);
         }
 

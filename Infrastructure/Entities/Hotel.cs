@@ -16,6 +16,8 @@ namespace Infrastructure.Entities
 
         public ICollection<HotelPhoto> HotelPhotos { get; set; }
         public ICollection<HotelRoom> HotelRooms { get; set; }
+        public IEnumerable<HotelConv> HotelConvs { get; set; }
     }
 
+   
 }

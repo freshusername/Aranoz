@@ -10,7 +10,7 @@ namespace Infrastructure.Entities
         public int Id { get; set; }
         public decimal Price { get; set; }
 
-        public int AditionalConvId { get; set; }
+        public int AdditionalConvId { get; set; }
         public AdditionalConv AdditionalConv { get; set; }
 
         public int HotelRoomId { get; set; }

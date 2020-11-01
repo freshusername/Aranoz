@@ -17,6 +17,9 @@ namespace ApplicationCore.DTOs
         public string LastName { get; set; }
 
         public string UserName { get; set; }
+        public string Phone { get; set; }
+
+        public bool RememberMe { get; set; }
 
         public bool RememberMe { get; set; }
 

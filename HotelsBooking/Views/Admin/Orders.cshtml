@@ -1,0 +1,46 @@
+﻿@model IEnumerable<Infrastructure.Entities.Order>
+<link href="~/css/Admin.css" rel="stylesheet" />
+<link href="~/css/ForTable.css" rel="stylesheet" />
+<link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
+
+<body>
+    <div id="viewport">
+        @await Html.PartialAsync("_AdminPartial")
+        <div id="content">
+            <div class="row">
+                <table class="table table-striped table-dark">
+                    <thead>
+                        <tr><th>List of orders</th><th></th><th></th></tr>
+                        <tr><th data-breakpoints="mobile">User</th><th data-breakpoints="mobile tablet">Is Active</th><th data-breakpoints="mobile tablet">Actions</th></tr>
+                    </thead>
+
+                    <tbody>
+                        @if (!Model.Any())
+                        {
+                            <tr><td colspan="3">No Orders</td></tr>
+                        }
+                        else
+                        {
+                            @foreach (var order in Model)
+                            {
+                                <tr>
+                                    <td data-label="User">(@order.User.FirstName + " " + @order.User.LastName)</td>
+                                    <td data-label="IsActive">@order.IsActive</td>
+                                    <td data-label="Actions">
+                                        <form asp-action="DeleteOrder" asp-controller="Admin" asp-route-id="@order.Id">
+                                            <a class="btn btn-sm btn-primary" asp-action="OrderDetails" asp-route-id="@order.Id">Open details</a>
+                                            <button type="submit" class="btn btn-sm btn-danger" asp-action="DeleteOrder" asp-route-id="@order.Id">Delete</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+                <div class="text-center">
+                    <a asp-action="CreateOrder" class="btn btn-success" style="width:20%;">Add new order</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>

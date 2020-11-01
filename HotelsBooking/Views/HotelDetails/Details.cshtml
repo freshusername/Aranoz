@@ -12,23 +12,23 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>aranoz</title>
-    <link rel="icon" href="img/favicon.png">
+    <link rel="icon" href="~/img/favicon.png">
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="~/css/bootstrap.min.css">
     <!-- animate CSS -->
-    <link rel="stylesheet" href="css/animate.css">
+    <link rel="stylesheet" href="~/css/animate.css">
     <!-- owl carousel CSS -->
-    <link rel="stylesheet" href="css/owl.carousel.min.css">
-    <link rel="stylesheet" href="css/lightslider.min.css">
+    <link rel="stylesheet" href="~/css/owl.carousel.min.css">
+    <link rel="stylesheet" href="~/css/lightslider.min.css">
     <!-- font awesome CSS -->
-    <link rel="stylesheet" href="css/all.css">
+    <link rel="stylesheet" href="~/css/all.css">
     <!-- flaticon CSS -->
-    <link rel="stylesheet" href="css/flaticon.css">
-    <link rel="stylesheet" href="css/themify-icons.css">
+    <link rel="stylesheet" href="~/css/flaticon.css">
+    <link rel="stylesheet" href="~/css/themify-icons.css">
     <!-- font awesome CSS -->
-    <link rel="stylesheet" href="css/magnific-popup.css">
+    <link rel="stylesheet" href="~/css/magnific-popup.css">
     <!-- style CSS -->
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="~/css/style.css">
 </head>
 <body>
     <div class="product_image_area section_padding">
@@ -36,24 +36,43 @@
             <div class="row s_product_inner justify-content-between">
                 <div class="col-lg-7 col-xl-7">
                     <div class="product_slider_img">
-                        <div class="lSSlideOuter  vertical" style="padding-right: 105px;">
-                            <div class="lSSlideWrapper usingCss" style="height: 450px; transition-duration: 600ms; transition-timing-function: ease;">
-                                <div id="vertical" class="lightSlider lsGrab lSSlide" style="height: 1800px; transform: translate3d(0px, 0px, 0px);">
-                                    <div data-thumb="img/product/single-product/product_1.png" class="lslide active" style="height: 450px; margin-bottom: 0px;">
-                                        <img src="img/product/single-product/product_1.png">
+                        @if (Model.HotelPhotos.Any())
+                        {
+                            List<string> imageSources = new List<string>();
+                            foreach (var photo in Model.HotelPhotos)
+                            {
+                                var base64 = Convert.ToBase64String(photo.Image);
+                                imageSources.Add(String.Format("data:image;base64,{0}", base64));
+                            }
+                            <div class="col-lg-7 col-xl-7">
+                                <div class="product_slider_img">
+                                    <div class="lSSlideOuter  vertical" style="padding-right: 105px;">
+                                        <div class="lSSlideWrapper usingCss" style="height: 450px; transition-duration: 600ms; transition-timing-function: ease;">
+                                            <div id="vertical" class="lightSlider lsGrab lSSlide" style="height: 1800px; transform: translate3d(0px, 0px, 0px);">
+                                                @foreach (string imageSource in imageSources)
+                                                {
+                                                    <div data-thumb="@imageSource" class="lslide" style="height: 450px; margin-bottom: 0px;">
+                                                        <img src="@imageSource" width="80" height="80" />
+                                                    </div>
+                                                }
+                                            </div><div class="lSAction"><a class="lSPrev"></a><a class="lSNext"></a></div>
+                                        </div>
+
+                                        <ul class="lSPager lSGallery" style="margin-left: 5px; width: 100px; transition-duration: 600ms; height: 607.167px; transform: translate3d(0px, 0px, 0px);">
+                                            @foreach (string imageSource in imageSources)
+                                            {
+                                                <li style="width:100%;height:146.66666666666666px;margin-bottom:5px" class="active">
+                                                    <a href="#">
+                                                        <img src="@imageSource">
+                                                    </a>
+                                                </li>
+                                            }
+                                        </ul>
                                     </div>
-                                    <div data-thumb="img/product/single-product/product_1.png" class="lslide" style="height: 450px; margin-bottom: 0px;">
-                                        <img src="img/product/single-product/product_1.png">
-                                    </div>
-                                    <div data-thumb="img/product/single-product/product_1.png" class="lslide" style="height: 450px; margin-bottom: 0px;">
-                                        <img src="img/product/single-product/product_1.png">
-                                    </div>
-                                    <div data-thumb="img/product/single-product/product_1.png" class="lslide" style="height: 450px; margin-bottom: 0px;">
-                                        <img src="img/product/single-product/product_1.png">
-                                    </div>
-                                </div><div class="lSAction"><a class="lSPrev"></a><a class="lSNext"></a></div>
-                            </div><ul class="lSPager lSGallery" style="margin-left: 5px; width: 100px; transition-duration: 600ms; height: 607.167px; transform: translate3d(0px, 0px, 0px);"><li style="width:100%;height:146.66666666666666px;margin-bottom:5px" class="active"><a href="#"><img src="img/product/single-product/product_1.png"></a></li><li style="width:100%;height:146.66666666666666px;margin-bottom:5px"><a href="#"><img src="img/product/single-product/product_1.png"></a></li><li style="width:100%;height:146.66666666666666px;margin-bottom:5px"><a href="#"><img src="img/product/single-product/product_1.png"></a></li><li style="width:100%;height:146.66666666666666px;margin-bottom:5px"><a href="#"><img src="img/product/single-product/product_1.png"></a></li></ul>
-                        </div>
+                                </div>
+                            </div>
+                            
+                        }
                     </div>
                 </div>
                 <div class="col-lg-5 col-xl-4">
@@ -129,7 +148,7 @@
                                 <div class="review_item">
                                     <div class="media">
                                         <div class="d-flex">
-                                            <img src="img/product/single-product/review-1.png" alt="">
+                                            <img src="~/img/product/single-product/review-1.png" alt="">
                                         </div>
                                         <div class="media-body">
                                             <h4>Blake Ruiz</h4>
@@ -147,7 +166,7 @@
                                 <div class="review_item reply">
                                     <div class="media">
                                         <div class="d-flex">
-                                            <img src="img/product/single-product/review-2.png" alt="">
+                                            <img src="~/img/product/single-product/review-2.png" alt="">
                                         </div>
                                         <div class="media-body">
                                             <h4>Blake Ruiz</h4>
@@ -165,7 +184,7 @@
                                 <div class="review_item">
                                     <div class="media">
                                         <div class="d-flex">
-                                            <img src="img/product/single-product/review-3.png" alt="">
+                                            <img src="~/img/product/single-product/review-3.png" alt="">
                                         </div>
                                         <div class="media-body">
                                             <h4>Blake Ruiz</h4>
@@ -289,7 +308,7 @@
                                 <div class="review_item">
                                     <div class="media">
                                         <div class="d-flex">
-                                            <img src="img/product/single-product/review-1.png" alt="">
+                                            <img src="~/img/product/single-product/review-1.png" alt="">
                                         </div>
                                         <div class="media-body">
                                             <h4>Blake Ruiz</h4>
@@ -310,7 +329,7 @@
                                 <div class="review_item">
                                     <div class="media">
                                         <div class="d-flex">
-                                            <img src="img/product/single-product/review-2.png" alt="">
+                                            <img src="~/img/product/single-product/review-2.png" alt="">
                                         </div>
                                         <div class="media-body">
                                             <h4>Blake Ruiz</h4>
@@ -331,7 +350,7 @@
                                 <div class="review_item">
                                     <div class="media">
                                         <div class="d-flex">
-                                            <img src="img/product/single-product/review-3.png" alt="">
+                                            <img src="~/img/product/single-product/review-3.png" alt="">
                                         </div>
                                         <div class="media-body">
                                             <h4>Blake Ruiz</h4>

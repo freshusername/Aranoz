@@ -11,7 +11,7 @@
 
 .profile-info_wrap {
     height: 408px;
-    width: 455px;
+    width: 455px !important;
     padding: 30px;
     background: linear-gradient(45deg, #ff0f52, #ff4d35);
     border-radius: 8px;
@@ -33,7 +33,7 @@
     height: 34px;
     color: #ffffff;
     font-size: 22px;
-    font-weight: 300 important!;
+    font-weight: 300 !important;
     padding: 20px 0px;
 }
 
@@ -43,7 +43,7 @@
 }
 
 .profile-role_block {
-    width: 270px;
+    width: 270px !important;
     height: 90px;
     background: linear-gradient(45deg, #ff4d35,#ff0f52);
     border-radius: 12px;
@@ -68,7 +68,7 @@
 }
 
 .profile-img img {
-    width: 270px;
+    width: 270px !important;
     height: 270px;
     box-shadow: -5px 9px 3.95px 1.05px rgba(0, 0, 0, 0.18);
     border-radius: 50%;
@@ -79,7 +79,7 @@
 }
 
 .order .order-photo img {
-    width: 234px;
+    width: 234px !important;
     height: 158px;
     box-shadow: -5px 9px 3.95px 1.05px rgba(0, 0, 0, 0.18);
     border-radius: 10px;
@@ -90,7 +90,7 @@
     height: 120px !important;
     position: relative;
     top: -8px;
-    width: 100%;
+    width: 100% !important;
     border-radius: 0 10px 10px 0;
 }
 

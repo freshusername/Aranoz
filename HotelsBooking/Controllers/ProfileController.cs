@@ -13,22 +13,23 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Internal;
 
 namespace HotelsBooking.Controllers
 {
   public class ProfileController : Controller
   {
     private readonly IMapper _mapper;
+    private readonly UserManager<AppUser> _userManager;
     private readonly IProfileService _profileService;
 
-    public ProfileController(IMapper mapper, IProfileService profileService)
+    public ProfileController(IMapper mapper, UserManager<AppUser> userManager, IProfileService profileService)
     {
       _mapper = mapper;
+      _userManager = userManager;
       _profileService = profileService;
     }
 
-    public async Task<IActionResult> Detail(string id)
+    public async Task<IActionResult> Detail([FromRoute] string id)
     {
       var profile = await _profileService.GetByIdAsync(id);
       var result = _mapper.Map<ProfileDTO, ProfileViewModel>(profile);
@@ -53,28 +54,6 @@ namespace HotelsBooking.Controllers
       };
 
       return View(model);
-    }
-
-    public async Task<IActionResult> Edit(string id)
-    {
-      var profile = await _profileService.GetByIdAsync(id);
-
-      return View(new ProfileUpdateViewModel
-      {
-        FirstName = profile.FirstName,
-        LastName = profile.LastName,
-        Email = profile.Email
-      });
-    }
-
-    [HttpPost]
-    public async Task<IActionResult> UpdateProfile(ProfileDTO model)
-    {
-      var profile = await _profileService.GetByEmailAsync(model.Email);
-      await _profileService.UpdateProfile(model);
-
-      return RedirectToAction("Detail", "Profile", new {id = profile.Id});
-
     }
   }
 }
