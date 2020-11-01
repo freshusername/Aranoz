@@ -26,6 +26,12 @@ namespace HotelsBooking.Controllers
             var hotels = _hotelManager.GetHotels();
             return View(hotels);
         }
+        public IActionResult template()
+        {
+            var hotels = _hotelManager.GetHotels();
+
+            return View(hotels);
+        }
 
         [HttpPost]
         public IActionResult AddHotel(HotelDto hotel)
@@ -39,11 +45,17 @@ namespace HotelsBooking.Controllers
             return View();
         }
 
+
+
+
+
         public IActionResult HotelMain(int hotelId)
         {
             HotelDto hotel = _hotelManager.Get(hotelId);
             return View(hotel);
         }
+
+
 
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

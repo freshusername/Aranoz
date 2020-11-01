@@ -9,14 +9,14 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20191211123037_TestMigration")]
-    partial class TestMigration
+    [Migration("20191210111124_AddedTableHotelPhotos")]
+    partial class AddedTableHotelPhotos
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.1.14-servicing-32113")
+                .HasAnnotation("ProductVersion", "2.1.11-servicing-32099")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
             modelBuilder.Entity("Infrastructure.Entities.AdditionalConv", b =>
@@ -166,7 +166,7 @@ namespace Infrastructure.Migrations
 
                     b.Property<string>("AppUserId");
 
-                    b.Property<bool>("IsActive");
+                    b.Property<bool>("IsEctive");
 
                     b.HasKey("Id");
 

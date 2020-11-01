@@ -19,4 +19,5 @@ namespace Infrastructure.Entities
         public IEnumerable<HotelConv> HotelConvs { get; set; }
     }
 
+   
 }

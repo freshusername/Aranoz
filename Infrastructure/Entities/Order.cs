@@ -8,11 +8,8 @@ namespace Infrastructure.Entities
     public class Order
     {
         public int Id { get; set; }
-        public bool IsActive { get; set; }
-
-        public string AppUserId { get; set; }
-        public virtual AppUser User { get; set; }
+        public AppUser User { get; set; }
+        public bool Status { get; set; }
         public ICollection<OrderDetail> OrderDetails { get; set; }
     }
-
 }

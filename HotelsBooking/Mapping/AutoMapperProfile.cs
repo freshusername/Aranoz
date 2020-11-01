@@ -1,4 +1,4 @@
-﻿using ApplicationCore.DTOs;
+using ApplicationCore.DTOs;
 using AutoMapper;
 using HotelsBooking.Models;
 using Infrastructure.Entities;
@@ -10,35 +10,26 @@ using System.Threading.Tasks;
 namespace HotelsBooking.Mapping
 {
     public class AutoMapperProfile : Profile
+
     {
+
         public AutoMapperProfile()
+
         {
-            CreateMap<AppUser,EditUserViewModel>();
-            CreateMap<AppUser, ChangePasswordViewModel>();
-            CreateMap<EditUserViewModel, UserDTO>().ForMember(au => au.UserName, map => map.MapFrom(vm => vm.Email)); ;
-            CreateMap<ChangePasswordViewModel, UserDTO>().ForMember(au => au.UserName, map => map.MapFrom(vm => vm.Email)); ;
 
-            CreateMap<AppUser, AdminUserDTO>();
-            CreateMap<AdminUserDTO, UsersViewModel>();
+            CreateMap<RegisterViewModel, UserDTO>()
+                .ForMember(au => au.UserName, map => map.MapFrom(vm => vm.Email));
 
-            CreateMap<AdditionalConvDTO, AdditionalConv>();
-            CreateMap<AdditionalConv,AdditionalConvDTO>();
+            CreateMap<UserDTO, AppUser>()
+                .ForMember(au => au.UserName, map => map.MapFrom(vm => vm.Email));
 
-            CreateMap<HotelConvDTO,HotelConvsViewModel>();
+            CreateMap<LoginViewModel, UserDTO>()
+                .ForMember(au => au.UserName, map => map.MapFrom(vm => vm.Email));
+            
 
-            CreateMap<CreateOrEditHotelViewModel, HotelDTO>();
-            CreateMap<HotelDTO ,CreateOrEditHotelViewModel>();
-            CreateMap<HotelDTO, Hotel>();
-            CreateMap<Hotel,HotelDTO>();
-
-            CreateMap<RegisterViewModel, UserDTO>().ForMember(au => au.UserName, map => map.MapFrom(vm => vm.Email));
-            CreateMap<UserDTO, AppUser>().ForMember(au => au.UserName, map => map.MapFrom(vm => vm.Email));
-
-            CreateMap<LoginViewModel, UserDTO>().ForMember(au => au.UserName, map => map.MapFrom(vm => vm.Email));
-            CreateMap<UserDTO, AppUser>().ForMember(au => au.UserName, map => map.MapFrom(vm => vm.Email));
-
-            CreateMap<OrderDTO, Order>();
         }
-    }
-}
 
+    }
+
+
+}
