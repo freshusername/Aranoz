@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ApplicationCore.DTOs;
+using ApplicationCore.DTOs.AppProfile;
 using ApplicationCore.Infrastructure;
 using AutoMapper;
 using Infrastructure.EF;
@@ -27,30 +28,41 @@ namespace ApplicationCore.Services
       _mapper = mapper;
       _userManager = userManager;
     }
-
-    public async Task<ProfileDTO> GetByIdAsync(string id)
+    
+    public async Task<ProfileDto> GetByIdAsync(string id)
     {
       var user = await _context.Users.SingleOrDefaultAsync(x => x.Id == id);
       if (user == null)
         return null;
 
-      var profile = _mapper.Map<AppUser, ProfileDTO>(user);
+      var profile = _mapper.Map<AppUser, ProfileDto>(user);
       return profile;
     }
 
-    public async Task<ProfileDTO> GetByEmailAsync(string email)
+    public async Task<ProfileDto> GetByEmailAsync(string email)
     {
       var user = await _context.Users.SingleOrDefaultAsync(x => x.Email == email);
       if (user == null)
         return null;
 
-      var profile = _mapper.Map<AppUser, ProfileDTO>(user);
+      var profile = _mapper.Map<AppUser, ProfileDto>(user);
       return profile;
     }
 
-    public async Task<OperationDetails> UpdateProfile(ProfileDTO model)
+    public IdentityUserRole<string> GetRole(string id)
+    {
+      var user = _context.Users.SingleOrDefault(x => x.Id == id);
+      if (user == null)
+        return null;
+      var role = _context.UserRoles.Find(id);
+
+      return role;
+    }
+
+    public async Task<OperationDetails> UpdateProfile(ProfileDto model)
     {
       var user = await _userManager.FindByEmailAsync(model.Email);
+
       if (user == null)
       {
         return new OperationDetails(false, "Something gone wrong", "Email");
@@ -68,13 +80,8 @@ namespace ApplicationCore.Services
     public IEnumerable<AppUser> GetAllProfilesAsync()
     {
       var users = _context.Users;
-      //var profiles = _mapper.Map<IEnumerable<AppUser>, IEnumerable<ProfileDTO>>(users);
+      //var profiles = _mapper.Map<IEnumerable<AppUser>, IEnumerable<ProfileDto>>(users);
       return users; 
     }
-
-    //public Task<Profile> UpdateProfile()
-    //{
-
-    //}
   }
 }
