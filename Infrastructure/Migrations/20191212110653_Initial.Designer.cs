@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20191210111124_AddedTableHotelPhotos")]
-    partial class AddedTableHotelPhotos
+    [Migration("20191212110653_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -96,7 +96,8 @@ namespace Infrastructure.Migrations
 
                     b.Property<string>("Name");
 
-                    b.Property<int>("Season");
+                    b.Property<string>("Season")
+                        .IsRequired();
 
                     b.HasKey("Id");
 
@@ -130,7 +131,7 @@ namespace Infrastructure.Migrations
 
                     b.Property<int>("HotelId");
 
-                    b.Property<byte[]>("image");
+                    b.Property<byte[]>("Image");
 
                     b.HasKey("Id");
 
@@ -166,7 +167,7 @@ namespace Infrastructure.Migrations
 
                     b.Property<string>("AppUserId");
 
-                    b.Property<bool>("IsEctive");
+                    b.Property<bool>("IsActive");
 
                     b.HasKey("Id");
 
@@ -218,9 +219,7 @@ namespace Infrastructure.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<int?>("AdditionalConvId");
-
-                    b.Property<int>("AditionalConvId");
+                    b.Property<int>("AdditionalConvId");
 
                     b.Property<int>("HotelRoomId");
 
@@ -350,7 +349,7 @@ namespace Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("Infrastructure.Entities.Hotel", "Hotel")
-                        .WithMany()
+                        .WithMany("HotelConvs")
                         .HasForeignKey("HotelId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
@@ -400,7 +399,8 @@ namespace Infrastructure.Migrations
                 {
                     b.HasOne("Infrastructure.Entities.AdditionalConv", "AdditionalConv")
                         .WithMany("RoomConvs")
-                        .HasForeignKey("AdditionalConvId");
+                        .HasForeignKey("AdditionalConvId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("Infrastructure.Entities.HotelRoom", "HotelRoom")
                         .WithMany("RoomConvs")

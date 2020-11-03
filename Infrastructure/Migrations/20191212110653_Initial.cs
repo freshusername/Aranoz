@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Infrastructure.Migrations
 {
-    public partial class test : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -328,8 +328,7 @@ namespace Infrastructure.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     Price = table.Column<decimal>(nullable: false),
-                    AditionalConvId = table.Column<int>(nullable: false),
-                    AdditionalConvId = table.Column<int>(nullable: true),
+                    AdditionalConvId = table.Column<int>(nullable: false),
                     HotelRoomId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
@@ -340,7 +339,7 @@ namespace Infrastructure.Migrations
                         column: x => x.AdditionalConvId,
                         principalTable: "AdditionalConvs",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_RoomConvs_HotelRooms_HotelRoomId",
                         column: x => x.HotelRoomId,

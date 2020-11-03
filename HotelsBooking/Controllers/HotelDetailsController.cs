@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ApplicationCore.DTOs;
+using ApplicationCore.Interfaces;
 using Infrastructure.EF;
 using Infrastructure.Entities;
 using Microsoft.AspNetCore.Http;
@@ -12,26 +14,22 @@ namespace HotelsBooking.Controllers
 {
     public class HotelDetailsController : Controller
     {
-        ApplicationDbContext db;
-        public HotelDetailsController(ApplicationDbContext context)
+        private readonly IHotelManager _hotelManager;
+        public HotelDetailsController(IHotelManager hotelManager)
         {
-            db = context;
+            this._hotelManager = hotelManager;
         }
         // GET: HotelDetails
         public ActionResult Index()
         {
-            return View(db.Hotels);
+            IEnumerable<HotelDTO> hotels = _hotelManager.GetHotels();
+            return View(hotels);
         }
 
         // GET: HotelDetails/Details/5
-        public ActionResult Details(int id)
+        public async Task<ActionResult> Details(int id)
         {
-            Hotel hotel = db.Hotels.Include(h => h.HotelRooms)
-                                         .ThenInclude(hr => hr.Room)
-                                    .Include(h => h.HotelRooms)
-                                         .ThenInclude(hr => hr.RoomConvs)
-                                    .Include(h => h.HotelPhotos)
-                                    .FirstOrDefault(h => h.Id == id);
+            HotelDTO hotel =  await _hotelManager.GetHotelById(id);
             return View(hotel);
         }
     }
