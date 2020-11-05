@@ -341,5 +341,4 @@ namespace HotelsBooking.Controllers
         }
         #endregion
     }
-
 }

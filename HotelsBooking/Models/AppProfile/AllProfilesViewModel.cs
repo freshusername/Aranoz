@@ -8,6 +8,6 @@ namespace HotelsBooking.Models.AppProfile
 {
   public class AllProfilesViewModel
   {
-    public IEnumerable<ProfileViewModel> profilesList { get; set; }
+    public IEnumerable<ProfileViewModel> ProfilesList { get; set; }
   }
 }
