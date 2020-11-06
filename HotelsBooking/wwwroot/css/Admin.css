@@ -6,6 +6,9 @@ body {
     font-size: 16px;
 }
 
+.nav > li{
+    width:100%;
+}
 /* Toggle Styles */
 
 #viewport {

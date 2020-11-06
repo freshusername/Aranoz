@@ -201,9 +201,7 @@ namespace Infrastructure.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<int?>("AdditionalConvId");
-
-                    b.Property<int>("AditionalConvId");
+                    b.Property<int>("AdditionalConvId");
 
                     b.Property<int>("HotelRoomId");
 
@@ -395,7 +393,8 @@ namespace Infrastructure.Migrations
                 {
                     b.HasOne("Infrastructure.Entities.AdditionalConv", "AdditionalConv")
                         .WithMany("RoomConvs")
-                        .HasForeignKey("AdditionalConvId");
+                        .HasForeignKey("AdditionalConvId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("Infrastructure.Entities.HotelRoom", "HotelRoom")
                         .WithMany("RoomConvs")

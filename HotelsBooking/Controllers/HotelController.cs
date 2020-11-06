@@ -1,6 +1,7 @@
 ﻿using ApplicationCore.DTOs;
 using ApplicationCore.Interfaces;
 using HotelsBooking.Models;
+using HotelsBooking.Models.Hotel;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -21,10 +22,17 @@ namespace HotelsBooking.Controllers
         }
 
         [HttpGet]
-        public IActionResult ShowHotels()
+        public IActionResult ShowHotels(FilterHotelDto filterHotelDto)
         {
-            var hotels = _hotelManager.GetHotels();
-            return View(hotels);
+            var hotels = _hotelManager.GetHotels(filterHotelDto);
+            var model = new FilteredHotelsViewModel
+            {
+                Hotels = hotels,
+                FilterHotelDto = filterHotelDto
+            };
+
+
+            return View(model);
         }
 
         [HttpPost]

@@ -22,7 +22,7 @@ namespace HotelsBooking.Controllers
         // GET: HotelDetails
         public ActionResult Index()
         {
-            IEnumerable<HotelDTO> hotels = _hotelManager.GetHotels();
+            IEnumerable<HotelDTO> hotels = _hotelManager.GetHotels(new FilterHotelDto() );
             return View(hotels);
         }
 

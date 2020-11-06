@@ -7,17 +7,19 @@ using ApplicationCore.Interfaces;
 using AutoMapper;
 using HotelsBooking.Models;
 using Infrastructure.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using static Infrastructure.Enums;
 
 namespace HotelsBooking.Controllers
 {
+    
     public class AdminController : Controller
     {
         private readonly IAdminManager _adminManager;
         private readonly UserManager<AppUser> _userManager;
-        private readonly IMapper _mapper;
+        private IMapper _mapper;
         public AdminController(IAdminManager adminManager, UserManager<AppUser> userManager, IMapper mapper)
         {
             _adminManager = adminManager;
@@ -28,7 +30,8 @@ namespace HotelsBooking.Controllers
         #region Users
         public IActionResult Users()
         {
-            return View(_adminManager.Users());
+            List<UsersViewModel> users = _mapper.Map<List<AdminUserDTO>, List<UsersViewModel>>(_adminManager.Users());
+            return View(users);
         }
 
         public async Task<IActionResult> EditUser(string Id)
@@ -121,7 +124,8 @@ namespace HotelsBooking.Controllers
         #region Hotels
         public IActionResult Hotels()
         {
-            return View(_adminManager.Hotels());
+            IEnumerable<CreateOrEditHotelViewModel> hotels = _mapper.Map<IEnumerable<HotelDTO>, IEnumerable<CreateOrEditHotelViewModel>>(_adminManager.Hotels());
+            return View(hotels);
         }
         public IActionResult CreateHotel()
         {
@@ -144,6 +148,51 @@ namespace HotelsBooking.Controllers
 
             return View(model);
         }
+
+        public async Task<IActionResult> EditHotel(int Id)
+        {
+            CreateOrEditHotelViewModel hotel = _mapper.Map<HotelDTO, CreateOrEditHotelViewModel>(await _adminManager.GetHotelById(Id));
+            if (hotel == null)
+            {
+                return NotFound();
+            }
+            return View(hotel);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditHotel(CreateOrEditHotelViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+            HotelDTO hotel = _mapper.Map<CreateOrEditHotelViewModel, HotelDTO>(model);
+            var res = await _adminManager.EditHotel(hotel);
+            if (res.Succedeed)
+            {
+                return RedirectToAction("Hotels");
+            }
+            else
+            {
+                ModelState.AddModelError(res.Property, res.Message);
+            }
+            return View(model);
+        }
+
+        public async Task<IActionResult> HotelConvs(int Id)
+        {
+            IEnumerable<HotelConvsViewModel> hotelConvs = _mapper.Map<IEnumerable<HotelConvDTO>, IEnumerable<HotelConvsViewModel>>(_adminManager.HotelConvs().Where(hc => hc.HotelId == Id));
+            return View(hotelConvs);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteHotelConv(int Id)
+        {
+            await _adminManager.DeleteHotelConv(Id);
+            int HotelId = Id;
+            return RedirectToAction("HotelConvs", new { Id = HotelId });
+        }
+
         [HttpPost]
         public async Task<IActionResult> DeleteHotel(int Id)
         {
@@ -151,7 +200,6 @@ namespace HotelsBooking.Controllers
             return RedirectToAction("Hotels");
         }
         #endregion
-
         #region Order
         public IActionResult Orders()
         {
@@ -187,17 +235,9 @@ namespace HotelsBooking.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> DeleteHotelConv(int Id)
+        public async Task<IActionResult> EditOrder(int Id)
         {
-            await _adminManager.DeleteHotelConv(Id);
-            int HotelId = Id;
-            return RedirectToAction("HotelConvs", new { Id= HotelId});
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> EditOrder(int id)
-        {
-            OrderDTO orderDTO = await _adminManager.GetOrderById(id);
+            OrderDTO orderDTO = await _adminManager.GetOrderById(Id);
             if (orderDTO == null)
             {
                 return NotFound();
@@ -236,7 +276,7 @@ namespace HotelsBooking.Controllers
             return View(_mapper.Map<List<OrderDetailDTO>, List<OrderDetailsViewModel>>(_adminManager.GetOrderDetails(id)));
         }
 
-        
+
         public IActionResult CreateOrderDetails() => View();
 
         [HttpPost]
