@@ -1,5 +1,5 @@
 ﻿@using Microsoft.EntityFrameworkCore;
-@model Infrastructure.Entities.Hotel
+@model ApplicationCore.DTOs.HotelDTO
 @{
     ViewData["Title"] = "Details";
 }
@@ -44,34 +44,20 @@
                                 var base64 = Convert.ToBase64String(photo.Image);
                                 imageSources.Add(String.Format("data:image;base64,{0}", base64));
                             }
-                            <div class="col-lg-7 col-xl-7">
-                                <div class="product_slider_img">
-                                    <div class="lSSlideOuter  vertical" style="padding-right: 105px;">
-                                        <div class="lSSlideWrapper usingCss" style="height: 450px; transition-duration: 600ms; transition-timing-function: ease;">
-                                            <div id="vertical" class="lightSlider lsGrab lSSlide" style="height: 1800px; transform: translate3d(0px, 0px, 0px);">
-                                                @foreach (string imageSource in imageSources)
-                                                {
-                                                    <div data-thumb="@imageSource" class="lslide" style="height: 450px; margin-bottom: 0px;">
-                                                        <img src="@imageSource" width="80" height="80" />
-                                                    </div>
-                                                }
-                                            </div><div class="lSAction"><a class="lSPrev"></a><a class="lSNext"></a></div>
-                                        </div>
-
-                                        <ul class="lSPager lSGallery" style="margin-left: 5px; width: 100px; transition-duration: 600ms; height: 607.167px; transform: translate3d(0px, 0px, 0px);">
+                            <div class="product_slider_img">
+                                <div class="lSSlideOuter  vertical" style="padding-right: 105px;">
+                                    <div class="lSSlideWrapper usingCss" style="height: 450px; transition-duration: 600ms; transition-timing-function: ease;">
+                                        <div id="vertical" class="lightSlider lsGrab lSSlide" style="height: 1800px; transform: translate3d(0px, 0px, 0px);">
                                             @foreach (string imageSource in imageSources)
                                             {
-                                                <li style="width:100%;height:146.66666666666666px;margin-bottom:5px" class="active">
-                                                    <a href="#">
-                                                        <img src="@imageSource">
-                                                    </a>
-                                                </li>
+                                                <div data-thumb="@imageSource" class="lslide" style="height: 450px; margin-bottom: 0px;">
+                                                    <img src="@imageSource">
+                                                </div>
                                             }
-                                        </ul>
+                                        </div><div class="lSAction"><a class="lSPrev"></a><a class="lSNext"></a></div>
                                     </div>
                                 </div>
                             </div>
-                            
                         }
                     </div>
                 </div>

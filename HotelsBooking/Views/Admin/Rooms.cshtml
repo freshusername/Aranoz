@@ -1,0 +1,48 @@
+﻿@model IEnumerable<HotelsBooking.Models.AdminRoomsViewModel>
+<link href="~/css/Admin.css" rel="stylesheet" />
+<link href="~/css/ForTable.css" rel="stylesheet" />
+<link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
+
+<body>
+    <div id="viewport">
+        @await Html.PartialAsync("_AdminPartial")
+
+        <div id="content">
+            <div class="row">
+                <p class="text-black-50 text-center">List of rooms</p>
+                <table class="table table-dark rwd-table text-center table-hover">
+                    <thead class="thead-light  text-center">
+                        <tr style="color:black" class="text-center">
+                            <th class="text-center">Room</th>
+                            <th class=" text-center">Actions</th>
+                        </tr>
+                    </thead>
+                    @if (!Model.Any())
+                    {
+                        <tr><td colspan="2">No Rooms</td></tr>
+                    }
+                    else
+                    {
+                        @foreach (var conv in Model)
+                        {
+
+                            <tr>
+                                <td>@conv.RoomType</td>
+                                <td>
+                                    <form asp-action="DeleteRoom" asp-controller="Admin" asp-route-id="@conv.Id">
+                                        <a class="btn btn-sm btn-warning" asp-action="EditRoom" asp-route-id="@conv.Id">Edit</a>
+                                        <button type="submit" class="btn btn-sm btn-danger" asp-action="DeleteRoom" asp-route-id="@conv.Id">Delete</button>
+                                    </form>
+                                </td>
+                            </tr>
+
+                        }
+                    }
+                </table>
+                <div class="text-center">
+                    <a asp-action="CreateRoom" class="btn btn-success">Add new room</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>

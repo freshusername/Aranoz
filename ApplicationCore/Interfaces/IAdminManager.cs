@@ -32,16 +32,35 @@ namespace ApplicationCore.Interfaces
         Task<OperationDetails> CreateAdditionalConv(AdditionalConvDTO additionalConvDTO);
         #endregion
         #region Orders
-        List<Order> Orders();
-        Task<OperationDetails> CreateOrder(OrderDTO orderDTO);
-        Task<OperationDetails> EditOrder(OrderDTO orderDTO);
+        AdminOrderDTO GetOrderById(int Id);
+        List<AdminOrderDTO> GetOrders();
+        Task<OperationDetails> CreateOrder(AdminOrderDTO orderDTO);
+        Task<OperationDetails> EditOrder(AdminOrderDTO orderDTO);
         Task DeleteOrder(int id);
 
-        List<OrderDetail> OrderDetails(int id);
-        Task<OperationDetails> CreateOrderDetails(OrderDetailDTO orderDTO);
-        Task<OperationDetails> EditOrderDetails(OrderDetailDTO orderDTO);
+        AdminOrderDetailDTO GetOrderDetailById(int Id);
+        List<AdminOrderDetailDTO> GetOrderDetails(int Id);
+        Task<OperationDetails> CreateOrderDetails(AdminOrderDetailDTO orderDTO);
+        Task<OperationDetails> EditOrderDetails(AdminOrderDetailDTO orderDTO);
+        bool IsHotelExists(string HotelName);
+        bool IsRoomExists(int RoomID);
         Task DeleteOrderDetails(int id);
         #endregion
 
+        #region Convs
+        List<AdditionalConvDTO> GetConvs();
+        AdditionalConvDTO GetConvById(int Id);
+        Task<OperationDetails> CreateConv(AdditionalConvDTO convDTO);
+        Task<OperationDetails> EditConv(AdditionalConvDTO convDTO);
+        Task DeleteConv(int Id);
+        #endregion
+
+        #region Rooms
+        List<AdminRoomDTO> GetRooms();
+        AdminRoomDTO GetRoomById(int Id);
+        Task<OperationDetails> CreateRoom(AdminRoomDTO convDTO);
+        Task<OperationDetails> EditRoom(AdminRoomDTO convDTO);
+        Task DeleteRoom(int Id);
+        #endregion
     }
 }

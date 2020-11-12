@@ -6,7 +6,7 @@
 <body>
     <div id="viewport">
         @await Html.PartialAsync("_AdminPartial")
-        <div id="content">
+        <div id="content" class="no-margin-top">
             <div class="row">
                 <table class="table table-striped table-dark">
                     <thead>
@@ -38,7 +38,7 @@
                         }
                     </tbody>
                 </table>
-                <div class="text-center">
+                <div class="button-center">
                     <a asp-action="CreateUser" class="btn btn-success">Add new user</a>
                 </div>
             </div>

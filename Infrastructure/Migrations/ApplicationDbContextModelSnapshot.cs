@@ -14,7 +14,7 @@ namespace Infrastructure.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.1.4-rtm-31024")
+                .HasAnnotation("ProductVersion", "2.1.14-servicing-32113")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
             modelBuilder.Entity("Infrastructure.Entities.AdditionalConv", b =>
@@ -217,9 +217,7 @@ namespace Infrastructure.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<int?>("AdditionalConvId");
-
-                    b.Property<int>("AditionalConvId");
+                    b.Property<int>("AdditionalConvId");
 
                     b.Property<int>("HotelRoomId");
 
@@ -399,7 +397,8 @@ namespace Infrastructure.Migrations
                 {
                     b.HasOne("Infrastructure.Entities.AdditionalConv", "AdditionalConv")
                         .WithMany("RoomConvs")
-                        .HasForeignKey("AdditionalConvId");
+                        .HasForeignKey("AdditionalConvId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("Infrastructure.Entities.HotelRoom", "HotelRoom")
                         .WithMany("RoomConvs")

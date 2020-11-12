@@ -1,0 +1,40 @@
+﻿@model HotelsBooking.Models.AdminRoomsViewModel;
+@{
+    ViewData["Title"] = "Add new room";
+}
+
+<link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
+
+<body>
+    <div class="row">
+
+        <div class="col-lg-8 col-lg-offset-2 cl-md-6 cl-md-offset-3 center-block">
+            <div class="text-center">
+                <label style="font-size:20px">Add new room</label>
+            </div>
+
+            <form asp-action="CreateRoom" asp-controller="Admin" method="post">
+
+                <div asp-validation-summary="All" class="text-danger text-center" style="margin-top:10px;"></div>
+                <table class="text-center">
+                    <tr>
+                        <td>
+                            <div class="form-group">
+                                <label class="control-label" asp-for="RoomType"></label><br />
+                                <select asp-for="RoomType" required asp-items="@new SelectList(Enum.GetNames(typeof(Infrastructure.Enums.RoomType)))"></select>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="form-group">
+                                <br />
+                                <input type="submit" value="Save" class="btn btn-success text-center" style="width:100%" />
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </form>
+        </div>
+    </div>
+</body>

@@ -109,3 +109,12 @@
     .order .order-info .order-price {
         font-size: 22px;
     }
+
+    .no-margin-top{
+        margin-top :0 !important;
+    }
+
+.button-center {
+    display: table;
+    margin: 0 auto 0 auto;
+}

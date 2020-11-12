@@ -4211,6 +4211,9 @@ ul {
 /* line 915, ../../01 cl html template/03_jun 2019/188_Aranoz shop_html/sass/_product.scss */
 .review_item {
     margin-bottom: 35px;
+    margin-left: 100px;
+    margin-top: 35px;
+    margin-right: 100px;
 }
 
     /* line 918, ../../01 cl html template/03_jun 2019/188_Aranoz shop_html/sass/_product.scss */
@@ -7814,6 +7817,10 @@ h6 {
     .footer_part .justify-content-around {
         justify-content: flex-start !important;
     }
+}
+
+.home-index-text {
+    color: #ffffff;
 }
 
 /*# sourceMappingURL=style.css.map */

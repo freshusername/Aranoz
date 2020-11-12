@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using Infrastructure.Entities;
+using static Infrastructure.Enums;
 
 namespace ApplicationCore.DTOs
 {
-    public class OrderDTO
+    public class AdminRoomDTO
     {
         public int Id { get; set; }
-        public bool IsActive { get; set; }
-        public  AppUser User { get; set; }
+        public RoomType RoomType { get; set; }
     }
 }

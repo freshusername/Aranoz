@@ -1,6 +1,6 @@
 ﻿
-@using ApplicationCore.DTOs;
-@model IEnumerable<HotelDTO>
+@using HotelsBooking.Models.Hotel
+@model FilteredHotelsViewModel
 @{
     <html lang="zxx">
     <head>
@@ -27,6 +27,8 @@
         <!-- swiper CSS -->
         <link rel="stylesheet" href="css/slick.css">
         <link rel="stylesheet" href="css/price_rangs.css">
+        <!-- check-box CSS -->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pretty-checkbox@3.0/dist/pretty-checkbox.min.css" />
         <!-- style CSS -->
         <link rel="stylesheet" href="css/style.css">
         <style type="text/css">
@@ -153,7 +155,6 @@
             </div>
         </section>
         <!-- breadcrumb start-->
-
         <!--================Category Product Area =================-->
         <section class="cat_product_area section_padding">
             <div class="container">
@@ -162,44 +163,19 @@
                         <div class="left_sidebar_area">
                             <aside class="left_widgets p_filter_widgets">
                                 <div class="l_w_title">
-                                    <h3>Browse Categories</h3>
-                                </div>
-                                <div class="widgets_inner">
-                                    <ul class="list">
-                                        <li>
-                                            <a href="#">Frozen Fish</a>
-                                            <span>(250)</span>
-                                        </li>
-                                        <li>
-                                            <a asp-controller="Hotel" asp-action="AddHotel" class="btn btn-success stretched-link">Add new hotel</a>
-                                        </li>
+                                    <h3>Room price filter</h3>
+                                    <form asp-action="ShowHotels" method="get">
+                                        <div class="form-group">
+                                            <h4>min price: </h4>
+                                            @Html.EditorFor(x => Model.FilterHotelDto.MinPrice)
+                                            <h4>max price: </h4>
+                                            @Html.EditorFor(x => Model.FilterHotelDto.MaxPrice)
+                                        </div>
 
-                                    </ul>
-                                </div>
-                            </aside>
-
-                            <aside class="left_widgets p_filter_widgets">
-                                <div class="l_w_title">
-                                    <h3>Hotels filters</h3>
-                                </div>
-                                <div class="widgets_inner">
-                                    <ul class="list">
-                                        <li>
-                                            <a href="#">Trump</a>
-                                        </li>
-                                        <li>
-                                            <a href="#">Cheremosh</a>
-                                        </li>
-
-                                    </ul>
-                                    <ul class="list">
-                                        <li>
-                                            <a href="#">Trump</a>
-                                        </li>
-                                        <li>
-                                            <a href="#">Cheremosh</a>
-                                        </li>
-                                    </ul>
+                                        <div class="form-group">
+                                            <input type="submit" value="Filter" class="btn btn-success" />
+                                        </div>
+                                    </form>
                                 </div>
                             </aside>
 
@@ -219,6 +195,24 @@
                                 </div>
                             </aside>
 
+                            <aside class="left_widgets p_filter_widgets">
+                                <div class="l_w_title">
+                                    <h3>Hotel Conveniences</h3>
+                                </div>
+                                <div class="widgets_inner">
+                                    <ul class="list">
+                                        <li>
+                                            <div class="pretty p-svg p-curve">
+                                                <input type="checkbox" />
+                                                <div class="state p-success">
+                                                    <label>Parking</label>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </aside>
+
                             <aside class="left_widgets p_filter_widgets price_rangs_aside">
                                 <div class="l_w_title">
                                     <h3>Price Filter</h3>
@@ -227,25 +221,25 @@
                                     <div class="range_item">
                                         <!-- <div id="slider-range"></div> -->
                                         <span class="irs js-irs-0">
-                                        <span class="irs">
-                                            <span class="irs-line" tabindex="-1">
-                                            <span class="irs-line-left"></span>
-                                            <span class="irs-line-mid"></span>
-                                            <span class="irs-line-right"></span>
+                                            <span class="irs">
+                                                <span class="irs-line" tabindex="-1">
+                                                    <span class="irs-line-left"></span>
+                                                    <span class="irs-line-mid"></span>
+                                                    <span class="irs-line-right"></span>
+                                                </span>
+                                                <span class="irs-min" style="visibility: hidden;">tk. 0</span>
+                                                <span class="irs-max" style="visibility: visible;">tk. 1.000</span>
+                                                <span class="irs-from" style="visibility: visible; left: 0%;">tk. 0</span>
+                                                <span class="irs-to" style="visibility: visible; left: 39.4089%;">tk. 500</span>
+                                                <span class="irs-single" style="visibility: hidden; left: 9.85222%;">tk. 0 - tk. 500</span>
                                             </span>
-                                            <span class="irs-min" style="visibility: hidden;">tk. 0</span>
-                                            <span class="irs-max" style="visibility: visible;">tk. 1.000</span>
-                                            <span class="irs-from" style="visibility: visible; left: 0%;">tk. 0</span>
-                                            <span class="irs-to" style="visibility: visible; left: 39.4089%;">tk. 500</span>
-                                            <span class="irs-single" style="visibility: hidden; left: 9.85222%;">tk. 0 - tk. 500</span>
-                                        </span>
                                             <span class="irs-grid"></span>
-                                        <span class="irs-bar" style="left: 3.69458%; width: 46.3054%;"></span>
-                                        <span class="irs-shadow shadow-from" style="display: none;"></span>
-                                        <span class="irs-shadow shadow-to" style="display: none;"></span>
-                                        <span class="irs-slider from" style="left: 0%;"></span>
-                                        <span class="irs-slider to type_last" style="left: 46.3054%;"></span>
-                                            </span>
+                                            <span class="irs-bar" style="left: 3.69458%; width: 46.3054%;"></span>
+                                            <span class="irs-shadow shadow-from" style="display: none;"></span>
+                                            <span class="irs-shadow shadow-to" style="display: none;"></span>
+                                            <span class="irs-slider from" style="left: 0%;"></span>
+                                            <span class="irs-slider to type_last" style="left: 46.3054%;"></span>
+                                        </span>
                                         <input type="text" class="js-range-slider irs-hidden-input" value="" readonly="">
                                         <div class="d-flex">
                                             <div class="price_text">
@@ -260,6 +254,7 @@
                                     </div>
                                 </div>
                             </aside>
+
                         </div>
                     </div>
 
@@ -268,7 +263,7 @@
                             <div class="col-lg-12">
                                 <div class="product_top_bar d-flex justify-content-between align-items-center">
                                     <div class="single_product_menu">
-                                        <p><span>@Model.Count() </span> hotels Found</p>
+                                        <p><span>@Model.Hotels.Count() </span> hotels found</p>
                                     </div>
                                     <div class="single_product_menu d-flex">
                                         <h5>sort by : </h5>
@@ -298,20 +293,27 @@
                                     </div>
 
                                     <div class="single_product_menu d-flex">
-                                        <div class="input-group">
-                                            <input v-model="searchValue" v-on:keyup.enter="getData" type="text" class="form-control" placeholder="search" aria-describedby="inputGroupPrepend">
-                                            <div class="input-group-prepend">
-                                                <span class="input-group-text" id="inputGroupPrepend"><i class="ti-search"></i></span>
-                                            </div>
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text" id="inputGroupPrepend"><i class="ti-search"></i></span>
+                                            <form asp-action="ShowHotels" method="get">
+                                                <div class="form-group">
+                                                    @Html.EditorFor(x => Model.FilterHotelDto.KeyWord)
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <input type="submit" value="Filter" class="btn btn-success" />
+                                                </div>
+                                            </form>
                                         </div>
                                     </div>
+
                                 </div>
                             </div>
 
                         </div>
 
                         <div v-for="item in Hotels" class="row align-items-center latest_product_inner">
-                            @foreach (var item in Model)
+                            @foreach (var item in Model.Hotels)
                             {
                                 <div class="col-lg-4 col-sm-6">
                                     <div class="single_product_item">
@@ -335,12 +337,12 @@
                                 </div>
                             }
                         </div>
+
                     </div>
                 </div>
             </div>
         </section>
         <!--================End Category Product Area =================-->
-
 
         <!--::footer_part start::-->
         <footer class="footer_part">
@@ -436,7 +438,6 @@
             </div>
         </footer>
         <!--::footer_part end::-->
-
         <!-- jquery plugins here-->
         <script src="js/jquery-1.12.1.min.js"></script>
         <!-- popper js -->
