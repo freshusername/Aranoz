@@ -118,3 +118,7 @@
     display: table;
     margin: 0 auto 0 auto;
 }
+
+.shadow-standart {
+    box-shadow: -2px 5px 20px 5px rgba(0, 0, 0, 0.18);
+}

@@ -48,9 +48,14 @@ namespace ApplicationCore.Managers
                                     || h.Location.Contains(filterHotelDto.KeyWord));
             }
             
-            if (filterHotelDto?.MinPrice >= 0 && filterHotelDto?.MaxPrice > 0)
+            if (filterHotelDto?.MinPrice >= 0)
             {
-                hotels = hotels.Where(h => h.HotelRooms.Where(p => p.Price >= filterHotelDto.MinPrice && p.Price <= filterHotelDto.MaxPrice).Any());
+                hotels = hotels.Where(h => h.HotelRooms.Any(p => p.Price >= filterHotelDto.MinPrice));
+            }
+
+            if (filterHotelDto?.MaxPrice > 0)
+            {
+                hotels = hotels.Where(h => h.HotelRooms.Any(p => p.Price <= filterHotelDto.MaxPrice));
             }
 
             return _mapper.Map<IEnumerable<Hotel>, IEnumerable<HotelDTO>>(hotels.ToList());

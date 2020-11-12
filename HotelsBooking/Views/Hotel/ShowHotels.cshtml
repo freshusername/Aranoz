@@ -178,23 +178,6 @@
                                     </form>
                                 </div>
                             </aside>
-
-                            <aside class="left_widgets p_filter_widgets">
-                                <div class="l_w_title">
-                                    <h3>Location Filter</h3>
-                                </div>
-                                <div class="widgets_inner">
-                                    <ul class="list">
-                                        <li>
-                                            <a href="#">Chernivtsi</a>
-                                        </li>
-                                        <li>
-                                            <a href="#">New-York</a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </aside>
-
                             <aside class="left_widgets p_filter_widgets">
                                 <div class="l_w_title">
                                     <h3>Hotel Conveniences</h3>
@@ -284,7 +267,7 @@
 
                                     <div>
                                         <h5>hotels on page :</h5>
-                                        <select v-model.lazy="CountOnPage" v-on:change="getData">
+                                        <select>
                                             <option>1</option>
                                             <option>5</option>
                                             <option>10</option>
@@ -294,9 +277,9 @@
 
                                     <div class="single_product_menu d-flex">
                                         <div class="input-group-prepend">
-                                            <span class="input-group-text" id="inputGroupPrepend"><i class="ti-search"></i></span>
                                             <form asp-action="ShowHotels" method="get">
                                                 <div class="form-group">
+                                                    <h5>Search for hotels/locations</h5>
                                                     @Html.EditorFor(x => Model.FilterHotelDto.KeyWord)
                                                 </div>
 
@@ -317,7 +300,7 @@
                             {
                                 <div class="col-lg-4 col-sm-6">
                                     <div class="single_product_item">
-                                        <img src="~/img/hotel_sample.jpg" alt="">
+                                        <img src="">
                                         <div class="single_product_text">
                                             <h4>
                                                 @Html.DisplayFor(modelItem => item.Name)
@@ -343,7 +326,6 @@
             </div>
         </section>
         <!--================End Category Product Area =================-->
-
         <!--::footer_part start::-->
         <footer class="footer_part">
             <div class="container">

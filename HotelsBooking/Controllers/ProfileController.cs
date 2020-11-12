@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using ApplicationCore.DTOs;
+using ApplicationCore.DTOs.AppProfile;
 using ApplicationCore.Services;
 using AutoMapper;
 using HotelsBooking.Models;
@@ -31,23 +32,24 @@ namespace HotelsBooking.Controllers
     public async Task<IActionResult> Detail(string id)
     {
       var profile = await _profileService.GetByIdAsync(id);
-      var result = _mapper.Map<ProfileDTO, ProfileViewModel>(profile);
+      var result = _mapper.Map<ProfileDto, ProfileViewModel>(profile);
       return View(result);
     }
 
     public async Task<IActionResult> Index()
     {
-      var profiles = _profileService
+      var profiles =  _profileService
         .GetAllProfilesAsync()
         .Select(pr => new ProfileViewModel
         {
           ProfileId = pr.Id,
+          //Role = Roles
           Email = pr.Email,
           FirstName = pr.FirstName,
           LastName = pr.LastName
         });
       
-      //var result = _mapper.Map<IEnumerable<ProfileDTO>, IEnumerable<AllProfilesViewModel>>(profiles);
+      //var result = _mapper.Map<IEnumerable<ProfileDto>, IEnumerable<AllProfilesViewModel>>(profiles);
       var model = new AllProfilesViewModel
       {
         profilesList = profiles
@@ -69,7 +71,7 @@ namespace HotelsBooking.Controllers
     }
 
     [HttpPost]
-    public async Task<IActionResult> UpdateProfile(ProfileDTO model)
+    public async Task<IActionResult> UpdateProfile(ProfileDto model)
     {
       var profile = await _profileService.GetByEmailAsync(model.Email);
       await _profileService.UpdateProfile(model);

@@ -8,11 +8,9 @@
     <div class="row">
 
         <div class="col-lg-8 col-lg-offset-2 col-md-6 col-md-offset-3 col-sm-12">
-            <div class="text-center">
-                <label style="font-size:20px">Edit room</label>
-            </div>
-            <form asp-action="EditRoom" asp-controller="Admin" method="post">
-                <div asp-validation-summary="All" class="text-danger text-center" style="margin-top:10px;"></div>
+            <h3 class="text-center">Edit room</h3>
+            <form asp-action="EditRoom" asp-controller="Admin" method="post" class="center">
+                <div asp-validation-summary="All" class="text-danger center" style="margin-top:10px;"></div>
                 <div class="form-group">
                     <input type="hidden" asp-for="Id" value="@Model.Id" />
                 </div>
@@ -27,13 +25,13 @@
                     </tr>
                     <tr>
                         <td>
-                            <div class="form-group">
+                            <div class="form-group text-center">
                                 <br />
-                                <input type="submit" value="Save" class="btn btn-success text-center" />
+                                <input type="submit" value="Save" class="btn btn-success" />
                             </div>
                         </td>
                     </tr>
-                </table> 
+                </table>
             </form>
         </div>
     </div>

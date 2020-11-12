@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace ApplicationCore.DTOs
+namespace ApplicationCore.DTOs.AppProfile
 {
-  public class ProfileDTO
+  public class ProfileDto
   {
     public string Id { get; set; }
     public string FirstName { get; set; }

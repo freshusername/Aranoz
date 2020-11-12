@@ -11,13 +11,14 @@
                 @foreach (var profile in Model.profilesList)
                 {
                     <a asp-controller="Profile" asp-action="Detail" asp-route-id="@profile.ProfileId">
-                        <div class="review_item">
+                        <div class="review_item shadow-standart" style="padding: 20px;">
                             <div class="media">
                                 <div class="d-flex">
                                     <img src="img/product/single-product/review-3.png" alt="">
                                 </div>
-                                <div class="media-body">
-                                    <h4>@profile.FirstName @profile.LastName</h4>
+                                <div class="media-body" style="height: 80px">
+                                    <h4 style="margin-right: 40px; margin-top: 10px; margin-bottom: 10px">@profile.FirstName @profile.LastName</h4>
+                                    <a class="role-button btn_2" >userRole</a>
                                 </div>
                             </div>
                             <p>

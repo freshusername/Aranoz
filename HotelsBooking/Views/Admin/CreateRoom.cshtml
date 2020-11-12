@@ -9,11 +9,8 @@
     <div class="row">
 
         <div class="col-lg-8 col-lg-offset-2 cl-md-6 cl-md-offset-3 center-block">
-            <div class="text-center">
-                <label style="font-size:20px">Add new room</label>
-            </div>
-
-            <form asp-action="CreateRoom" asp-controller="Admin" method="post">
+            <h3 class="text-center">Add new room</h3>
+            <form asp-action="CreateRoom" asp-controller="Admin" method="post" class="center">
 
                 <div asp-validation-summary="All" class="text-danger text-center" style="margin-top:10px;"></div>
                 <table class="text-center">
@@ -27,9 +24,9 @@
                     </tr>
                     <tr>
                         <td>
-                            <div class="form-group">
+                            <div class="form-group text-center">
                                 <br />
-                                <input type="submit" value="Save" class="btn btn-success text-center" style="width:100%" />
+                                <input type="submit" value="Save" class="btn btn-success" />
                             </div>
                         </td>
                     </tr>
