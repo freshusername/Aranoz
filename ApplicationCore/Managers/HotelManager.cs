@@ -47,14 +47,15 @@ namespace ApplicationCore.Managers
                                     || h.Description.Contains(filterHotelDto.KeyWord)
                                     || h.Location.Contains(filterHotelDto.KeyWord));
             }
+            
             if (filterHotelDto?.MinPrice >= 0 && filterHotelDto?.MaxPrice > 0)
             {
                 hotels = hotels.Where(h => h.HotelRooms.Where(p => p.Price >= filterHotelDto.MinPrice && p.Price <= filterHotelDto.MaxPrice).Any());
             }
 
             return _mapper.Map<IEnumerable<Hotel>, IEnumerable<HotelDTO>>(hotels.ToList());
-
         }
+
         public async Task<OperationDetails> Create(HotelDTO hotelDTO)
         {
             Hotel hotelCheck = _context.Hotels.FirstOrDefault(x => x.Name == hotelDTO.Name);
@@ -82,12 +83,14 @@ namespace ApplicationCore.Managers
             }
             return new OperationDetails(false, "Hotel with the same name already exists", "Name");
         }
+
         public async Task Delete(int Id)
         {
             Hotel hotel = _context.Hotels.Find(Id);
             _context.Hotels.Remove(hotel);
             await _context.SaveChangesAsync();
         }
+
         #region HotelConvs
 
         public IEnumerable<HotelConvDTO> GetHotelConvs()
@@ -130,6 +133,7 @@ namespace ApplicationCore.Managers
             await _context.SaveChangesAsync();
         }
         #endregion
+
         public void Dispose()
         {
             

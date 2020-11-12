@@ -20,10 +20,13 @@ namespace ApplicationCore.Managers
         private IMapper _mapper;
         private IAuthenticationManager _authenticationManager;
         private IHotelManager _hotelManager;
-        private IOrderManager _orderManager;
+        private readonly IOrderManager _orderManager;
         private IAdditionalConvManager _additionalConvManager;
+        private readonly IConvsManager _convsManager;
+        private readonly IAdminRoomManager _roomManager;
         public AdminManager(ApplicationDbContext applicationDbContext, UserManager<AppUser> userManager,IMapper mapper, 
-            IAuthenticationManager authenticationManager, IHotelManager hotelManager, IOrderManager orderManager, IAdditionalConvManager additionalConvManager)
+            IAuthenticationManager authenticationManager, IHotelManager hotelManager, IOrderManager orderManager,
+            IAdditionalConvManager additionalConvManager,IConvsManager convsManager,IAdminRoomManager roomManager)
         {
             _applicationDbContext = applicationDbContext;
             _userManager = userManager;
@@ -32,6 +35,8 @@ namespace ApplicationCore.Managers
             _hotelManager = hotelManager;
             _orderManager = orderManager;
             _additionalConvManager = additionalConvManager;
+            _convsManager = convsManager;
+            _roomManager = roomManager;
         }
         #region Users
         public List<AdminUserDTO> Users()
@@ -128,26 +133,42 @@ namespace ApplicationCore.Managers
         #region AddConvs
         public Task<OperationDetails> CreateAdditionalConv(AdditionalConvDTO additionalConvDTO) => _additionalConvManager.Create(additionalConvDTO);
         #endregion
+
+        #region Orders
+        public AdminOrderDTO GetOrderById(int Id) => _orderManager.GetOrderById(Id);
+        public List<AdminOrderDTO> GetOrders() => _orderManager.GetOrders();
+        public Task<OperationDetails> CreateOrder(AdminOrderDTO orderDTO)=> _orderManager.CreateOrder(orderDTO);
+        public Task<OperationDetails> EditOrder(AdminOrderDTO orderDTO) => _orderManager.EditOrder(orderDTO);
+        public async Task DeleteOrder(int id) => await _orderManager.DeleteOrder(id);
+
+        public AdminOrderDetailDTO GetOrderDetailById(int Id) => _orderManager.GetOrderDetailById(Id);
+        public List<AdminOrderDetailDTO> GetOrderDetails(int Id) => _orderManager.GetOrderDetails(Id);
+        public Task<OperationDetails> CreateOrderDetails(AdminOrderDetailDTO orderDTO) => _orderManager.CreateOrderDetails(orderDTO);
+        public Task<OperationDetails> EditOrderDetails(AdminOrderDetailDTO orderDTO) => _orderManager.EditOrderDetails(orderDTO);
+        public Task DeleteOrderDetails(int id) => _orderManager.DeleteOrderDetails(id);
+        public bool IsHotelExists(string HotelName) => _orderManager.IsHotelExists(HotelName);
+        public bool IsRoomExists(int RoomID) => _orderManager.IsRoomExists(RoomID);
+        #endregion
+
+
+        #region Convs
+        public List<AdditionalConvDTO> GetConvs() => _convsManager.GetConvs();
+        public AdditionalConvDTO GetConvById(int Id) => _convsManager.GetConvById(Id);
+        public Task<OperationDetails> CreateConv(AdditionalConvDTO convDTO) => _convsManager.CreateConv(convDTO);
+        public Task<OperationDetails> EditConv(AdditionalConvDTO convDTO) => _convsManager.EditConv(convDTO);
+        public Task DeleteConv(int Id) => _convsManager.DeleteConv(Id);
+        #endregion
+
+        #region Rooms
+        public List<AdminRoomDTO> GetRooms() => _roomManager.GetRooms();
+        public AdminRoomDTO GetRoomById(int Id) => _roomManager.GetRoomById(Id);
+        public Task<OperationDetails> CreateRoom(AdminRoomDTO convDTO) => _roomManager.CreateRoom(convDTO);
+        public Task<OperationDetails> EditRoom(AdminRoomDTO convDTO) => _roomManager.EditRoom(convDTO);
+        public Task DeleteRoom(int Id) => _roomManager.DeleteRoom(Id);
+        #endregion
         public void Dispose()
         {
 
         }
-
-        #region Orders
-        public List<Order> Orders()
-        {
-            return _orderManager.GetOrders();
-        }
-
-        public async Task<OperationDetails> CreateOrder(OrderDTO orderDTO)
-        {
-            return await _orderManager.CreateOrder(orderDTO);
-        }
-
-        public async Task DeleteOrder(int id)
-        {
-            await _orderManager.DeleteOrder(id);
-        }
-        #endregion
     }
 }

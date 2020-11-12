@@ -1,0 +1,28 @@
+﻿@model HotelsBooking.Models.ConvsViewModel;
+@{
+    ViewData["Title"] = "Add new convenience";
+}
+
+<link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
+
+<body>
+    <div class="row">
+
+        <div class="col-lg-8 col-lg-offset-2 cl-md-6 cl-md-offset-3">
+            <h2>Add new convenience</h2>
+
+            <form asp-action="CreateConv" asp-controller="Admin" method="post">
+
+                <div asp-validation-summary="All" class="text-danger text-center" style="margin-top:10px;"></div>
+
+                <div class="form-group">
+                    <label class="control-label" asp-for="Name"></label>
+                    <input type="text" asp-for="Name" class="form-control" required placeholder="Enter name"/>
+                </div>
+                <div class="form-group text-center">
+                    <input type="submit" value="Save" class="btn btn-success text-center" style="width:20%" />
+                </div>
+            </form>
+        </div>
+    </div>
+</body> 

@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Infrastructure.Entities.OrderDetail>
+﻿@model IEnumerable<HotelsBooking.Models.OrderDetailsViewModel>
 <link href="~/css/Admin.css" rel="stylesheet" />
 <link href="~/css/ForTable.css" rel="stylesheet" />
 <body>
@@ -6,36 +6,46 @@
         @await Html.PartialAsync("_AdminPartial")
         <div id="content">
             <div class="row">
-                <table class="table table-dark rwd-table">
-                    <tr><th>Order details</th><th></th><th></th></tr>
-                    <tr><th>Check-in</th><th>Check-out</th><th>Hotel</th><th>Room</th><th>Total Price</th><th>Actions</th></tr>
+                <p  class="text-black-50">List of order details </p>
+                <table class="table table-dark rwd-table text-center table-hover">
+                    <thead class="thead-light text-center">
+                        <tr>
+                            <th class="text-center">Order date</th>
+                            <th class="text-center">Check-in date</th>
+                            <th class="text-center">Check-out date </th>
+                            <th class="text-center">Hotel</th>
+                            <th class="text-center">Room</th>
+                            <th class="text-center">Total Price</th>
+                            <th class="text-center">Actions</th>
+                        </tr>
+                    </thead>
                     @if (!Model.Any())
                     {
-                        <tr><td colspan="4">No details</td></tr>
+                        <tr><td colspan="7">No details</td></tr>
                     }
                     else
                     {
                         @foreach (var detail in Model)
                         {
-                <tr>
-                    <td>@detail.CheckInDate</td>
-                    <td>@detail.CheckOutDate</td>
-                    <td>@detail.HotelRoom.Hotel.Name</td>
-                    <td>@detail.HotelRoom.Room.Id</td>
-                    <td>@detail.TotalPrice</td>     
-                    <td>
-                        <form asp-action="DeleteOrder" asp-controller="Admin" asp-route-id="@detail.Id">
-                            <a class="btn btn-sm btn-warning" asp-action="EditOrder" asp-route-id="@detail.Id">Edit</a>
-                            <a class="btn btn-sm btn-primary" asp-action="OpenDetails" asp-route-id="@detail.Id">Open details</a>
-                            <button type="submit" class="btn btn-sm btn-danger" asp-action="DeleteOrder" asp-route-id="@detail.Id">Delete</button>
-                        </form>
-                    </td>
-                </tr>
+                        <tr>
+                            <td title="@detail.OrderDate.DateTime.ToLocalTime()">@detail.OrderDate.DateTime.ToShortDateString()</td>
+                            <td>@detail.CheckInDate.DateTime.ToShortDateString()</td>
+                            <td>@detail.CheckOutDate.DateTime.ToShortDateString()</td>
+                            <td>@detail.HotelName</td>
+                            <td>@detail.RoomId</td>
+                            <td>@detail.TotalPrice</td>     
+                            <td>
+                                <form asp-action="DeleteOrderDetails" asp-controller="Admin" asp-route-OrderID="@ViewBag.OrderID" asp-route-id="@detail.Id">
+                                    <a class="btn btn-sm btn-warning" asp-action="EditOrderDetails" asp-route-OrderID="@ViewBag.OrderID" asp-route-id="@detail.Id">Edit</a>
+                                    <button type="submit" class="btn btn-sm btn-danger" asp-action="DeleteOrderDetails" asp-route-OrderID="@ViewBag.OrderID" asp-route-id="@detail.Id">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
                         }
                     }
                 </table>
                 <div class="text-center">
-                    <a asp-action="CreateOrder" class="btn btn-success" style="width:30%;">Add new order</a>
+                    <a asp-action="CreateOrderDetails" asp-route-id="@ViewBag.OrderID"  class="btn btn-success">Add new order details</a>
                 </div>
             </div>
         </div>

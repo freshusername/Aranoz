@@ -1,0 +1,49 @@
+﻿@model HotelsBooking.Models.CreateOrEditOrderDetailsViewModel;
+@{
+    ViewData["Title"] = "Edit Order Details";
+}
+<link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
+
+<body>
+    <div class="row">
+
+        <div class="col-lg-8 col-lg-offset-2 col-md-6 col-md-offset-3 col-sm-12">
+            <div class="text-center">
+                <label style="font-size:20px">Edit order details</label>
+            </div>
+            <form asp-action="EditOrderDetails" asp-controller="Admin" method="post">
+                <div asp-validation-summary="All" class="text-danger text-center" style="margin-top:10px;"></div>
+                <div class="form-group">
+                    <input type="hidden" asp-for="Id" value="@Model.Id" />
+                </div>
+                <div class="form-group">
+                    <input type="hidden" asp-for="OrderID" value="@Model.OrderID" />
+                </div>
+                
+                <div class="form-group">
+                    <label class="control-label">Check-in date:</label>
+                    <input type="date" asp-for="CheckInDate" class="form-control" value="@string.Format("{0:yyyy-MM-dd}", Model.CheckInDate)" required/>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label">Check-out date:</label>
+                    <input type="date" asp-for="CheckOutDate" class="form-control" value="@string.Format("{0:yyyy-MM-dd}", Model.CheckOutDate)" required/>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label">Hotel:</label>
+                    <input type="text" asp-for="HotelName" class="form-control" value="@Model.HotelName"  placeholder="Enter hotel name" required/>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label">Room:</label>
+                    <input type="number" asp-for="RoomId" class="form-control" value="@Model.RoomId" placeholder="Enter room number" required/>
+                </div>
+
+                <div class="form-group text-center">
+                    <input type="submit" value="Save" class="btn btn-success text-center" style="width:20%" />
+                </div>
+            </form>
+        </div>
+    </div>
+</body> 
