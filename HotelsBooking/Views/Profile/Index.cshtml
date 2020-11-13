@@ -8,7 +8,7 @@
 
             <div class="review_list">
 
-                @foreach (var profile in Model.profilesList)
+                @foreach (var profile in Model.ProfilesList)
                 {
                     <a asp-controller="Profile" asp-action="Detail" asp-route-id="@profile.ProfileId">
                         <div class="review_item shadow-standart" style="padding: 20px;">
@@ -18,7 +18,11 @@
                                 </div>
                                 <div class="media-body" style="height: 80px">
                                     <h4 style="margin-right: 40px; margin-top: 10px; margin-bottom: 10px">@profile.FirstName @profile.LastName</h4>
-                                    <a class="role-button btn_2" >userRole</a>
+                                    @foreach (var role in profile.Roles)
+                                    {
+                                        <a class="@(role.ToLower() + " role-button btn_2")" style="margin-left: 10px;">@role</a>
+                                    }
+                                        
                                 </div>
                             </div>
                             <p>

@@ -21,7 +21,12 @@
                     </div>
                 </div>
                 <div class="profile-img">
-                    <img src="https://i.imgur.com/f2kiwyi.png" alt="profile-img">
+                    @if (Model.ProfileImage != null)
+                    {
+                        var base64 = Convert.ToBase64String(Model.ProfileImage);
+                        string imageSource = String.Format("data:image;base64,{0}", base64);
+                        <img src="@imageSource" alt="profile-img">
+                    }
                 </div>
             </div>
             <div class="orders-list d-flex flex-column col-xl-6">

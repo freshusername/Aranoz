@@ -2,23 +2,20 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
-using ApplicationCore.DTOs.AppProfile;
+using ApplicationCore.DTOs;
 using ApplicationCore.Infrastructure;
 using Infrastructure.Entities;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ApplicationCore.Services
 {
   public interface IProfileService
   {
-    Task<ProfileDto> GetByIdAsync(string id);
-    Task<ProfileDto> GetByEmailAsync(string email);
-    
+    Task<ProfileDTO> GetByIdAsync(string id);
+    Task<ProfileDTO> GetByEmailAsync(string email);
 
     IEnumerable<AppUser> GetAllProfilesAsync();
-    Task<OperationDetails> UpdateProfile(ProfileDto model);
+    Task<OperationDetails> UpdateProfile(ProfileUpdateDTO model);
 
-    IdentityUserRole<string> GetRole(string id);
   }
 }
