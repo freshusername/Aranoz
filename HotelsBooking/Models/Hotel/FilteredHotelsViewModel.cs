@@ -8,8 +8,8 @@ namespace HotelsBooking.Models.Hotel
 {
     public class FilteredHotelsViewModel
     {
-        public IEnumerable<HotelDTO> Hotels { get; set; }
 
-        public FilterHotelDto FilterHotelDto { get; set; }
+        public IEnumerable<HotelDTO> Hotels { get; set; }
+        public HotelFilterDto HotelFilterDto { get; set; }
     }
 }
