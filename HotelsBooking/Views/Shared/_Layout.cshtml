@@ -38,7 +38,7 @@
     <link href="~/css/rating.css" rel="stylesheet" asp-append-version="true" />
 </head>
 <body>
-    @if (User.IsInRole("User"))
+    @if (User.IsInRole("User") || !(SignInManager.IsSignedIn(User)))
     {
         <header class="main_menu home_menu">
             <div class="align-items-center">
@@ -150,7 +150,7 @@
     <script src="~/js/masonry.pkgd.min.js" asp-append-version="true"></script>
 
     <script src="~/js/owl.carousel.min.js" asp-append-version="true"></script>
-    <script src="~/js/jquery.nice-select.min.js" asp-append-version="true" type="text/javascript"></script>
+
     <script src="~/js/slick.min.js" asp-append-version="true"></script>
     <script src="~/js/jquery.counterup.min.js" asp-append-version="true"></script>
     <script src="~/js/waypoints.min.js" asp-append-version="true"></script>

@@ -52,7 +52,7 @@
     display: flex;
     padding-left: 29px;
     float: left;
-    align-items: center;
+    flex-flow: column;
 }
 
     .profile-role_block span {

@@ -10,7 +10,7 @@
 
                 @foreach (var profile in Model.ProfilesList)
                 {
-                    <a asp-controller="Profile" asp-action="Detail" asp-route-id="@profile.ProfileId">
+                    <a asp-controller="Profile" asp-action="Detail" asp-route-id="@profile.Id">
                         <div class="review_item shadow-standart" style="padding: 20px;">
                             <div class="media">
                                 <div class="d-flex">
@@ -22,7 +22,7 @@
                                     {
                                         <a class="@(role.ToLower() + " role-button btn_2")" style="margin-left: 10px;">@role</a>
                                     }
-                                        
+
                                 </div>
                             </div>
                             <p>
@@ -33,9 +33,25 @@
                             </p>
                         </div>
                     </a>
-                    
+
                 }
             </div>
         </div>
     </section>
 </body>
+
+@*<div class="single_product_item">
+        <img src="">
+        <div class="single_product_text">
+            <h4>
+                SLS Hotel
+            </h4>
+            <h3>
+                Beverly Hills
+            </h3>
+            <h3>
+                Hot
+            </h3>
+            <a href="/Hotel/HotelMain">Details</a>
+        </div>
+    </div>*@
