@@ -20,13 +20,11 @@ namespace ApplicationCore.Managers
         private IMapper _mapper;
         private IAuthenticationManager _authenticationManager;
         private IHotelManager _hotelManager;
-        private readonly IOrderManager _orderManager;
+        private IOrderManager _orderManager;
         private IAdditionalConvManager _additionalConvManager;
-        private readonly IConvsManager _convsManager;
-        private readonly IAdminRoomManager _roomManager;
         public AdminManager(ApplicationDbContext applicationDbContext, UserManager<AppUser> userManager,IMapper mapper, 
             IAuthenticationManager authenticationManager, IHotelManager hotelManager, IOrderManager orderManager,
-            IAdditionalConvManager additionalConvManager,IConvsManager convsManager,IAdminRoomManager roomManager)
+            IAdditionalConvManager additionalConvManager)
         {
             _applicationDbContext = applicationDbContext;
             _userManager = userManager;
@@ -35,13 +33,32 @@ namespace ApplicationCore.Managers
             _hotelManager = hotelManager;
             _orderManager = orderManager;
             _additionalConvManager = additionalConvManager;
-            _convsManager = convsManager;
-            _roomManager = roomManager;
         }
         #region Users
-        public List<AdminUserDTO> Users()
+        public List<AdminUserDTO> GetUsers(string sortOrder = null)
         {
             List<AdminUserDTO> users = _mapper.Map<List<AppUser>, List<AdminUserDTO>>(_userManager.Users.ToList());
+            switch (sortOrder)
+            {
+                case "name_desc":
+                    users = users.OrderByDescending(u => u.Email).ToList();
+                    break;
+                case "first":
+                    users = users.OrderBy(u => u.FirstName).ToList();
+                    break;
+                case "first_desc":
+                    users = users.OrderByDescending(u => u.FirstName).ToList();
+                    break;
+                case "second":
+                    users = users.OrderBy(u => u.LastName).ToList();
+                    break;
+                case "second_desc":
+                    users = users.OrderByDescending(u => u.LastName).ToList();
+                    break;
+                default:
+                    users = users.OrderBy(u => u.Email).ToList();
+                    break;
+            }
             return users;
         }
         public async Task<OperationDetails> CreateUser(UserDTO userDTO)
@@ -98,77 +115,57 @@ namespace ApplicationCore.Managers
         #endregion
 
         #region Hotels
-        public async Task<HotelDTO> GetHotelById(int Id)
-        {
-            HotelDTO hotel = await _hotelManager.GetHotelById(Id);
-            return hotel;
-        }
-        public IEnumerable<HotelDTO> Hotels()
-        {
-            IEnumerable<HotelDTO> hotels =_hotelManager.GetHotels(new HotelFilterDto() );
-            return hotels;
-        }
+        public async Task<HotelDTO> GetHotelById(int Id) => await _hotelManager.GetHotelById(Id);
+        public IEnumerable<HotelDTO> GetHotels(string sortOrder = null) => _hotelManager.GetHotels(new FilterHotelDto(), sortOrder);
+        public async Task<OperationDetails> CreateHotel(HotelDTO hotelDTO) => await _hotelManager.Create(hotelDTO);
+        public async Task<OperationDetails> EditHotel(HotelDTO hotelDTO) => await _hotelManager.Update(hotelDTO);
+        public async Task DeleteHotel(int Id) => await _hotelManager.Delete(Id);
 
-        public async Task<OperationDetails> CreateHotel(HotelDTO hotelDTO)
-        {
-            return await _hotelManager.Create(hotelDTO);
-        }
-        public async Task<OperationDetails> EditHotel(HotelDTO hotelDTO)
-        {
-            return await _hotelManager.Update(hotelDTO);
-        }
-        public async Task DeleteHotel(int Id)
-        {
-            await _hotelManager.Delete(Id);
-        }
-        public IEnumerable<HotelConvDTO> HotelConvs() => _hotelManager.GetHotelConvs();
 
+        public IEnumerable<HotelConvDTO> GetHotelConvs(string sortOrder = null) => _hotelManager.GetHotelConvs(sortOrder);
         public Task<OperationDetails> CreateHotelConv(HotelConvDTO hotelConvDTO) => _hotelManager.CreateHotelConv(hotelConvDTO);
+        public async Task DeleteHotelConv(int Id) => await _hotelManager.DeleteHotelConv(Id);
+        public HotelConvDTO GetHotelConvById(int Id) => _hotelManager.GetHotelConvById(Id);
+        public async Task<OperationDetails> EditHotelConv(HotelConvDTO hotelConvDTO) => await _hotelManager.UpdateHotelConv(hotelConvDTO);
 
-        public async Task DeleteHotelConv(int Id)
-        {
-            await _hotelManager.DeleteHotelConv(Id);
-        }
+
+        public HotelRoomDTO GetHotelRoomById(int Id) => _hotelManager.GetHotelRoomById(Id);
+        public IEnumerable<HotelRoomDTO> GetHotelRooms(string sortOrder = null) => _hotelManager.GetHotelRooms(sortOrder);
+        public async Task<OperationDetails> CreateHotelRoom(HotelRoomDTO hotelRoomDTO) => await _hotelManager.CreateHotelRoom(hotelRoomDTO);
+        public async Task<OperationDetails> EditHotelRoom(HotelRoomDTO hotelRoomDTO) => await _hotelManager.UpdateHotelRoom(hotelRoomDTO);
+        public async Task DeleteHotelRoom(int Id) => await _hotelManager.DeleteHotelRoom(Id);
+
+        
+        public IEnumerable<HotelRoomConvDTO> GetRoomConvs(int Id, string sortOrder=null) => _hotelManager.GetHotelRoomConvs(Id, sortOrder);
+        public async Task<OperationDetails> CreateRoomConv(HotelRoomConvDTO roomConv) => await _hotelManager.CreateHotelRoomConv(roomConv);
+        public async Task DeleteHotelRoomConv(int Id) => await _hotelManager.DeleteHotelRoomConv(Id);
         #endregion
         #region AddConvs
+        public IEnumerable<AdditionalConvDTO> GetAdditionalConvs() => _additionalConvManager.GetConvs();
         public Task<OperationDetails> CreateAdditionalConv(AdditionalConvDTO additionalConvDTO) => _additionalConvManager.Create(additionalConvDTO);
         #endregion
 
         #region Orders
-        public AdminOrderDTO GetOrderById(int Id) => _orderManager.GetOrderById(Id);
-        public List<AdminOrderDTO> GetOrders() => _orderManager.GetOrders();
-        public Task<OperationDetails> CreateOrder(AdminOrderDTO orderDTO)=> _orderManager.CreateOrder(orderDTO);
-        public Task<OperationDetails> EditOrder(AdminOrderDTO orderDTO) => _orderManager.EditOrder(orderDTO);
+        public Task<OrderDTO> GetOrderById(int Id) => _orderManager.GetOrderById(Id);
+        public List<OrderDTO> GetOrders() => _orderManager.GetOrders();
+        public Task<OperationDetails> CreateOrder(OrderDTO orderDTO)=> _orderManager.CreateOrder(orderDTO);
+        public Task<OperationDetails> EditOrder(OrderDTO orderDTO) => _orderManager.EditOrder(orderDTO);
         public async Task DeleteOrder(int id) => await _orderManager.DeleteOrder(id);
 
-        public AdminOrderDetailDTO GetOrderDetailById(int Id) => _orderManager.GetOrderDetailById(Id);
-        public List<AdminOrderDetailDTO> GetOrderDetails(int Id) => _orderManager.GetOrderDetails(Id);
-        public Task<OperationDetails> CreateOrderDetails(AdminOrderDetailDTO orderDTO) => _orderManager.CreateOrderDetails(orderDTO);
-        public Task<OperationDetails> EditOrderDetails(AdminOrderDetailDTO orderDTO) => _orderManager.EditOrderDetails(orderDTO);
+        public Task<OrderDetailDTO> GetOrderDetailById(int Id) => _orderManager.GetOrderDetailById(Id);
+        public List<OrderDetailDTO> GetOrderDetails(int Id) => _orderManager.GetOrderDetails(Id);
+        public Task<OperationDetails> CreateOrderDetails(OrderDetailDTO orderDTO) => _orderManager.CreateOrderDetails(orderDTO);
+        public Task<OperationDetails> EditOrderDetails(OrderDetailDTO orderDTO) => _orderManager.EditOrderDetails(orderDTO);
         public Task DeleteOrderDetails(int id) => _orderManager.DeleteOrderDetails(id);
         public bool IsHotelExists(string HotelName) => _orderManager.IsHotelExists(HotelName);
         public bool IsRoomExists(int RoomID) => _orderManager.IsRoomExists(RoomID);
         #endregion
 
-
-        #region Convs
-        public List<AdditionalConvDTO> GetConvs() => _convsManager.GetConvs();
-        public AdditionalConvDTO GetConvById(int Id) => _convsManager.GetConvById(Id);
-        public Task<OperationDetails> CreateConv(AdditionalConvDTO convDTO) => _convsManager.CreateConv(convDTO);
-        public Task<OperationDetails> EditConv(AdditionalConvDTO convDTO) => _convsManager.EditConv(convDTO);
-        public Task DeleteConv(int Id) => _convsManager.DeleteConv(Id);
-        #endregion
-
-        #region Rooms
-        public List<AdminRoomDTO> GetRooms() => _roomManager.GetRooms();
-        public AdminRoomDTO GetRoomById(int Id) => _roomManager.GetRoomById(Id);
-        public Task<OperationDetails> CreateRoom(AdminRoomDTO convDTO) => _roomManager.CreateRoom(convDTO);
-        public Task<OperationDetails> EditRoom(AdminRoomDTO convDTO) => _roomManager.EditRoom(convDTO);
-        public Task DeleteRoom(int Id) => _roomManager.DeleteRoom(Id);
-        #endregion
         public void Dispose()
         {
 
         }
+
+        
     }
 }
