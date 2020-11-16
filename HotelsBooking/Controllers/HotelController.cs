@@ -22,15 +22,13 @@ namespace HotelsBooking.Controllers
         }
 
         [HttpGet]
-        public IActionResult ShowHotels(HotelFilterDto HotelFilterDto)
-        
-        
+        public IActionResult ShowHotels(FilterHotelDto filterHotelDto)
         {
-            var hotels = _hotelManager.GetHotels(HotelFilterDto);
+            var hotels = _hotelManager.GetHotels(filterHotelDto,null);
             var model = new FilteredHotelsViewModel
             {
                 Hotels = hotels,
-                HotelFilterDto = HotelFilterDto
+                FilterHotelDto = filterHotelDto
             };
 
 

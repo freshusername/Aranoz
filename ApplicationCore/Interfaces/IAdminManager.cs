@@ -11,7 +11,7 @@ namespace ApplicationCore.Interfaces
     public interface IAdminManager : IDisposable 
     {
         #region Users
-        List<AdminUserDTO> Users();
+        List<AdminUserDTO> GetUsers(string sortOrder);
         Task<OperationDetails> CreateUser(UserDTO userDTO);
         Task<OperationDetails> EditUser(UserDTO userDTO);
         Task<OperationDetails> ChangePassword(UserDTO userDTO);
@@ -20,47 +20,48 @@ namespace ApplicationCore.Interfaces
 
         #region Hotels
         Task<HotelDTO> GetHotelById(int Id);
-        IEnumerable<HotelDTO> Hotels();
+        IEnumerable<HotelDTO> GetHotels(string sortOrder);
         Task<OperationDetails> CreateHotel(HotelDTO hotelDTO);
         Task<OperationDetails> EditHotel(HotelDTO hotelDTO);
         Task DeleteHotel(int Id);
-        IEnumerable<HotelConvDTO> HotelConvs();
+
+        IEnumerable<HotelConvDTO> GetHotelConvs(string sortOrder);
         Task<OperationDetails> CreateHotelConv(HotelConvDTO hotelConvDTO);
         Task DeleteHotelConv(int Id);
+        HotelConvDTO GetHotelConvById(int Id);
+        Task<OperationDetails> EditHotelConv(HotelConvDTO hotelConvDTO);
+
+        HotelRoomDTO GetHotelRoomById(int Id);
+        IEnumerable<HotelRoomDTO> GetHotelRooms(string sortOrder);
+        Task<OperationDetails> CreateHotelRoom(HotelRoomDTO hotelRoomDTO);
+        Task<OperationDetails> EditHotelRoom(HotelRoomDTO hotelRoomDTO);
+        Task DeleteHotelRoom(int Id);
+
+        IEnumerable<HotelRoomConvDTO> GetRoomConvs(int Id, string sortOrder);
+        Task<OperationDetails> CreateRoomConv(HotelRoomConvDTO roomConv);
+        Task DeleteHotelRoomConv(int Id);
         #endregion
         #region AddConv
+        IEnumerable<AdditionalConvDTO> GetAdditionalConvs();
         Task<OperationDetails> CreateAdditionalConv(AdditionalConvDTO additionalConvDTO);
+
         #endregion
+
         #region Orders
-        AdminOrderDTO GetOrderById(int Id);
-        List<AdminOrderDTO> GetOrders();
-        Task<OperationDetails> CreateOrder(AdminOrderDTO orderDTO);
-        Task<OperationDetails> EditOrder(AdminOrderDTO orderDTO);
+        Task<OrderDTO> GetOrderById(int Id);
+        List<OrderDTO> GetOrders();
+        Task<OperationDetails> CreateOrder(OrderDTO orderDTO);
+        Task<OperationDetails> EditOrder(OrderDTO orderDTO);
         Task DeleteOrder(int id);
 
-        AdminOrderDetailDTO GetOrderDetailById(int Id);
-        List<AdminOrderDetailDTO> GetOrderDetails(int Id);
-        Task<OperationDetails> CreateOrderDetails(AdminOrderDetailDTO orderDTO);
-        Task<OperationDetails> EditOrderDetails(AdminOrderDetailDTO orderDTO);
+        Task<OrderDetailDTO> GetOrderDetailById(int Id);
+        List<OrderDetailDTO> GetOrderDetails(int Id);
+        Task<OperationDetails> CreateOrderDetails(OrderDetailDTO orderDTO);
+        Task<OperationDetails> EditOrderDetails(OrderDetailDTO orderDTO);
         bool IsHotelExists(string HotelName);
         bool IsRoomExists(int RoomID);
         Task DeleteOrderDetails(int id);
         #endregion
 
-        #region Convs
-        List<AdditionalConvDTO> GetConvs();
-        AdditionalConvDTO GetConvById(int Id);
-        Task<OperationDetails> CreateConv(AdditionalConvDTO convDTO);
-        Task<OperationDetails> EditConv(AdditionalConvDTO convDTO);
-        Task DeleteConv(int Id);
-        #endregion
-
-        #region Rooms
-        List<AdminRoomDTO> GetRooms();
-        AdminRoomDTO GetRoomById(int Id);
-        Task<OperationDetails> CreateRoom(AdminRoomDTO convDTO);
-        Task<OperationDetails> EditRoom(AdminRoomDTO convDTO);
-        Task DeleteRoom(int Id);
-        #endregion
     }
 }

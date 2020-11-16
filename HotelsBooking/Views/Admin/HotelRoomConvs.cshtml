@@ -1,7 +1,8 @@
-﻿@model IEnumerable<HotelsBooking.Models.HotelConvsViewModel>
+﻿@model IEnumerable<HotelsBooking.Models.HotelRoomConvsViewModel>
 <link href="~/css/Admin.css" rel="stylesheet" />
 <link href="~/css/ForTable.css" rel="stylesheet" />
 <link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
+
 <body>
     <div id="viewport">
         @await Html.PartialAsync("_AdminPartial")
@@ -9,10 +10,10 @@
             <div class="row">
                 <table class="table table-striped table-dark">
                     <thead>
-                        <tr><th>List of conveniences</th><th></th><th></th></tr>
+                        <tr><th>List of conveniences for hotel room</th><th></th><th></th></tr>
                         <tr>
-                        <th data-breakpoints="mobile"><a asp-action="HotelConvs" asp-route-sortOrder="@ViewData["NameSortParm"]">Name</a></th>
-                        <th data-breakpoints="mobile tablet"><a asp-action="HotelConvs" asp-route-sortOrder="@ViewData["PriceSortParm"]">Price</a></th>
+                        <th data-breakpoints="mobile"><a asp-action="HotelRoomConvs" asp-route-sortOrder="@ViewData["NameSortParm"]">Name</a></th>
+                        <th data-breakpoints="mobile tablet"><a asp-action="HotelRoomConvs" asp-route-sortOrder="@ViewData["PriceSortParm"]">Price</a></th>
                         <th data-breakpoints="mobile tablet">Actions</th>
                         </tr>
                     </thead>
@@ -26,12 +27,11 @@
                             @foreach (var addConv in Model)
                             {
                                 <tr>
-                                    <td data-label="Name">@addConv.Name</td>
-                                    <td data-label="Location">@Math.Round(addConv.Price,2)</td>
+                                    <td data-label="Name">@addConv.ConvName</td>
+                                    <td data-label="Price">@Math.Round(addConv.Price, 2)</td>
                                     <td data-label="Actions">
-                                        <form asp-action="DeleteHotelConv" asp-controller="Admin">
-                                            <a class="btn btn-sm btn-warning" asp-action="EditHotelConv">Edit</a>
-                                            <button type="submit" class="btn btn-sm btn-danger" asp-action="DeleteHotelConv" asp-route-id="@addConv.Id">Delete</button>
+                                        <form asp-action="DeleteHotelRoomConv" asp-controller="Admin">
+                                            <button type="submit" class="btn btn-sm btn-outline-danger" asp-action="DeleteHotelRoomConv" asp-route-id="@addConv.Id" asp-route-hotelroomid="@addConv.HotelRoomId" >Delete</button>
                                         </form>
                                     </td>
                                 </tr>
@@ -40,7 +40,7 @@
                     </tbody>
                 </table>
                 <div class="button-center">
-                    <a asp-action="CreateHotel" class="btn btn-success">Add new hotel convenience</a>
+                    <a asp-action="AddConvForRoom" class="btn btn-success" asp-route-id="@ViewData["Id"]" asp-route-HotelId="@ViewData["HotelId"]">Add new room convenience</a>
                 </div>
             </div>
         </div>
