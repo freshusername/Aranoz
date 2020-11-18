@@ -7,42 +7,55 @@
         @await Html.PartialAsync("_AdminPartial")
         <div id="content" class="no-margin-top">
             <div class="row">
-                    <table class="table table-striped table-dark">
-                        <thead>
-                            <tr><th>List of Hotels</th><th></th><th></th><th></th></tr>
-                            <tr>
+                <div class="col-lg-8 col-lg-offset-2">
+                    <form asp-action="Hotels" method="get" style="margin-top:15px">
+                        <div class="form-actions no-color form-group">
+                            <p>
+                                <span style="font-weight:bold">Find by any option: </span>
+                                <input type="text" name="SearchString" value="@ViewData["currentFilter"]" />
+                                <input type="submit" value="Search" class="btn btn-success" /> |
+                                <a asp-action="Hotels" style="font-weight:500">Back to Full List</a>
+
+                            </p>
+                        </div>
+                    </form>
+                </div>
+                <table class="table table-striped table-dark">
+                    <thead>
+                        <tr><th>List of Hotels</th><th></th><th></th><th></th></tr>
+                        <tr>
                             <th data-breakpoints="mobile"><a asp-action="Hotels" asp-route-sortOrder="@ViewData["NameSortParm"]">Name</a></th>
                             <th data-breakpoints="mobile tablet"><a asp-action="Hotels" asp-route-sortOrder="@ViewData["LocationSortParm"]">Location</a></th>
                             <th data-breakpoints="mobile tablet"><a asp-action="Hotels" asp-route-sortOrder="@ViewData["SeasonSortParm"]">Season</a></th>
                             <th data-breakpoints="mobile tablet">Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @if (!Model.Any())
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (!Model.Any())
+                        {
+                            <tr><td colspan="4">No Hotels</td></tr>
+                        }
+                        else
+                        {
+                            @foreach (var hotel in Model)
                             {
-                                <tr><td colspan="4">No Hotels</td></tr>
+                                <tr>
+                                    <td data-label="Name">@hotel.Name</td>
+                                    <td data-label="Location">@hotel.Location</td>
+                                    <td data-label="Season">@hotel.Season</td>
+                                    <td data-label="Actions">
+                                        <form asp-action="DeleteHotel" asp-controller="Admin">
+                                            <a class="btn btn-sm btn-outline-warning" asp-action="EditHotel" asp-route-id="@hotel.Id">Edit</a>
+                                            <a class="btn btn-sm btn-outline-primary" asp-action="HotelConvs" asp-route-id="@hotel.Id">Conveniences</a>
+                                            <a class="btn btn-sm btn-outline-primary" asp-action="HotelRooms" asp-route-id="@hotel.Id">Rooms</a>
+                                            <button type="submit" class="btn btn-sm btn-outline-danger" asp-action="DeleteHotel" asp-route-id="@hotel.Id">Delete</button>
+                                        </form>
+                                    </td>
+                                </tr>
                             }
-                            else
-                            {
-                                @foreach (var hotel in Model)
-                                {
-                                    <tr>
-                                        <td data-label="Name">@hotel.Name</td>
-                                        <td data-label="Location">@hotel.Location</td>
-                                        <td data-label="Season">@hotel.Season</td>
-                                        <td data-label="Actions">
-                                            <form asp-action="DeleteHotel" asp-controller="Admin">
-                                                <a class="btn btn-sm btn-warning" asp-action="EditHotel" asp-route-id="@hotel.Id">Edit</a>
-                                                <a class="btn btn-sm btn-primary" asp-action="HotelConvs" asp-route-id="@hotel.Id">Conveniences</a>
-                                                <a class="btn btn-sm btn-primary" asp-action="Rooms">Rooms</a>
-                                                <button type="submit" class="btn btn-sm btn-danger" asp-action="DeleteHotel" asp-route-id="@hotel.Id">Delete</button>
-                                            </form>
-                                        </td>
-                                    </tr>
-                                }
-                            }
-                        </tbody>
-                    </table>
+                        }
+                    </tbody>
+                </table>
                 <div class="button-center">
                     <a asp-action="CreateHotel" class="btn btn-success">Add new hotel</a>
                 </div>

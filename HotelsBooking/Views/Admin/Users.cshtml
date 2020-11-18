@@ -8,14 +8,27 @@
         @await Html.PartialAsync("_AdminPartial")
         <div id="content" class="no-margin-top">
             <div class="row">
+                <div class="col-lg-8 col-lg-offset-2">
+                    <form asp-action="Users" method="get" style="margin-top:15px">
+                        <div class="form-actions no-color form-group">
+                            <p>
+                                <span style="font-weight:bold">Find by any option: </span>
+                                <input type="text" name="SearchString" value="@ViewData["currentFilter"]" />
+                                <input type="submit" value="Search" class="btn btn-success" /> |
+                                <a asp-action="Users" style="font-weight:500">Back to Full List</a>
+
+                            </p>
+                        </div>
+                    </form>
+                </div>
                 <table class="table table-striped table-dark">
                     <thead>
                         <tr><th>List of Users</th><th></th><th></th><th></th></tr>
                         <tr>
-                        <th data-breakpoints="mobile"><a asp-action="Users" asp-route-sortOrder="@ViewData["NameSortParm"]">Email</a></th>
-                        <th data-breakpoints="mobile tablet"><a asp-action="Users" asp-route-sortOrder="@ViewData["FirstNameSortParm"]">Firts Name</a></th>
-                        <th data-breakpoints="mobile tablet"><a asp-action="Users" asp-route-sortOrder="@ViewData["SecondNameSortParm"]">Last Name</a></th>
-                        <th data-breakpoints="mobile tablet">Actions</th>
+                            <th data-breakpoints="mobile"><a asp-action="Users" asp-route-sortOrder="@ViewData["NameSortParm"]">Email</a></th>
+                            <th data-breakpoints="mobile tablet"><a asp-action="Users" asp-route-sortOrder="@ViewData["FirstNameSortParm"]">Firts Name</a></th>
+                            <th data-breakpoints="mobile tablet"><a asp-action="Users" asp-route-sortOrder="@ViewData["SecondNameSortParm"]">Last Name</a></th>
+                            <th data-breakpoints="mobile tablet">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -43,10 +56,11 @@
                         }
                     </tbody>
                 </table>
-                <div class="button-center">
+
+            </div>
+                <div class="center col-lg-6 col-lg-3">
                     <a asp-action="CreateUser" class="btn btn-success">Add new user</a>
                 </div>
             </div>
         </div>
-    </div>
 </body>
