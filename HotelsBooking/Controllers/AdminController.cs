@@ -31,12 +31,15 @@ namespace HotelsBooking.Controllers
         #region Users
 
         [HttpGet]
-        public IActionResult Users(string sortOrder)
+        public IActionResult Users(string sortOrder, string searchString)
         {
             ViewData["NameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
             ViewData["FirstNameSortParm"] = sortOrder == "first" ? "first_desc" : "first";
             ViewData["SecondNameSortParm"] = sortOrder == "second" ? "second_desc" : "second";
-            List<UsersViewModel> users = _mapper.Map<List<AdminUserDTO>, List<UsersViewModel>>(_adminManager.GetUsers(sortOrder));
+            ViewData["CurrentFilter"] = searchString;
+
+            IEnumerable<UsersViewModel> users = _mapper.Map<IEnumerable<AdminUserDTO>, IEnumerable<UsersViewModel>>(_adminManager.GetUsers(sortOrder,searchString));
+            
             return View(users);
         }
 
@@ -134,12 +137,14 @@ namespace HotelsBooking.Controllers
         #region Hotels
 
         [HttpGet]
-        public IActionResult Hotels(string sortOrder)
+        public IActionResult Hotels(string sortOrder, string searchString)
         {
             ViewData["NameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
             ViewData["LocationSortParm"] = sortOrder == "location" ? "location_desc" : "location";
             ViewData["SeasonSortParm"] = sortOrder == "season" ? "season_desc" : "season";
-            IEnumerable<CreateOrEditHotelViewModel> hotels = _mapper.Map<IEnumerable<HotelDTO>, IEnumerable<CreateOrEditHotelViewModel>>(_adminManager.GetHotels(sortOrder));
+            ViewData["CurrentFilter"] = searchString;
+
+            IEnumerable<CreateOrEditHotelViewModel> hotels = _mapper.Map<IEnumerable<HotelDTO>, IEnumerable<CreateOrEditHotelViewModel>>(_adminManager.GetHotels(sortOrder,searchString));
             return View(hotels);
         }
 
