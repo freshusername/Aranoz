@@ -8,13 +8,26 @@
         @await Html.PartialAsync("_AdminPartial")
         <div id="content" class="no-margin-top">
             <div class="row">
+                <div class="col-lg-8 col-lg-offset-2">
+                    <form asp-action="HotelRoomConvs" method="get" style="margin-top:15px">
+                        <div class="form-actions no-color form-group">
+                            <p>
+                                <span style="font-weight:bold">Find by any option: </span>
+                                <input type="text" name="SearchString" value="@ViewData["currentFilter"]" />
+                                <input type="submit" value="Search" class="btn btn-success" /> |
+                                <a asp-action="HotelRoomConvs" style="font-weight:500">Back to Full List</a>
+
+                            </p>
+                        </div>
+                    </form>
+                </div>
                 <table class="table table-striped table-dark">
                     <thead>
                         <tr><th>List of conveniences for hotel room</th><th></th><th></th></tr>
                         <tr>
-                        <th data-breakpoints="mobile"><a asp-action="HotelRoomConvs" asp-route-sortOrder="@ViewData["NameSortParm"]">Name</a></th>
-                        <th data-breakpoints="mobile tablet"><a asp-action="HotelRoomConvs" asp-route-sortOrder="@ViewData["PriceSortParm"]">Price</a></th>
-                        <th data-breakpoints="mobile tablet">Actions</th>
+                            <th data-breakpoints="mobile"><a asp-action="HotelRoomConvs" asp-route-sortOrder="@ViewData["NameSortParm"]">Name</a></th>
+                            <th data-breakpoints="mobile tablet"><a asp-action="HotelRoomConvs" asp-route-sortOrder="@ViewData["PriceSortParm"]">Price</a></th>
+                            <th data-breakpoints="mobile tablet">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -31,7 +44,7 @@
                                     <td data-label="Price">@Math.Round(addConv.Price, 2)</td>
                                     <td data-label="Actions">
                                         <form asp-action="DeleteHotelRoomConv" asp-controller="Admin">
-                                            <button type="submit" class="btn btn-sm btn-outline-danger" asp-action="DeleteHotelRoomConv" asp-route-id="@addConv.Id" asp-route-hotelroomid="@addConv.HotelRoomId" >Delete</button>
+                                            <button type="submit" class="btn btn-sm btn-outline-danger" asp-action="DeleteHotelRoomConv" asp-route-id="@addConv.Id" asp-route-hotelroomid="@addConv.HotelRoomId">Delete</button>
                                         </form>
                                     </td>
                                 </tr>

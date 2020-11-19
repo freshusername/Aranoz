@@ -152,7 +152,7 @@ namespace ApplicationCore.Managers
             return _mapper.Map<HotelConv, HotelConvDTO>(hotelConv);
         }
 
-        public IEnumerable<HotelConvDTO> GetHotelConvs(string sortOrder=null)
+        public IEnumerable<HotelConvDTO> GetHotelConvs(string sortOrder=null, string searchString=null)
         {
             List<HotelConv> hotelConvs = _context.HotelConvs.ToList();
             List<AdditionalConv> addConvs = _context.AdditionalConvs.ToList();
@@ -162,6 +162,11 @@ namespace ApplicationCore.Managers
                 ac => ac.Id,
                 (hc, ac) => new HotelConvDTO { Id = hc.Id, Name = ac.Name, HotelId = hc.HotelId, Price = hc.Price }
                 );
+
+            if (!String.IsNullOrEmpty(searchString))
+                query = query.Where(u => u.Name.Contains(searchString)
+                                    || Convert.ToString(Math.Round(u.Price,0))
+                                    .Equals(searchString));
 
             switch (sortOrder)
             {
@@ -240,7 +245,7 @@ namespace ApplicationCore.Managers
                                                     .FirstOrDefault(hr => hr.Id == Id);
             return _mapper.Map<HotelRoom, HotelRoomDTO>(hotelRoom);
         }
-        public IEnumerable<HotelRoomDTO> GetHotelRooms(string sortOrder = null)
+        public IEnumerable<HotelRoomDTO> GetHotelRooms(string sortOrder = null, string searchString = null)
         {
             List<HotelRoom> hotelRooms = _context.HotelRooms.ToList();
             List<Room> rooms = _context.Rooms.ToList();
@@ -249,7 +254,12 @@ namespace ApplicationCore.Managers
                 r => r.Id,
                 (hr, r) => new HotelRoomDTO { Id = hr.Id, HotelId = hr.HotelId, Price = hr.Price, RoomId = r.Id, Type = r.RoomType, Number = hr.Number }
                 );
-
+            if (!String.IsNullOrEmpty(searchString))
+                query = query.Where(u => Convert.ToString(u.Number).Contains(searchString)
+                                    || Convert.ToString(Math.Round(u.Price, 0))
+                                    .Equals(searchString)
+                                    || u.Type.ToString().ToUpper()
+                                    .Contains(searchString.ToUpper()));
             switch (sortOrder)
             {
                 case "number_desc":
@@ -328,7 +338,7 @@ namespace ApplicationCore.Managers
         }
         #endregion
         #region HotelRoomConvs
-        public IEnumerable<HotelRoomConvDTO> GetHotelRoomConvs(int Id, string sortOrder = null)
+        public IEnumerable<HotelRoomConvDTO> GetHotelRoomConvs(int Id, string sortOrder = null, string searchString=null)
         {
             IEnumerable<RoomConv> roomConvs = _context.RoomConvs.ToList().Where(rc => rc.HotelRoomId == Id);
             List<AdditionalConv> convs = _context.AdditionalConvs.ToList();
@@ -338,6 +348,11 @@ namespace ApplicationCore.Managers
                 c => c.Id,
                 (rc, c) => new HotelRoomConvDTO { Id = rc.Id, Price = rc.Price, HotelRoomId = rc.HotelRoomId, ConvName = c.Name }
                 );
+
+            if (!String.IsNullOrEmpty(searchString))
+                query = query.Where(u => u.ConvName.Contains(searchString)
+                                    || Convert.ToString(Math.Round(u.Price, 0))
+                                    .Equals(searchString));
 
             switch (sortOrder)
             {

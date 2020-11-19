@@ -7,45 +7,58 @@
         @await Html.PartialAsync("_AdminPartial")
         <div id="content" class="no-margin-top">
             <div class="row">
-                <table class="table table-striped table-dark">
-                    <thead>
-                        <tr><th>List of Rooms</th><th></th><th></th><th></th></tr>
-                        <tr>
-                        <th data-breakpoints="mobile"><a asp-action="HotelRooms" asp-route-sortOrder="@ViewData["NameSortParm"]">Number</a></th>
-                        <th data-breakpoints="mobile tablet"><a asp-action="HotelRooms" asp-route-sortOrder="@ViewData["PriceSortParm"]">Price</a></th>
-                        <th data-breakpoints="mobile tablet"><a asp-action="HotelRooms" asp-route-sortOrder="@ViewData["TypeSortParm"]">Type</a></th>
-                        <th data-breakpoints="mobile tablet">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @if (!Model.Any())
-                        {
-                            <tr><th colspan="4">No Rooms</th></tr>
-                        }
-                        else
-                        {
-                            @foreach (var room in Model)
+                <div class="col-lg-8 col-lg-offset-2">
+                    <form asp-action="HotelRooms" method="get" style="margin-top:15px">
+                        <div class="form-actions no-color form-group">
+                            <p>
+                                <span style="font-weight:bold">Find by any option: </span>
+                                <input type="text" name="SearchString" value="@ViewData["currentFilter"]" />
+                                <input type="submit" value="Search" class="btn btn-success" /> |
+                                <a asp-action="HotelRooms" style="font-weight:500">Back to Full List</a>
+
+                            </p>
+                        </div>
+                    </form>
+                    </div>
+                    <table class="table table-striped table-dark">
+                        <thead>
+                            <tr><th>List of Rooms</th><th></th><th></th><th></th></tr>
+                            <tr>
+                                <th data-breakpoints="mobile"><a asp-action="HotelRooms" asp-route-sortOrder="@ViewData["NameSortParm"]">Number</a></th>
+                                <th data-breakpoints="mobile tablet"><a asp-action="HotelRooms" asp-route-sortOrder="@ViewData["PriceSortParm"]">Price</a></th>
+                                <th data-breakpoints="mobile tablet"><a asp-action="HotelRooms" asp-route-sortOrder="@ViewData["TypeSortParm"]">Type</a></th>
+                                <th data-breakpoints="mobile tablet">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (!Model.Any())
                             {
-                                <tr>
-                                    <td data-label="Number">@room.Number</td>
-                                    <td data-label="Price">@Math.Round(room.Price,2)</td>
-                                    <td data-label="Type">@room.Type</td>
-                                    <td data-label="Actions">
-                                        <form asp-action="DeleteHotelRoom" asp-controller="Admin">
-                                            <a class="btn btn-sm btn-outline-warning" asp-action="EditHotelRoom" asp-route-id="@room.Id">Edit</a>
-                                            <a class="btn btn-sm btn-outline-primary" asp-action="HotelRoomConvs" asp-route-id="@room.Id">Conveniences</a>
-                                            <button type="submit" class="btn btn-sm btn-outline-danger" asp-action="DeleteHotelRoom" asp-route-id="@room.Id" asp-route-HotelId="@room.HotelId">Delete</button>
-                                        </form>
-                                    </td>
-                                </tr>
+                                <tr><th colspan="4">No Rooms</th></tr>
                             }
-                        }
-                    </tbody>
-                </table>
-                <div class="button-center">
-                    <a asp-action="CreateHotelRoom" class="btn btn-success" asp-route-id="@ViewData["Id"]">Add new hotel room</a>
+                            else
+                            {
+                                @foreach (var room in Model)
+                                {
+                                    <tr>
+                                        <td data-label="Number">@room.Number</td>
+                                        <td data-label="Price">@Math.Round(room.Price, 2)</td>
+                                        <td data-label="Type">@room.Type</td>
+                                        <td data-label="Actions">
+                                            <form asp-action="DeleteHotelRoom" asp-controller="Admin">
+                                                <a class="btn btn-sm btn-outline-warning" asp-action="EditHotelRoom" asp-route-id="@room.Id">Edit</a>
+                                                <a class="btn btn-sm btn-outline-primary" asp-action="HotelRoomConvs" asp-route-id="@room.Id">Conveniences</a>
+                                                <button type="submit" class="btn btn-sm btn-outline-danger" asp-action="DeleteHotelRoom" asp-route-id="@room.Id" asp-route-HotelId="@room.HotelId">Delete</button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                    <div class="button-center">
+                        <a asp-action="CreateHotelRoom" class="btn btn-success" asp-route-id="@ViewData["Id"]">Add new hotel room</a>
+                    </div>
                 </div>
             </div>
-        </div>
     </div>
 </body>
