@@ -18,21 +18,10 @@ namespace ApplicationCore.Managers
     {
         private readonly IPhotoManager photoManager;
         private readonly ApplicationDbContext context;
-        private readonly IMapper mapper;
-        public ProfileManager(IPhotoManager _photoManager, ApplicationDbContext _context, IMapper _mapper)
+        public ProfileManager(IPhotoManager _photoManager, ApplicationDbContext _context)
         {
             photoManager = _photoManager;
             context = _context;
-            mapper = _mapper;
-        }
-        public async Task<IActionResult> DetailAsync()
-        {
-            throw new NotImplementedException();
-        }
-
-        public async Task<IActionResult> DetailAsync(string id)
-        {
-            throw new NotImplementedException();
         }
 
         public async Task<byte[]> UploadProfileImageAsync(IFormFile image)

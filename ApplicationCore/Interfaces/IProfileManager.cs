@@ -12,8 +12,6 @@ namespace ApplicationCore.Interfaces
 {
     public interface IProfileManager
     {
-        Task<IActionResult> DetailAsync(string id); 
-        Task<byte[]> UploadProfileImageAsync(IFormFile image);
         Task<OperationDetails> UpdateProfileInfoAsync(ProfileUpdateDTO profileDTO);
     }
 }
