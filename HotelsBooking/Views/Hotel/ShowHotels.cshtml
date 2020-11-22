@@ -9,6 +9,8 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <title>Hotels</title>
         <link rel="icon" href="img/favicon.png">
+
+        <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
         <!-- Bootstrap CSS -->
         <link rel="stylesheet" href="css/bootstrap.min.css">
         <!-- animate CSS -->
@@ -32,6 +34,7 @@
         <!-- style CSS -->
         <link rel="stylesheet" href="css/style.css">
         <style type="text/css">
+
             .mallbery-serp-2kPdnU {
                 position: relative !important;
                 display: flex !important;
@@ -133,6 +136,7 @@
             }
         </style>
         <link rel="stylesheet" type="text/css" href="moz-extension://40c6e28c-f56d-40ab-9d96-39b4f5a84bc3/styles.css">
+        <link rel="stylesheet" type="text/css" href="~/css/show-hotels.css">
     </head>
     <body>
         <div class="mallbery-ext-install" style="z-index: 2147483647 !important; text-transform: none !important;"></div>
@@ -168,24 +172,60 @@
 
                                         <div class="form-group">
                                             <h3>Room price filter</h3>
-                                            <label>min price: </label>
-                                            @Html.EditorFor(x => Model.HotelFilterDto.MinPrice, new { htmlAttributes = new { @class = "form-control rounded", @placeholder = "min price" }})
-                                            <br />
-                                            <label>max price: </label>
-                                            @Html.EditorFor(x => Model.HotelFilterDto.MaxPrice, new { htmlAttributes = new { @class = "form-control rounded", @placeholder = "max price" }})
+                                            <div class="row">
+                                                <div class="col-xs-6">
+                                                    <label>min price: </label>
+                                                    @Html.EditorFor(x => Model.HotelFilterDto.MinPrice, new { htmlAttributes = new { @class = "form-control rounded", @placeholder = "min price" } })
+                                                </div>
+
+                                                <div class="col-xs-6">
+                                                    <label>max price: </label>
+                                                    @Html.EditorFor(x => Model.HotelFilterDto.MaxPrice, new { htmlAttributes = new { @class = "form-control rounded", @placeholder = "max price" } })
+                                                </div>
+                                            </div>
                                         </div>
 
                                         <div class="form-group">
                                             <label>Amount on page</label>
-                                            @Html.EditorFor(x => Model.HotelFilterDto.PageSize, new { htmlAttributes = new { @class = "form-control rounded", @placeholder = "amount on page" }})
+                                            @Html.EditorFor(x => Model.HotelFilterDto.PageSize, new { htmlAttributes = new { min = "1", @class = "form-control rounded", @placeholder = "amount on page" } })
                                         </div>
-
-                                        <input type="text" class="form-control"/>
 
                                         <div class="form-group">
-                                            <label>Search for hotels/locations</label>
-                                            @Html.EditorFor(x => Model.HotelFilterDto.KeyWord, new { htmlAttributes = new { @class = "form-control rounded", @placeholder = "keyword" }})
+                                            <label>Search for hotels or locations</label>
+                                            @Html.EditorFor(x => Model.HotelFilterDto.KeyWord, new { htmlAttributes = new { @class = "form-control rounded", @placeholder = "keyword" } })
                                         </div>
+                                        <div class="form-group">
+
+                                            <p>
+                                                <label for="amount">Price range:</label>
+                                                $<input type="text" id="amount_min" style="border:0; color:#f6931f; font-weight:bold;">
+                                                $<input type="text" id="amount_max" style="border:0; color:#f6931f; font-weight:bold;">
+                                            </p>
+
+                                            <div id="slider-range"></div>
+                                        </div>
+                                        <script>
+                                            $(function () {
+                                                $("#slider-range").slider({
+                                                    range: true,
+                                                    min: 0,
+                                                    max: 500,
+                                                    values: [75, 300],
+                                                    slide: function (event, ui) {
+                                                        $("#amount_min").val(ui.values[0]);
+                                                        $("#amount_max").val(ui.values[1]);
+                                                    }
+                                                });
+                                                $("#amount_min").val($("#slider-range").slider("values", 0));
+                                                $("#amount_max").val($("#slider-range").slider("values", 1));
+                                                $("#amount_min").change(function () {
+                                                    $("#slider-range").slider("values", 0, $(this).val());
+                                                });
+                                                $("#amount_max").change(function () {
+                                                    $("#slider-range").slider("values", 1, $(this).val());
+                                                })
+                                            });
+                                        </script>
 
                                         <input type="submit" value="Filter" class="btn btn-success" />
                                     </form>
@@ -210,6 +250,48 @@
                                 </div>
                             </aside>
 
+                            <aside class="left_widgets p_filter_widgets price_rangs_aside">
+                                <div class="l_w_title">
+                                    <h3>Price Filter</h3>
+                                </div>
+                                <div class="widgets_inner">
+                                    <div class="range_item">
+                                        <!-- <div id="slider-range"></div> -->
+                                        <span class="irs js-irs-0">
+                                            <span class="irs">
+                                                <span class="irs-line" tabindex="-1">
+                                                    <span class="irs-line-left"></span>
+                                                    <span class="irs-line-mid"></span>
+                                                    <span class="irs-line-right"></span>
+                                                </span>
+                                                <span class="irs-min" style="visibility: hidden;">tk. 0</span>
+                                                <span class="irs-max" style="visibility: visible;">tk. 1.000</span>
+                                                <span class="irs-from" style="visibility: visible; left: 0%;">tk. 0</span>
+                                                <span class="irs-to" style="visibility: visible; left: 39.4089%;">tk. 500</span>
+                                                <span class="irs-single" style="visibility: hidden; left: 9.85222%;">tk. 0 - tk. 500</span>
+                                            </span>
+                                            <span class="irs-grid"></span>
+                                            <span class="irs-bar" style="left: 3.69458%; width: 46.3054%;"></span>
+                                            <span class="irs-shadow shadow-from" style="display: none;"></span>
+                                            <span class="irs-shadow shadow-to" style="display: none;"></span>
+                                            <span class="irs-slider from" style="left: 0%;"></span>
+                                            <span class="irs-slider to type_last" style="left: 46.3054%;"></span>
+                                        </span>
+                                        <input type="text" class="js-range-slider irs-hidden-input" value="" readonly="">
+                                        <div class="d-flex">
+                                            <div class="price_text">
+                                                <p>Price :</p>
+                                            </div>
+                                            <div class="price_value d-flex justify-content-center">
+                                                <input type="text" class="js-input-from" id="amount" readonly="">
+                                                <span>to</span>
+                                                <input type="text" class="js-input-to" id="amount" readonly="">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </aside>
+
                         </div>
                     </div>
 
@@ -218,7 +300,7 @@
                             <div class="col-lg-12">
                                 <div class="product_top_bar d-flex justify-content-between align-items-center">
                                     <div class="single_product_menu">
-                                        <p><span>@Model.Hotels.Count() </span> hotels found</p>
+                                        <p><span>@Model.HotelFilterDto.HotelsAmount </span> hotels found</p>
                                     </div>
                                     <div class="single_product_menu d-flex">
                                         <h5>sort by : </h5>
@@ -245,28 +327,20 @@
                         <div class="row align-items-center latest_product_inner">
                             @foreach (var item in Model.Hotels)
                             {
-                                //List<string> imageSources = new List<string>();
-                                //   foreach (var photo in item.HotelPhotos)
-                                //   {
-                                //       var base64 = Convert.ToBase64String(photo.Image);
-                                //       imageSources.Add(String.Format("data:image;base64,{0}", base64));
-                                //   }
-
                                 <div class="col-lg-4 col-sm-6">
                                     <div class="single_product_item">
-                                        @*@foreach (string imageSource in imageSources)
+
+                                        @if (item.HotelPhotos.Any())
                                         {
-                                            <div data-thumb="@imageSource" class="lslide" style="height: 450px; margin-bottom: 0px;">
-                                                <img src="@imageSource" width="80" height="80" />
-                                            </div>
-                                        }*@
-                                       @if(item.HotelPhotos.Any())
-                                       { 
-                                            byte[] img = item.HotelPhotos.First().Image;
-                                        
-                                            var base64 = Convert.ToBase64String(img);
-                                            string s = String.Format("data:image;base64,{0}", base64);
-                                            <img src="@s)">
+                                            byte[] byteImg = item.HotelPhotos
+                                                .Where(p => p.HotelId == item.Id)
+                                                .Select(p => p.Image).FirstOrDefault();
+
+                                            var base64Img = Convert.ToBase64String(byteImg);
+                                            string img = String.Format("data:image;base64,{0}", base64Img);
+                                            <figure class="effect-winston">
+                                                <img src="@img" alt="img30" />
+                                            </figure>
                                         }
                                         <div class="single_product_text">
                                             <h4>
@@ -292,13 +366,25 @@
                             <ul class="pagination justify-content-center">
                                 @if (Model.HotelFilterDto != null)
                                 {
-                                    @if (Model.HotelFilterDto.CurrentPage > 1)
+                                    @if (Model.HotelFilterDto.HasPrevious)
                                     {
-                                        <li class="page-item active">
-                                            <a asp-route-CurrentPage="@Model.HotelFilterDto.CurrentPage - 1" class="page-link">prev</a>
+                                        <li class="page-item">
+                                            @Html.ActionLink("prev", "ShowHotels", "Hotel", null, null, null,
+                                                      new
+                                                      {
+                                                          KeyWord = Model.HotelFilterDto.KeyWord,
+                                                          MaxPrice = Model.HotelFilterDto.MaxPrice,
+                                                          MinPrice = Model.HotelFilterDto.MinPrice,
+                                                          CurrentPage = Model.HotelFilterDto.CurrentPage - 1,
+                                                          HotelsAmount = Model.HotelFilterDto.HotelsAmount,
+                                                          PageSize = Model.HotelFilterDto.PageSize,
+                                                          HasPrevious = Model.HotelFilterDto.HasPrevious,
+                                                          HasNext = Model.HotelFilterDto.HasNext
+
+                                                      },
+                                                      null)
                                         </li>
                                     }
-
 
                                     @for (var i = 1; i <= Model.HotelFilterDto.PagesCount; i++)
                                     {
@@ -311,9 +397,31 @@
                                                     MinPrice = Model.HotelFilterDto.MinPrice,
                                                     CurrentPage = i,
                                                     HotelsAmount = Model.HotelFilterDto.HotelsAmount,
-                                                    PageSize = Model.HotelFilterDto.PageSize
+                                                    PageSize = Model.HotelFilterDto.PageSize,
+                                                    HasPrevious = Model.HotelFilterDto.HasPrevious,
+                                                    HasNext = Model.HotelFilterDto.HasNext
+
                                                 },
                                                 null)
+                                        </li>
+                                    }
+                                    @if (Model.HotelFilterDto.HasNext)
+                                    {
+                                        <li class="page-item">
+                                            @Html.ActionLink("next", "ShowHotels", "Hotel", null, null, null,
+                                                      new
+                                                      {
+                                                          KeyWord = Model.HotelFilterDto.KeyWord,
+                                                          MaxPrice = Model.HotelFilterDto.MaxPrice,
+                                                          MinPrice = Model.HotelFilterDto.MinPrice,
+                                                          CurrentPage = Model.HotelFilterDto.CurrentPage + 1,
+                                                          HotelsAmount = Model.HotelFilterDto.HotelsAmount,
+                                                          PageSize = Model.HotelFilterDto.PageSize,
+                                                          HasPrevious = Model.HotelFilterDto.HasPrevious,
+                                                          HasNext = Model.HotelFilterDto.HasNext
+
+                                                      },
+                                                      null)
                                         </li>
                                     }
                                 }
@@ -423,6 +531,11 @@
             </div>
         </footer>
         <!--::footer_part end::-->
+
+
+        <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
         <!-- jquery plugins here-->
         <script src="js/jquery-1.12.1.min.js"></script>
         <!-- popper js -->
@@ -451,7 +564,6 @@
         <script src="js/price_rangs.js"></script>
         <!-- custom js -->
         <script src="js/custom.js"></script>
-
         <div class="mallbery-ext-normal" style="z-index: 2147483647 !important; text-transform: none !important; position: fixed;"></div><div class="mallbery-caa" style="z-index: 2147483647 !important; text-transform: none !important; position: fixed;"></div>
     </body>
 </html>
