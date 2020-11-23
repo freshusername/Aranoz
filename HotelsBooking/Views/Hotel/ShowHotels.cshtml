@@ -10,6 +10,12 @@
         <title>Hotels</title>
         <link rel="icon" href="img/favicon.png">
 
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+        <link rel="stylesheet" href="~/css/slider-test.css">
+
+
+        <link rel="stylesheet" href="~/css/mega-price-slider.css">
+
         <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
         <!-- Bootstrap CSS -->
         <link rel="stylesheet" href="css/bootstrap.min.css">
@@ -171,63 +177,42 @@
                                     <form asp-action="ShowHotels" method="get">
 
                                         <div class="form-group">
-                                            <h3>Room price filter</h3>
-                                            <div class="row">
-                                                <div class="col-xs-6">
-                                                    <label>min price: </label>
-                                                    @Html.EditorFor(x => Model.HotelFilterDto.MinPrice, new { htmlAttributes = new { @class = "form-control rounded", @placeholder = "min price" } })
-                                                </div>
+                                            <div class="l_w_title">
+                                                <h3>Room price Filter</h3>
+                                            </div>
+                                            <div class="price-slider col-xl-12">
 
-                                                <div class="col-xs-6">
-                                                    <label>max price: </label>
-                                                    @Html.EditorFor(x => Model.HotelFilterDto.MaxPrice, new { htmlAttributes = new { @class = "form-control rounded", @placeholder = "max price" } })
+                                                <input asp-for="HotelFilterDto.MinSearchPrice" class="rounded" value="@Convert.ToInt32(Model.HotelFilterDto.MinSearchPrice)" min="@Convert.ToInt32(Model.HotelFilterDto.MinAvailRoomPrice)" max="@Convert.ToInt32(Model.HotelFilterDto.MaxAvailRoomPrice)" step="10" type="range" />
+                                                <input asp-for="HotelFilterDto.MaxSearchPrice" class="rounded" value="@Convert.ToInt32(Model.HotelFilterDto.MaxAvailRoomPrice)" min="@Convert.ToInt32(Model.HotelFilterDto.MinAvailRoomPrice)" max="@Convert.ToInt32(Model.HotelFilterDto.MaxAvailRoomPrice)" step="10" type="range" />
+
+                                                <div class="row">
+                                                    <div class="col-xl-6" style="margin-bottom: 20px;">
+                                                        min:
+                                                        <input class="form-control rounded" type="number" value="@Convert.ToInt32(Model.HotelFilterDto.MinAvailRoomPrice)" min="@Convert.ToInt32(Model.HotelFilterDto.MinAvailRoomPrice)" max="@Convert.ToInt32(Model.HotelFilterDto.MaxAvailRoomPrice)" />
+                                                    </div>
+                                                    <div class="col-xl-6" style="margin-bottom: 20px;">
+                                                        max:
+                                                        <input class="form-control rounded" type="number" value="@Convert.ToInt32(Model.HotelFilterDto.MaxAvailRoomPrice)" min="@Convert.ToInt32(Model.HotelFilterDto.MinAvailRoomPrice)" max="@Convert.ToInt32(Model.HotelFilterDto.MaxAvailRoomPrice)" />
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
 
                                         <div class="form-group">
-                                            <label>Amount on page</label>
-                                            @Html.EditorFor(x => Model.HotelFilterDto.PageSize, new { htmlAttributes = new { min = "1", @class = "form-control rounded", @placeholder = "amount on page" } })
+                                            <label>Hotels on page: </label>
+                                            @Html.EditorFor(x => Model.HotelFilterDto.PageSize, new { htmlAttributes = new { min = 1, max = 1000, @class = "form-control rounded", @placeholder = "pages" } })
                                         </div>
 
                                         <div class="form-group">
-                                            <label>Search for hotels or locations</label>
+                                            <label>Search for name or location</label>
                                             @Html.EditorFor(x => Model.HotelFilterDto.KeyWord, new { htmlAttributes = new { @class = "form-control rounded", @placeholder = "keyword" } })
                                         </div>
-                                        <div class="form-group">
 
-                                            <p>
-                                                <label for="amount">Price range:</label>
-                                                $<input type="text" id="amount_min" style="border:0; color:#f6931f; font-weight:bold;">
-                                                $<input type="text" id="amount_max" style="border:0; color:#f6931f; font-weight:bold;">
-                                            </p>
+                                        <input type="submit" value="Apply filters" class="btn btn-lg btn-outline-success col-xl-12" />
 
-                                            <div id="slider-range"></div>
+                                        <div class="form-group ">
+                                            <a class="btn btn-outline-danger col-xl-12 " href="/Hotel/ShowHotels">Reset filters</a>
                                         </div>
-                                        <script>
-                                            $(function () {
-                                                $("#slider-range").slider({
-                                                    range: true,
-                                                    min: 0,
-                                                    max: 500,
-                                                    values: [75, 300],
-                                                    slide: function (event, ui) {
-                                                        $("#amount_min").val(ui.values[0]);
-                                                        $("#amount_max").val(ui.values[1]);
-                                                    }
-                                                });
-                                                $("#amount_min").val($("#slider-range").slider("values", 0));
-                                                $("#amount_max").val($("#slider-range").slider("values", 1));
-                                                $("#amount_min").change(function () {
-                                                    $("#slider-range").slider("values", 0, $(this).val());
-                                                });
-                                                $("#amount_max").change(function () {
-                                                    $("#slider-range").slider("values", 1, $(this).val());
-                                                })
-                                            });
-                                        </script>
-
-                                        <input type="submit" value="Filter" class="btn btn-success" />
                                     </form>
                                 </div>
                             </aside>
@@ -247,48 +232,6 @@
                                             </div>
                                         </li>
                                     </ul>
-                                </div>
-                            </aside>
-
-                            <aside class="left_widgets p_filter_widgets price_rangs_aside">
-                                <div class="l_w_title">
-                                    <h3>Price Filter</h3>
-                                </div>
-                                <div class="widgets_inner">
-                                    <div class="range_item">
-                                        <!-- <div id="slider-range"></div> -->
-                                        <span class="irs js-irs-0">
-                                            <span class="irs">
-                                                <span class="irs-line" tabindex="-1">
-                                                    <span class="irs-line-left"></span>
-                                                    <span class="irs-line-mid"></span>
-                                                    <span class="irs-line-right"></span>
-                                                </span>
-                                                <span class="irs-min" style="visibility: hidden;">tk. 0</span>
-                                                <span class="irs-max" style="visibility: visible;">tk. 1.000</span>
-                                                <span class="irs-from" style="visibility: visible; left: 0%;">tk. 0</span>
-                                                <span class="irs-to" style="visibility: visible; left: 39.4089%;">tk. 500</span>
-                                                <span class="irs-single" style="visibility: hidden; left: 9.85222%;">tk. 0 - tk. 500</span>
-                                            </span>
-                                            <span class="irs-grid"></span>
-                                            <span class="irs-bar" style="left: 3.69458%; width: 46.3054%;"></span>
-                                            <span class="irs-shadow shadow-from" style="display: none;"></span>
-                                            <span class="irs-shadow shadow-to" style="display: none;"></span>
-                                            <span class="irs-slider from" style="left: 0%;"></span>
-                                            <span class="irs-slider to type_last" style="left: 46.3054%;"></span>
-                                        </span>
-                                        <input type="text" class="js-range-slider irs-hidden-input" value="" readonly="">
-                                        <div class="d-flex">
-                                            <div class="price_text">
-                                                <p>Price :</p>
-                                            </div>
-                                            <div class="price_value d-flex justify-content-center">
-                                                <input type="text" class="js-input-from" id="amount" readonly="">
-                                                <span>to</span>
-                                                <input type="text" class="js-input-to" id="amount" readonly="">
-                                            </div>
-                                        </div>
-                                    </div>
                                 </div>
                             </aside>
 
@@ -318,10 +261,8 @@
                                             </ul>
                                         </div>
                                     </div>
-
                                 </div>
                             </div>
-
                         </div>
 
                         <div class="row align-items-center latest_product_inner">
@@ -369,58 +310,38 @@
                                     @if (Model.HotelFilterDto.HasPrevious)
                                     {
                                         <li class="page-item">
-                                            @Html.ActionLink("prev", "ShowHotels", "Hotel", null, null, null,
-                                                      new
-                                                      {
-                                                          KeyWord = Model.HotelFilterDto.KeyWord,
-                                                          MaxPrice = Model.HotelFilterDto.MaxPrice,
-                                                          MinPrice = Model.HotelFilterDto.MinPrice,
-                                                          CurrentPage = Model.HotelFilterDto.CurrentPage - 1,
-                                                          HotelsAmount = Model.HotelFilterDto.HotelsAmount,
-                                                          PageSize = Model.HotelFilterDto.PageSize,
-                                                          HasPrevious = Model.HotelFilterDto.HasPrevious,
-                                                          HasNext = Model.HotelFilterDto.HasNext
+                                            @{
+                                                var prev = (HotelFilterDto)Model.HotelFilterDto.Clone();
+                                                prev.CurrentPage = Model.HotelFilterDto.CurrentPage - 1;
+                                            }
 
-                                                      },
+                                            @Html.ActionLink("prev", "ShowHotels", "Hotel", null, null, null,
+                                                      prev,
                                                       null)
                                         </li>
                                     }
 
                                     @for (var i = 1; i <= Model.HotelFilterDto.PagesCount; i++)
                                     {
+                                        var page_i = (HotelFilterDto)Model.HotelFilterDto.Clone();
+                                        page_i.CurrentPage = i;
+
                                         <li class="page-item @( i == Model.HotelFilterDto.CurrentPage ? "active" : "")">
                                             @Html.ActionLink(i.ToString(), "ShowHotels", "Hotel", null, null, null,
-                                                new
-                                                {
-                                                    KeyWord = Model.HotelFilterDto.KeyWord,
-                                                    MaxPrice = Model.HotelFilterDto.MaxPrice,
-                                                    MinPrice = Model.HotelFilterDto.MinPrice,
-                                                    CurrentPage = i,
-                                                    HotelsAmount = Model.HotelFilterDto.HotelsAmount,
-                                                    PageSize = Model.HotelFilterDto.PageSize,
-                                                    HasPrevious = Model.HotelFilterDto.HasPrevious,
-                                                    HasNext = Model.HotelFilterDto.HasNext
-
-                                                },
+                                                page_i,
                                                 null)
                                         </li>
                                     }
                                     @if (Model.HotelFilterDto.HasNext)
                                     {
                                         <li class="page-item">
-                                            @Html.ActionLink("next", "ShowHotels", "Hotel", null, null, null,
-                                                      new
-                                                      {
-                                                          KeyWord = Model.HotelFilterDto.KeyWord,
-                                                          MaxPrice = Model.HotelFilterDto.MaxPrice,
-                                                          MinPrice = Model.HotelFilterDto.MinPrice,
-                                                          CurrentPage = Model.HotelFilterDto.CurrentPage + 1,
-                                                          HotelsAmount = Model.HotelFilterDto.HotelsAmount,
-                                                          PageSize = Model.HotelFilterDto.PageSize,
-                                                          HasPrevious = Model.HotelFilterDto.HasPrevious,
-                                                          HasNext = Model.HotelFilterDto.HasNext
+                                            @{
+                                                var prev = (HotelFilterDto)Model.HotelFilterDto.Clone();
+                                                prev.CurrentPage = Model.HotelFilterDto.CurrentPage - 1;
+                                            }
 
-                                                      },
+                                            @Html.ActionLink("prev", "ShowHotels", "Hotel", null, null, null,
+                                                      prev,
                                                       null)
                                         </li>
                                     }
@@ -431,6 +352,19 @@
                 </div>
             </div>
         </section>
+        @section Scripts {
+            <script>
+                // переопределение валидации на стороне клиента
+                $.validator.methods.range = function (value, element, param) {
+                    var globalizedValue = value.replace(",", ".");
+                    return this.optional(element) || (globalizedValue >= param[0] && globalizedValue <= param[1]);
+                }
+
+                $.validator.methods.number = function (value, element) {
+                    return this.optional(element) || /^-?(?:\d+|\d{1,3}(?:[\s\.,]\d{3})+)(?:[\.,]\d+)?$/.test(value);
+                }
+            </script>
+        }
 
         <!--================End Category Product Area =================-->
         <!--::footer_part start::-->
@@ -532,10 +466,56 @@
         </footer>
         <!--::footer_part end::-->
 
+        <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js'></script>
+        <script>
+            (function () {
+
+                var parent = document.querySelector(".price-slider");
+                if (!parent) return;
+
+                var
+                    rangeS = parent.querySelectorAll("input[type=range]"),
+                    numberS = parent.querySelectorAll("input[type=number]");
+
+                rangeS.forEach(function (el) {
+                    el.oninput = function () {
+                        var slide1 = parseFloat(rangeS[0].value),
+                            slide2 = parseFloat(rangeS[1].value);
+
+                        if (slide1 > slide2) {
+                            [slide1, slide2] = [slide2, slide1];
+                        }
+
+                        numberS[0].value = slide1;
+                        numberS[1].value = slide2;
+                    }
+                });
+
+                numberS.forEach(function (el) {
+                    el.oninput = function () {
+                        var number1 = parseFloat(numberS[0].value),
+                            number2 = parseFloat(numberS[1].value);
+
+                        if (number1 > number2) {
+                            var tmp = number1;
+                            numberS[0].value = number2;
+                            numberS[1].value = tmp;
+                        }
+
+                        rangeS[0].value = number1;
+                        rangeS[1].value = number2;
+
+                    }
+                });
+
+            })();
+        </script>
+
+        @*<script src="~/js/mega-price-slider.js"></script>*@
+        @*<script src="~/js/lightslider.min.js"></script>*@
 
         <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
         <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-
         <!-- jquery plugins here-->
         <script src="js/jquery-1.12.1.min.js"></script>
         <!-- popper js -->
