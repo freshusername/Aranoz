@@ -17,5 +17,6 @@ namespace Infrastructure.Entities
         public Hotel Hotel { get; set; }
 
         public ICollection<RoomConv> RoomConvs { get; set; }
+        public ICollection<OrderDetail> OrderDetails { get; set; }
     }
 }
