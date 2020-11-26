@@ -21,6 +21,7 @@
 </head>
 @using ApplicationCore.DTOs
 @model FilterHotelDto
+
 <!-- Search Filter Section Begin -->
 <section class="search-filter">
     <div class="container">
@@ -53,13 +54,17 @@
                         </div>
                     </div>
                     <div class="room-selector">
-                        <p>Room</p>
+                        <p>Location</p>
                         <select asp-for="@Model.Location" class="suit-select">
                             <option value="@String.Empty">Enter location</option>
-                            <option value="New-York">New-York</option>
-                            <option value="Beverly Hills">Beverly Hills</option>
-                            <option value="Zurich">Zurich</option>
-                            <option value="Gstaad">Gstaad</option>
+                            @foreach (var location in ViewBag.Locations)
+                            {
+                                <option value="@location">@location</option>
+                            }
+                            @*<option value="new-york">new-york</option>
+                            <option value="beverly hills">beverly hills</option>
+                            <option value="zurich">zurich</option>
+                            <option value="gstaad">gstaad</option>*@
                         </select>
                     </div>
                     <button value="Filter" type="submit">Go</button>

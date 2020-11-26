@@ -39,7 +39,7 @@ namespace ApplicationCore.Managers
             var hotels = _context.Hotels.Include(h => h.HotelRooms)
                                             .ThenInclude(hr => hr.Room)
                                         .Include(h => h.HotelRooms)
-                                                .ThenInclude(hr => hr.RoomConvs)
+                                            .ThenInclude(hr => hr.RoomConvs)
                                         .Include(h => h.HotelRooms)
                                             .ThenInclude(hr => hr.OrderDetails)
                                         .Include(h => h.HotelPhotos)
@@ -56,14 +56,12 @@ namespace ApplicationCore.Managers
                 hotels = hotels.Where(h => h.Location.Contains(filterHotelDto.Location));
             }
 
-            if (filterHotelDto?.FromDate != null)
+            if (filterHotelDto?.FromDate != null && filterHotelDto?.ToDate != null)
             {
-                hotels = hotels.Where(h => h.Location.Contains(filterHotelDto.Location));
-            }
-
-            if (filterHotelDto?.ToDate != null)
-            {
-                hotels = hotels.Where(h => h.Location.Contains(filterHotelDto.Location));
+                hotels = hotels.Where(h => h.HotelRooms
+                                                .Any(hr => hr.OrderDetails
+                                                            .Any(od => CheckIfAvailable(od.CheckInDate, od.CheckOutDate, filterHotelDto.FromDate, filterHotelDto.ToDate))
+                                                            || !hr.OrderDetails.Any()));
             }
 
             if (filterHotelDto?.MinPrice >= 0)
@@ -77,6 +75,13 @@ namespace ApplicationCore.Managers
             }
 
             return _mapper.Map<IEnumerable<Hotel>, IEnumerable<HotelDTO>>(hotels.ToList());
+        }
+
+        private bool CheckIfAvailable(DateTimeOffset CheckInDate, DateTimeOffset CheckOutDate, DateTimeOffset FromDate, DateTimeOffset ToDate)
+        {
+            if((FromDate < CheckInDate && ToDate <= CheckInDate) || (FromDate >= CheckOutDate && ToDate > CheckOutDate))
+                return true;
+            return false;
         }
 
         public async Task<OperationDetails> Create(HotelDTO hotelDTO)
