@@ -31,27 +31,31 @@
                     <h4>Check Availability</h4>
                     <div class="datepicker">
                         <p>From</p>
-                        <input asp-for="@Model.FromDate" type="text" class="datepicker-1" placeholder="dd / mm / yyyy">
+                        <input asp-for="@Model.FromDate" type="text" class="datepicker-1" placeholder="dd / mm / yyyy" autocomplete="off">
                         <img src="img/calendar.png" alt="">
                     </div>
                     <div class="datepicker">
                         <p>To</p>
-                        <input asp-for="@Model.ToDate" type="text" class="datepicker-2" placeholder="dd / mm / yyyy">
+                        <input asp-for="@Model.ToDate" type="text" class="datepicker-2" placeholder="dd / mm / yyyy" autocomplete="off">
                         <img src="img/calendar.png" alt="">
                     </div>
                     <div class="room-quantity">
                         <div class="single-quantity">
                             <p>Adults</p>
-                            <div class="pro-qty"><input type="text" value="0"></div>
-                        </div>
-                        <div class="single-quantity">
-                            <p>Children</p>
-                            <div class="pro-qty"><input type="text" value="0"></div>
+                            <div class="pro-qty">
+                                <input asp-for="@Model.MaxAdults" type="text" value="0">
+                            </div>
                         </div>
                         <div class="single-quantity last">
+                            <p>Children</p>
+                            <div class="pro-qty">
+                                <input asp-for="@Model.MaxChildren" type="text" value="0">
+                            </div>
+                        </div>
+                        @*<div class="single-quantity last">
                             <p>Rooms</p>
                             <div class="pro-qty"><input type="text" value="0"></div>
-                        </div>
+                        </div>*@
                     </div>
                     <div class="room-selector">
                         <p>Location</p>
@@ -61,10 +65,6 @@
                             {
                                 <option value="@location">@location</option>
                             }
-                            @*<option value="new-york">new-york</option>
-                            <option value="beverly hills">beverly hills</option>
-                            <option value="zurich">zurich</option>
-                            <option value="gstaad">gstaad</option>*@
                         </select>
                     </div>
                     <button value="Filter" type="submit">Go</button>

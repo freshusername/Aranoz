@@ -64,6 +64,13 @@ namespace ApplicationCore.Managers
                                                             || !hr.OrderDetails.Any()));
             }
 
+            if (filterHotelDto?.MaxAdults >= 0 && filterHotelDto?.MaxChildren >= 0)
+            {
+                hotels = hotels.Where(h => h.HotelRooms
+                                                .Any(hr => (filterHotelDto.MaxAdults <= hr.MaxAdults && filterHotelDto.MaxChildren <= hr.MaxChildren)
+                                                            || (filterHotelDto.MaxAdults + filterHotelDto.MaxChildren) <= hr.MaxAdults));
+            }
+
             if (filterHotelDto?.MinPrice >= 0)
             {
                 hotels = hotels.Where(h => h.HotelRooms.Any(p => p.Price >= filterHotelDto.MinPrice));

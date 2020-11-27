@@ -9,6 +9,8 @@ namespace Infrastructure.Entities
     {
         public int Id { get; set; }             
         public decimal Price { get; set; }
+        public int MaxAdults { get; set; }
+        public int MaxChildren { get; set; }
 
         public int RoomId { get; set; }
         public Room Room { get; set; }

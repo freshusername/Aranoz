@@ -7894,7 +7894,7 @@ h6 {
     }
 
     .check-form .datepicker {
-        width: calc(19.3% - 19px);
+        width: calc(23.3% - 19px);
         float: left;
         margin-right: 19px;
         background: #ffffff;
@@ -7930,7 +7930,7 @@ h6 {
         }
 
     .check-form .room-quantity {
-        width: calc(29% - 16px);
+        width: calc(20.9% - 16px);
         float: left;
         margin-right: 16px;
         background: #ffffff;
