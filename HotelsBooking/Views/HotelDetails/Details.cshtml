@@ -66,12 +66,14 @@
                         <h3>@Model.Name</h3>
                         <ul class="list">
                             <li>
-                                <a class="active" href="#">
+                                <a class="active" asp-controller="Hotel" asp-action="ShowHotels" asp-route-Season="@Model.Season">
                                     <span>Season</span> : @Model.Season
                                 </a>
                             </li>
                             <li>
-                                <a href="#"> <span>Location</span> : @Model.Location</a>
+                                <a class="active" asp-controller="Hotel" asp-action="ShowHotels" asp-route-Location="@Model.Location"> 
+                                    <span>Location</span> : @Model.Location
+                                </a>
                             </li>
                         </ul>
                         <p>
@@ -100,26 +102,44 @@
                 <div class="tab-pane fade active show" id="rooms" role="tabpanel" aria-labelledby="rooms-tab">
                     <div class="table-responsive">
                         <table class="table">
-                            <thead>
+                            <tbody>
                                 <tr>
-                                    <td>Room Type</td>
-                                    <td>Price</td>
-                                    <td>List of additional conveniences</td>
+                                    <td><strong>Room Type</strong></td>
+                                    <td><strong>Accommodates up to</strong></td>
+                                    <td><strong>Additional conveniences</strong></td>
+                                    <td><strong>Price</strong></td>
                                     <td></td>
                                 </tr>
-                            </thead>
-                            <tbody>
                                 @foreach (var hotelRoom in Model.HotelRooms)
                                 {
                                     <tr>
                                         <td>@hotelRoom.Room.RoomType</td>
-                                        <td>@hotelRoom.Price</td>
                                         <td>
-                                            @foreach (var room_conv in hotelRoom.RoomConvs)
+                                            @if (@hotelRoom.MaxAdults != 0)
                                             {
-                                                <p>@room_conv.AdditionalConv.Name</p>
+                                                <p>@hotelRoom.MaxAdults adults</p>
+                                            }
+                                            @if (@hotelRoom.MaxChildren != 0)
+                                            {
+                                                <p>@hotelRoom.MaxChildren children</p>
                                             }
                                         </td>
+                                        <td>
+                                            @if (hotelRoom.RoomConvs.Any())
+                                            {
+                                                <ul class="unordered-list">
+                                                    @foreach (var room_conv in hotelRoom.RoomConvs)
+                                                    {
+                                                        <li>@room_conv.AdditionalConv.Name</li>
+                                                    }
+                                                </ul>
+                                            }
+                                            else
+                                            {
+                                                <p>None</p>
+                                            }
+                                        </td>
+                                        <td>@hotelRoom.Price.ToString("0.00")$</td>
                                         <td><a href="~/HotelDetails">Book this room</a></td>
                                     </tr>
                                 }
