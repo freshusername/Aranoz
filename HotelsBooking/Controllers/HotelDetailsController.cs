@@ -27,9 +27,15 @@ namespace HotelsBooking.Controllers
         }
 
         // GET: HotelDetails/Details/5
-        public async Task<ActionResult> Details(int id)
+        //public async Task<ActionResult> Details(int id)
+        //{
+        //    HotelDTO hotel =  await _hotelManager.GetHotelById(id);
+        //    return View(hotel);
+        //}
+
+        public async Task<ActionResult> Details(FilterHotelDetailDTO filterHotelDetailDTO)
         {
-            HotelDTO hotel =  await _hotelManager.GetHotelById(id);
+            HotelDTO hotel = await _hotelManager.GetHotelDetails(filterHotelDetailDTO);
             return View(hotel);
         }
     }
