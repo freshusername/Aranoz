@@ -7850,3 +7850,198 @@ h6 {
 }
 
 /*# sourceMappingURL=style.css.map */
+
+/*---------------------
+  Search Filter
+-----------------------*/
+
+.search-filter {
+    margin-top: 100px;
+    /*position: absolute;*/
+    width: 100%;
+    z-index: 99;
+}
+
+    .search-filter.other-page-filter {
+        margin-top: -172px;
+    }
+
+.check-form {
+    padding-top: 30px;
+    padding-bottom: 65px;
+    padding-right: 48px;
+    padding-left: 48px;
+    margin: 0 -50px;
+    position: relative;
+    z-index: 1;
+}
+
+    .check-form:after {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background: #000000;
+        content: "";
+        opacity: 0.47;
+        z-index: -1;
+    }
+
+    .check-form h4 {
+        color: #ffffff;
+        margin-bottom: 30px;
+    }
+
+    .check-form .datepicker {
+        width: calc(23.3% - 19px);
+        float: left;
+        margin-right: 19px;
+        background: #ffffff;
+        position: relative;
+        padding: 18px;
+    }
+
+        .check-form .datepicker p {
+            font-size: 14px;
+            color: #242424;
+            letter-spacing: 0.4px;
+            margin-bottom: 7px;
+            font-weight: 600;
+        }
+
+        .check-form .datepicker input {
+            width: 100%;
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            border: none;
+            color: #242424;
+            opacity: 0.5;
+            letter-spacing: 1.2px;
+            line-height: 42px;
+            border-bottom: 1px solid #888888;
+        }
+
+        .check-form .datepicker img {
+            position: absolute;
+            right: 18px;
+            bottom: 33px;
+        }
+
+    .check-form .room-quantity {
+        width: calc(20.9% - 16px);
+        float: left;
+        margin-right: 16px;
+        background: #ffffff;
+        padding-top: 18px;
+        padding-bottom: 18px;
+        padding-left: 29px;
+        padding-right: 28px;
+    }
+
+        .check-form .room-quantity .single-quantity {
+            display: inline-block;
+            margin-right: 30px;
+        }
+
+            .check-form .room-quantity .single-quantity.last {
+                margin-right: 0;
+            }
+
+            .check-form .room-quantity .single-quantity p {
+                font-size: 14px;
+                color: #242424;
+                letter-spacing: 0.4px;
+                margin-bottom: 10px;
+                font-weight: 600;
+            }
+
+            .check-form .room-quantity .single-quantity .pro-qty {
+                border-bottom: 1px solid #888888;
+                line-height: 42px;
+                height: 42px;
+            }
+
+                .check-form .room-quantity .single-quantity .pro-qty .qtybtn {
+                    float: left;
+                    width: 15px;
+                    text-align: center;
+                    cursor: pointer;
+                    display: block;
+                    color: #081624;
+                    font-size: 11px;
+                    letter-spacing: 0.4px;
+                    line-height: 42px;
+                }
+
+                .check-form .room-quantity .single-quantity .pro-qty input {
+                    width: 28px;
+                    border: none;
+                    float: left;
+                    text-align: center;
+                    font-family: "Montserrat Alternates", sans-serif;
+                    font-size: 14px;
+                    font-weight: 600;
+                    color: #081624;
+                    opacity: 0.25;
+                    letter-spacing: 0.4px;
+                    margin-top: -2px;
+                }
+
+    .check-form .room-selector {
+        width: calc(25% - 16px);
+        float: left;
+        margin-right: 16px;
+        background: #ffffff;
+        padding-top: 18px;
+        padding-left: 24px;
+        padding-right: 24px;
+        padding-bottom: 18px;
+    }
+
+        .check-form .room-selector p {
+            font-size: 14px;
+            color: #242424;
+            letter-spacing: 0.4px;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .check-form .room-selector .nice-select {
+            background-color: transparent;
+            border-radius: 0;
+            border: none;
+            padding-left: 0;
+            padding-right: 0;
+            float: none;
+            line-height: 42px;
+            border-bottom: 1px solid #888888;
+        }
+
+            .check-form .room-selector .nice-select span {
+                font-size: 10px;
+                color: #242424;
+                opacity: 0.5;
+                text-transform: uppercase;
+                font-weight: 700;
+                letter-spacing: 1.2px;
+            }
+
+            .check-form .room-selector .nice-select .list {
+                width: 100%;
+                margin-top: 1px;
+            }
+
+            .check-form .room-selector .nice-select:after {
+                display: none;
+            }
+
+    .check-form button {
+        background: #F9AD81;
+        border: 1px solid #F9AD81;
+        font-size: 18px;
+        color: #ffffff;
+        padding: 43px 27px;
+        cursor: pointer;
+    }

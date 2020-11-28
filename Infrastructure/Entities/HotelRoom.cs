@@ -9,6 +9,8 @@ namespace Infrastructure.Entities
     {
         public int Id { get; set; }             
         public decimal Price { get; set; }
+        public int MaxAdults { get; set; }
+        public int MaxChildren { get; set; }
 
         public int RoomId { get; set; }
         public Room Room { get; set; }
@@ -17,5 +19,6 @@ namespace Infrastructure.Entities
         public Hotel Hotel { get; set; }
 
         public ICollection<RoomConv> RoomConvs { get; set; }
+        public ICollection<OrderDetail> OrderDetails { get; set; }
     }
 }

@@ -1,7 +1,79 @@
-﻿
+﻿<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="Hotel Template">
+    <meta name="keywords" content="Hotel, unica, creative, html">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Europa Hotel & Spa | Template</title>
 
-<h2>Index</h2>
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css?family=Montserrat+Alternates:100,200,300,400,500,600,700,800,900&display=swap" rel="stylesheet">
 
+    <!-- Css Styles -->
+    <link rel="stylesheet" href="~/css/bootstrap.min.css" type="text/css">
+    <link rel="stylesheet" href="~/css/font-awesome.min.css" type="text/css">
+    <link rel="stylesheet" href="~/css/flaticon.css" type="text/css">
+    <link rel="stylesheet" href="~/css/owl.carousel.min.css" type="text/css">
+    <link rel="stylesheet" href="~/css/jquery-ui.min.css" type="text/css">
+    <link rel="stylesheet" href="~/css/nice-select.css" type="text/css">
+    <link rel="stylesheet" href="~/css/slicknav.min.css" type="text/css">
+    <link rel="stylesheet" href="~/css/style.css" type="text/css">
+</head>
+@using ApplicationCore.DTOs
+@model FilterHotelDto
+
+<!-- Search Filter Section Begin -->
+<section class="search-filter">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <form asp-controller="Hotel" asp-action="ShowHotels" method="get" class="check-form">
+                    <h4>Check Availability</h4>
+                    <div class="datepicker">
+                        <p>From</p>
+                        <input asp-for="@Model.FromDate" type="text" class="datepicker-1" placeholder="dd / mm / yyyy" autocomplete="off">
+                        <img src="img/calendar.png" alt="">
+                    </div>
+                    <div class="datepicker">
+                        <p>To</p>
+                        <input asp-for="@Model.ToDate" type="text" class="datepicker-2" placeholder="dd / mm / yyyy" autocomplete="off">
+                        <img src="img/calendar.png" alt="">
+                    </div>
+                    <div class="room-quantity">
+                        <div class="single-quantity">
+                            <p>Adults</p>
+                            <div class="pro-qty">
+                                <input asp-for="@Model.MaxAdults" type="text" value="0">
+                            </div>
+                        </div>
+                        <div class="single-quantity last">
+                            <p>Children</p>
+                            <div class="pro-qty">
+                                <input asp-for="@Model.MaxChildren" type="text" value="0">
+                            </div>
+                        </div>
+                        @*<div class="single-quantity last">
+                            <p>Rooms</p>
+                            <div class="pro-qty"><input type="text" value="0"></div>
+                        </div>*@
+                    </div>
+                    <div class="room-selector">
+                        <p>Location</p>
+                        <select asp-for="@Model.Location" class="suit-select">
+                            <option value="@String.Empty">Enter location</option>
+                            @foreach (var location in ViewBag.Locations)
+                            {
+                                <option value="@location">@location</option>
+                            }
+                        </select>
+                    </div>
+                    <button value="Filter" type="submit">Go</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Search Filter Section End -->
 
 <section class="feature_part padding_top">
     <div class="container">
@@ -11,7 +83,7 @@
                     <p class="home-index-text">hotels list</p>
                     <h3 class="home-index-text">Hotels</h3>
                     <a asp-controller="Hotel" asp-action="ShowHotels" class="feature_btn home-index-text">EXPLORE NOW<i class="fas fa-play"></i></a>
-     
+
                 </div>
             </div>
             <div class="col-lg-5 col-sm-6">
@@ -20,9 +92,19 @@
                         <p class="home-index-text">profiles list</p>
                         <h3 class="home-index-text">Profiles</h3>
                         <a asp-controller="Profile" asp-action="Index" class="feature_btn home-index-text">EXPLORE NOW<i class="fas fa-play"></i></a>
-     
+
                     </div>
+                </div>
             </div>
         </div>
     </div>
 </section>
+
+<script src="~/js/jquery-3.3.1.min.js"></script>
+<script src="~/js/bootstrap.min.js"></script>
+<script src="~/js/jquery.magnific-popup.min.js"></script>
+<script src="~/js/jquery-ui.min.js"></script>
+<script src="~/js/jquery.nice-select.min.js"></script>
+<script src="~/js/jquery.slicknav.js"></script>
+<script src="~/js/owl.carousel.min.js"></script>
+<script src="~/js/main.js"></script>

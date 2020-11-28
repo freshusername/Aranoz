@@ -295,7 +295,7 @@
                                             </h3>
                                             @if (!User.IsInRole("BlockedUser"))
                                             {
-                                                @Html.ActionLink("Details", "HotelMain", item.Id)
+                                                <a asp-controller="HotelDetails" asp-action="Details" asp-route-id="@item.Id">Details</a>
                                             }
                                         </div>
                                     </div>
