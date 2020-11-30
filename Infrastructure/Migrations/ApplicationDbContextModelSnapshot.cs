@@ -14,7 +14,7 @@ namespace Infrastructure.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.1.14-servicing-32113")
+                .HasAnnotation("ProductVersion", "2.1.11-servicing-32099")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
             modelBuilder.Entity("Infrastructure.Entities.AdditionalConv", b =>
@@ -151,6 +151,8 @@ namespace Infrastructure.Migrations
 
                     b.Property<int>("MaxChildren");
 
+                    b.Property<int>("Number");
+
                     b.Property<decimal>("Price");
 
                     b.Property<int>("RoomId");
@@ -211,7 +213,8 @@ namespace Infrastructure.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<int>("RoomType");
+                    b.Property<string>("RoomType")
+                        .IsRequired();
 
                     b.HasKey("Id");
 

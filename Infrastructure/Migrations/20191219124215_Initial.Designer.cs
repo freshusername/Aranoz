@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20191216205549_Added_OrderDetails_to_HotelRooms")]
-    partial class Added_OrderDetails_to_HotelRooms
+    [Migration("20191219124215_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -149,6 +149,12 @@ namespace Infrastructure.Migrations
 
                     b.Property<int>("HotelId");
 
+                    b.Property<int>("MaxAdults");
+
+                    b.Property<int>("MaxChildren");
+
+                    b.Property<int>("Number");
+
                     b.Property<decimal>("Price");
 
                     b.Property<int>("RoomId");
@@ -209,7 +215,8 @@ namespace Infrastructure.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<int>("RoomType");
+                    b.Property<string>("RoomType")
+                        .IsRequired();
 
                     b.HasKey("Id");
 
