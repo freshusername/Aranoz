@@ -39,7 +39,7 @@
     <link href="~/css/rating.css" rel="stylesheet" asp-append-version="true" />
 </head>
 <body>
-    @if (User.IsInRole("User")|| !(SignInManager.IsSignedIn(User)))
+    @if (User.IsInRole("User"))
     {
         <header class="main_menu home_menu">
             <div class="align-items-center">

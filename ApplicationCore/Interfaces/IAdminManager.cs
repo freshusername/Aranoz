@@ -20,7 +20,7 @@ namespace ApplicationCore.Interfaces
 
         #region Hotels
         Task<HotelDTO> GetHotelById(int Id);
-        IEnumerable<HotelDTO> GetHotels(string sortOrder, string searchString);
+        IEnumerable<HotelDTO> GetHotels(HotelFilterDto hotelFilterDto,string sortOrder);
         Task<OperationDetails> CreateHotel(HotelDTO hotelDTO);
         Task<OperationDetails> EditHotel(HotelDTO hotelDTO);
         Task DeleteHotel(int Id);
