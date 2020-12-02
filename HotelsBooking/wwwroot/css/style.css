@@ -16,7 +16,7 @@
 /* line 4, ../../01 cl html template/03_jun 2019/188_Aranoz shop_html/sass/_common.scss */
 body {
     font-family: "Poppins", sans-serif;
-    padding: 0;
+    padding: 100px;
     margin: 0;
     font-size: 14px;
 }
@@ -7455,7 +7455,7 @@ h6 {
 
 /* line 1, ../../01 cl html template/03_jun 2019/188_Aranoz shop_html/sass/_breadcrumb.scss */
 .breadcrumb_bg {
-    background-image: url("../img/breadcrumb.png");
+    background-image: url("../img/hotel/hotel_logo.jpg");
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;

@@ -1,4 +1,4 @@
-﻿@using ApplicationCore.DTOs
+﻿﻿@using ApplicationCore.DTOs
 @using HotelsBooking.Models.Hotel
 @model FilteredHotelsViewModel
 @{
@@ -9,6 +9,11 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <title>Hotels</title>
         <link rel="icon" href="img/favicon.png">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+        <link rel="stylesheet" href="~/css/slider-test.css">
+
+        <link rel="stylesheet" href="~/css/mega-price-slider.css">
+        <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
         <!-- Bootstrap CSS -->
         <link rel="stylesheet" href="css/bootstrap.min.css">
         <!-- animate CSS -->
@@ -32,6 +37,8 @@
         <!-- style CSS -->
         <link rel="stylesheet" href="css/style.css">
         <style type="text/css">
+
+
             .mallbery-serp-2kPdnU {
                 position: relative !important;
                 display: flex !important;
@@ -133,10 +140,10 @@
             }
         </style>
         <link rel="stylesheet" type="text/css" href="moz-extension://40c6e28c-f56d-40ab-9d96-39b4f5a84bc3/styles.css">
+        <link rel="stylesheet" type="text/css" href="~/css/show-hotels.css">
     </head>
     <body>
         <div class="mallbery-ext-install" style="z-index: 2147483647 !important; text-transform: none !important;"></div>
-
         <!--================Home Banner Area =================-->
         <!-- breadcrumb start-->
         <section class="breadcrumb breadcrumb_bg">
@@ -153,7 +160,6 @@
                 </div>
             </div>
         </section>
-
         <!-- breadcrumb start-->
         <!--================Category Product Area =================-->
         <section class="cat_product_area section_padding">
@@ -161,305 +167,382 @@
                 <div id="hotel_list" class="row">
                     <div class="col-lg-3">
                         <div class="left_sidebar_area">
-
                             <aside class="left_widgets p_filter_widgets">
                                 <div class="l_w_title">
                                     <form asp-action="ShowHotels" method="get">
-
                                         <div class="form-group">
-                                            <h3>Room price filter</h3>
-                                            <label>min price: </label>
-                                            @Html.EditorFor(x => Model.HotelFilterDto.MinPrice, new { htmlAttributes = new { @class = "form-control rounded", @placeholder = "min price" }})
-                                            <br />
-                                            <label>max price: </label>
-                                            @Html.EditorFor(x => Model.HotelFilterDto.MaxPrice, new { htmlAttributes = new { @class = "form-control rounded", @placeholder = "max price" }})
-                                        </div>
+                                            <div class="l_w_title">
+                                                <h3>Room price Filter</h3>
+                                            </div>
+                                            <div class="price-slider col-xl-12">
+                                                <div class="slider-margin">
+                                                    <input asp-for="HotelFilterDto.MinSearchPrice" class="rounded" value="@Convert.ToInt32(Model.HotelFilterDto.MinAvailRoomPrice)" min="@Convert.ToInt32(Model.HotelFilterDto.MinAvailRoomPrice)" max="@Convert.ToInt32(Model.HotelFilterDto.MaxAvailRoomPrice)" step="10" type="range" />
+                                                    <input asp-for="HotelFilterDto.MaxSearchPrice" class="rounded" value="@Convert.ToInt32(Model.HotelFilterDto.MaxAvailRoomPrice)" min="@Convert.ToInt32(Model.HotelFilterDto.MinAvailRoomPrice)" max="@Convert.ToInt32(Model.HotelFilterDto.MaxAvailRoomPrice)" step="10" type="range" />
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-xl-6">
+                                                        max:
+                                                        <input class="form-control rounded" type="number" value="@Convert.ToInt32(Model.HotelFilterDto.MinAvailRoomPrice)" min="@Convert.ToInt32(Model.HotelFilterDto.MinAvailRoomPrice)" max="@Convert.ToInt32(Model.HotelFilterDto.MaxAvailRoomPrice)" />
+                                                    </div>
+                                                    <div class="col-xl-6">
+                                                        min:
+                                                        <input class="form-control rounded" type="number" value="@Convert.ToInt32(Model.HotelFilterDto.MaxAvailRoomPrice)" min="@Convert.ToInt32(Model.HotelFilterDto.MinAvailRoomPrice)" max="@Convert.ToInt32(Model.HotelFilterDto.MaxAvailRoomPrice)" />
+                                                    </div>
+                                                </div>
 
+                                            </div>
+                                        </div>
                                         <div class="form-group">
                                             <label>Amount on page</label>
-                                            @Html.EditorFor(x => Model.HotelFilterDto.PageSize, new { htmlAttributes = new { @class = "form-control rounded", @placeholder = "amount on page" }})
-                                        </div>
-
-                                        <input type="text" class="form-control"/>
-
-                                        <div class="form-group">
-                                            <label>Search for hotels/locations</label>
-                                            @Html.EditorFor(x => Model.HotelFilterDto.KeyWord, new { htmlAttributes = new { @class = "form-control rounded", @placeholder = "keyword" }})
-                                        </div>
-
-                                        <input type="submit" value="Filter" class="btn btn-success" />
-                                    </form>
-                                </div>
-                            </aside>
-
-                            <aside class="left_widgets p_filter_widgets">
-                                <div class="l_w_title">
-                                    <h3>Hotel Conveniences</h3>
-                                </div>
-                                <div class="widgets_inner">
-                                    <ul class="list">
-                                        <li>
-                                            <div class="pretty p-svg p-curve">
-                                                <input type="checkbox" />
-                                                <div class="state p-success">
-                                                    <label>Parking</label>
-                                                </div>
-                                            </div>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </aside>
-
-                        </div>
+@Html.EditorFor(x => Model.HotelFilterDto.PageSize, new { htmlAttributes = new { min = "1", max = @Model.HotelFilterDto?.HotelsAmount, @class = "form-control rounded", @placeholder = "amount on page" } })
+</div>
+<div class="form-group">
+    <label>Search for name or location</label>
+@Html.EditorFor(x => Model.HotelFilterDto.KeyWord, new { htmlAttributes = new { @class = "form-control rounded", @placeholder = "keyword" } })
+</div>
+<input type="submit" value="Apply filters" class="btn btn-lg btn-outline-success col-xl-12" />
+<div class="form-group ">
+    <a class="btn btn-outline-danger col-xl-12 " href="/Hotel/ShowHotels">Reset filters</a>
+</div>
+</form>
+</div>
+</aside>
+<aside class="left_widgets p_filter_widgets">
+    <div class="l_w_title">
+        <h3>Hotel Conveniences</h3>
+    </div>
+    <div class="widgets_inner">
+        <ul class="list">
+            <li>
+                <div class="pretty p-svg p-curve">
+                    <input type="checkbox" />
+                    <div class="state p-success">
+                        <label>Parking</label>
                     </div>
-
-                    <div class="col-lg-9">
-                        <div class="row">
-                            <div class="col-lg-12">
-                                <div class="product_top_bar d-flex justify-content-between align-items-center">
-                                    <div class="single_product_menu">
-                                        <p><span>@Model.Hotels.Count() </span> hotels found</p>
-                                    </div>
-                                    <div class="single_product_menu d-flex">
-                                        <h5>sort by : </h5>
-                                        <select style="display: none;">
-                                            <option data-display="Select">name</option>
-                                            <option value="1">price</option>
-                                            <option value="2">product</option>
-                                        </select>
-                                        <div class="nice-select" tabindex="0">
-                                            <span class="current">Select</span>
-                                            <ul class="list">
-                                                <li data-value="name" data-display="Select" class="option selected">name</li>
-                                                <li data-value="1" class="option">price</li>
-                                                <li data-value="2" class="option">product</li>
-                                            </ul>
-                                        </div>
-                                    </div>
-
-                                </div>
-                            </div>
-
-                        </div>
-
-                        <div class="row align-items-center latest_product_inner">
-                            @foreach (var item in Model.Hotels)
+                </div>
+            </li>
+        </ul>
+    </div>
+</aside>
+</div>
+</div>
+<div class="col-lg-9">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="product_top_bar d-flex justify-content-between align-items-center">
+                <div class="single_product_menu">
+                    <p><span>@Model.HotelFilterDto.HotelsAmount </span> hotels found</p>
+                </div>
+                <div class="single_product_menu d-flex">
+                    <h5>sort by : </h5>
+                    <select style="display: none;">
+                        <option data-display="Select">name</option>
+                        <option value="1">price</option>
+                        <option value="2">product</option>
+                    </select>
+                    <div class="nice-select" tabindex="0">
+                        <span class="current">Select</span>
+                        <ul class="list">
+                            <li data-value="name" data-display="Select" class="option selected">name</li>
+                            <li data-value="1" class="option">price</li>
+                            <li data-value="2" class="option">product</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row align-items-center latest_product_inner">
+@foreach (var item in Model.Hotels)
                             {
-                                //List<string> imageSources = new List<string>();
-                                //   foreach (var photo in item.HotelPhotos)
-                                //   {
-                                //       var base64 = Convert.ToBase64String(photo.Image);
-                                //       imageSources.Add(String.Format("data:image;base64,{0}", base64));
-                                //   }
-
-                                <div class="col-lg-4 col-sm-6">
-                                    <div class="single_product_item">
-                                        @*@foreach (string imageSource in imageSources)
+        <div class="col-lg-4 col-sm-6">
+            <div class="single_product_item">
+@if (item.HotelPhotos.Any())
                                         {
-                                            <div data-thumb="@imageSource" class="lslide" style="height: 450px; margin-bottom: 0px;">
-                                                <img src="@imageSource" width="80" height="80" />
-                                            </div>
-                                        }*@
-                                       @if(item.HotelPhotos.Any())
-                                       { 
-                                            byte[] img = item.HotelPhotos.First().Image;
-                                        
-                                            var base64 = Convert.ToBase64String(img);
-                                            string s = String.Format("data:image;base64,{0}", base64);
-                                            <img src="@s)">
-                                        }
-                                        <div class="single_product_text">
-                                            <h4>
-                                                @Html.DisplayFor(modelItem => item.Name)
-                                            </h4>
-                                            <h3>
-                                                @Html.DisplayFor(modelItem => item.Location)
-                                            </h3>
-                                            <h3>
-                                                @Html.DisplayFor(modelItem => item.Season)
-                                            </h3>
-                                            @if (!User.IsInRole("BlockedUser"))
+                                            byte[] byteImg = item.HotelPhotos
+                                                .Where(p => p.HotelId == item.Id)
+                                                .Select(p => p.Image).FirstOrDefault();
+
+                                            var base64Img = Convert.ToBase64String(byteImg);
+                                            string img = String.Format("data:image;base64,{0}", base64Img);
+                <figure class="effect-winston">
+                    <img src="@img" alt="img30" />
+                    </figure>
+}
+<div class="single_product_text">
+    <h4>
+@Html.DisplayFor(modelItem => item.Name)
+</h4>
+<h3>
+@Html.DisplayFor(modelItem => item.Location)
+</h3>
+<h3>
+@Html.DisplayFor(modelItem => item.Season)
+</h3>
+@if (!User.IsInRole("BlockedUser"))
                                             {
-                                                @Html.ActionLink("Details", "Details", "HotelDetails", new FilterHotelDetailDTO { HotelId = item.Id, FromDate = Model.HotelFilterDto.FromDate, ToDate = Model.HotelFilterDto.ToDate } );
-                                                @*<a asp-controller="HotelDetails" asp-action="Details" asp-route-HotelId="@item.Id" asp-route-FromDate="@Model.FilterHotelDto.FromDate" asp-route-ToDate="@Model.FilterHotelDto.ToDate">Details</a>*@
-                                            }
-                                        </div>
-                                    </div>
+@Html.ActionLink("Details", "HotelMain", item.Id)
+}
+</div>
+</div>
                                 </div>
-                            }
-                        </div>
-
-                        <nav aria-label="Page navigation example">
-                            <ul class="pagination justify-content-center">
-                                @if (Model.HotelFilterDto != null)
+}
+</div>
+<nav aria-label="Page navigation example">
+    <ul class="pagination justify-content-center">
+@if (Model.HotelFilterDto != null)
                                 {
-                                    @if (Model.HotelFilterDto.CurrentPage > 1)
+@if (Model.HotelFilterDto.HasPrevious)
                                     {
-                                        <li class="page-item active">
-                                            <a asp-route-CurrentPage="@Model.HotelFilterDto.CurrentPage - 1" class="page-link">prev</a>
+        <li class="page-item">
+@Html.ActionLink("prev", "ShowHotels", "Hotel", null, null, null,
+                        new
+                        {
+                            KeyWord = Model.HotelFilterDto.KeyWord,
+                            MaxSearchPrice = Model.HotelFilterDto.MaxSearchPrice,
+                            MinSearchPrice = Model.HotelFilterDto.MinSearchPrice,
+                            CurrentPage = Model.HotelFilterDto.CurrentPage - 1,
+                            HotelsAmount = Model.HotelFilterDto.HotelsAmount,
+                            PageSize = Model.HotelFilterDto.PageSize,
+                            HasPrevious = Model.HotelFilterDto.HasPrevious,
+                            HasNext = Model.HotelFilterDto.HasNext
+
+                        },
+                        null)
                                         </li>
-                                    }
+}
 
-
-                                    @for (var i = 1; i <= Model.HotelFilterDto.PagesCount; i++)
+@for (var i = 1; i <= Model.HotelFilterDto.PagesCount; i++)
                                     {
-                                        <li class="page-item @( i == Model.HotelFilterDto.CurrentPage ? "active" : "")">
-                                            @Html.ActionLink(i.ToString(), "ShowHotels", "Hotel", null, null, null,
-                                                new
-                                                {
-                                                    KeyWord = Model.HotelFilterDto.KeyWord,
-                                                    MaxPrice = Model.HotelFilterDto.MaxPrice,
-                                                    MinPrice = Model.HotelFilterDto.MinPrice,
-                                                    CurrentPage = i,
-                                                    HotelsAmount = Model.HotelFilterDto.HotelsAmount,
-                                                    PageSize = Model.HotelFilterDto.PageSize,
-                                                    FromDate = Model.HotelFilterDto.FromDate,
-                                                    ToDate = Model.HotelFilterDto.ToDate,
-                                                    MaxAdults = Model.HotelFilterDto.MaxAdults,
-                                                    MaxChildren = Model.HotelFilterDto.MaxChildren,
-                                                    Location = Model.HotelFilterDto.Location,
-                                                    Season = Model.HotelFilterDto.Season
-                                                },
-                                                null);
+<li class="page-item @( i == Model.HotelFilterDto.CurrentPage ? "active" : "")">
+@Html.ActionLink(i.ToString(), "ShowHotels", "Hotel", null, null, null,
+          new
+          {
+              KeyWord = Model.HotelFilterDto.KeyWord,
+              MaxSearchPrice = Model.HotelFilterDto.MaxSearchPrice,
+              MinSearchPrice = Model.HotelFilterDto.MinSearchPrice,
+              CurrentPage = i,
+              HotelsAmount = Model.HotelFilterDto.HotelsAmount,
+              PageSize = Model.HotelFilterDto.PageSize,
+              HasPrevious = Model.HotelFilterDto.HasPrevious,
+              HasNext = Model.HotelFilterDto.HasNext
+
+          },
+          null)
                                         </li>
-                                    }
-                                }
-                            </ul>
-                        </nav>
+}
+@if (Model.HotelFilterDto.HasNext)
+                                    {
+<li class="page-item">
+@Html.ActionLink("next", "ShowHotels", "Hotel", null, null, null,
+                new
+                {
+                    KeyWord = Model.HotelFilterDto.KeyWord,
+                    MaxSearchPrice = Model.HotelFilterDto.MaxSearchPrice,
+                    MinSearchPrice = Model.HotelFilterDto.MinSearchPrice,
+                    CurrentPage = Model.HotelFilterDto.CurrentPage + 1,
+                    HotelsAmount = Model.HotelFilterDto.HotelsAmount,
+                    PageSize = Model.HotelFilterDto.PageSize,
+                    HasPrevious = Model.HotelFilterDto.HasPrevious,
+                    HasNext = Model.HotelFilterDto.HasNext
+
+                },
+                null)
+                                        </li>
+}
+}
+</ul>
+</nav>
+</div>
+</div>
+</div>
+</section>
+ @section Scripts {
+    <script>
+        // переопределение валидации на стороне клиента
+        $.validator.methods.range = function (value, element, param) {
+            var globalizedValue = value.replace(",", ".");
+            return this.optional(element) || (globalizedValue >= param[0] && globalizedValue <= param[1]);
+        }
+
+        $.validator.methods.number = function (value, element) {
+            return this.optional(element) || /^-?(?:\d+|\d{1,3}(?:[\s\.,]\d{3})+)(?:[\.,]\d+)?$/.test(value);
+        }
+    </script>
+}
+
+<!--================End Category Product Area =================-->
+<!--::footer_part start::-->
+<footer class="footer_part">
+    <div class="container">
+        <div class="row justify-content-around">
+            <div class="col-sm-6 col-lg-2">
+                <div class="single_footer_part">
+                    <h4>Top Products</h4>
+                    <ul class="list-unstyled">
+                        <li><a href="">Managed Website</a></li>
+                        <li><a href="">Manage Reputation</a></li>
+                        <li><a href="">Power Tools</a></li>
+                        <li><a href="">Marketing Service</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-sm-6 col-lg-2">
+                <div class="single_footer_part">
+                    <h4>Quick Links</h4>
+                    <ul class="list-unstyled">
+                        <li><a href="">Jobs</a></li>
+                        <li><a href="">Brand Assets</a></li>
+                        <li><a href="">Investor Relations</a></li>
+                        <li><a href="">Terms of Service</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-sm-6 col-lg-2">
+                <div class="single_footer_part">
+                    <h4>Features</h4>
+                    <ul class="list-unstyled">
+                        <li><a href="">Jobs</a></li>
+                        <li><a href="">Brand Assets</a></li>
+                        <li><a href="">Investor Relations</a></li>
+                        <li><a href="">Terms of Service</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-sm-6 col-lg-2">
+                <div class="single_footer_part">
+                    <h4>Resources</h4>
+                    <ul class="list-unstyled">
+                        <li><a href="">Guides</a></li>
+                        <li><a href="">Research</a></li>
+                        <li><a href="">Experts</a></li>
+                        <li><a href="">Agencies</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-sm-6 col-lg-4">
+                <div class="single_footer_part">
+                    <h4>Newsletter</h4>
+                    <p>
+                        Heaven fruitful doesn't over lesser in days. Appear creeping
+                    </p>
+                    <div id="mc_embed_signup">
+                        <form target="_blank" action="https://spondonit.us12.list-manage.com/subscribe/post?u=1462626880ade1ac87bd9c93a&amp;id=92a4423d01" method="get" class="subscribe_form relative mail_part" novalidate="true">
+                            <input type="email" name="EMAIL" id="newsletter-form-email" placeholder="Email Address" class="placeholder hide-on-focus" onfocus="this.placeholder = ''" onblur="this.placeholder = ' Email Address '">
+                            <button type="submit" name="submit" id="newsletter-submit" class="email_icon newsletter-submit button-contactForm">subscribe</button>
+                            <div class="mt-10 info"></div>
+                        </form>
                     </div>
                 </div>
             </div>
-        </section>
-
-        <!--================End Category Product Area =================-->
-        <!--::footer_part start::-->
-        <footer class="footer_part">
-            <div class="container">
-                <div class="row justify-content-around">
-                    <div class="col-sm-6 col-lg-2">
-                        <div class="single_footer_part">
-                            <h4>Top Products</h4>
-                            <ul class="list-unstyled">
-                                <li><a href="">Managed Website</a></li>
-                                <li><a href="">Manage Reputation</a></li>
-                                <li><a href="">Power Tools</a></li>
-                                <li><a href="">Marketing Service</a></li>
-                            </ul>
-                        </div>
+        </div>
+    </div>
+    <div class="copyright_part">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="copyright_text">
+                        <p>
+                            <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                            Copyright ©
+                            <script>document.write(new Date().getFullYear());</script>2019 All rights reserved | This template is made with <i class="ti-heart" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
+                            <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                        </p>
                     </div>
-
-                    <div class="col-sm-6 col-lg-2">
-                        <div class="single_footer_part">
-                            <h4>Quick Links</h4>
-                            <ul class="list-unstyled">
-                                <li><a href="">Jobs</a></li>
-                                <li><a href="">Brand Assets</a></li>
-                                <li><a href="">Investor Relations</a></li>
-                                <li><a href="">Terms of Service</a></li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <div class="col-sm-6 col-lg-2">
-                        <div class="single_footer_part">
-                            <h4>Features</h4>
-                            <ul class="list-unstyled">
-                                <li><a href="">Jobs</a></li>
-                                <li><a href="">Brand Assets</a></li>
-                                <li><a href="">Investor Relations</a></li>
-                                <li><a href="">Terms of Service</a></li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <div class="col-sm-6 col-lg-2">
-                        <div class="single_footer_part">
-                            <h4>Resources</h4>
-                            <ul class="list-unstyled">
-                                <li><a href="">Guides</a></li>
-                                <li><a href="">Research</a></li>
-                                <li><a href="">Experts</a></li>
-                                <li><a href="">Agencies</a></li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <div class="col-sm-6 col-lg-4">
-                        <div class="single_footer_part">
-                            <h4>Newsletter</h4>
-                            <p>
-                                Heaven fruitful doesn't over lesser in days. Appear creeping
-                            </p>
-                            <div id="mc_embed_signup">
-                                <form target="_blank" action="https://spondonit.us12.list-manage.com/subscribe/post?u=1462626880ade1ac87bd9c93a&amp;id=92a4423d01" method="get" class="subscribe_form relative mail_part" novalidate="true">
-                                    <input type="email" name="EMAIL" id="newsletter-form-email" placeholder="Email Address" class="placeholder hide-on-focus" onfocus="this.placeholder = ''" onblur="this.placeholder = ' Email Address '">
-                                    <button type="submit" name="submit" id="newsletter-submit" class="email_icon newsletter-submit button-contactForm">subscribe</button>
-                                    <div class="mt-10 info"></div>
-                                </form>
-                            </div>
-                        </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="footer_icon social_icon">
+                        <ul class="list-unstyled">
+                            <li><a href="#" class="single_social_icon"><i class="fab fa-facebook-f"></i></a></li>
+                            <li><a href="#" class="single_social_icon"><i class="fab fa-twitter"></i></a></li>
+                            <li><a href="#" class="single_social_icon"><i class="fas fa-globe"></i></a></li>
+                            <li><a href="#" class="single_social_icon"><i class="fab fa-behance"></i></a></li>
+                        </ul>
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
+</footer>
+<!--::footer_part end::-->
+<script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js'></script>
+<script>
+    (function () {
 
-            <div class="copyright_part">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-lg-8">
-                            <div class="copyright_text">
-                                <p>
-                                    <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-                                    Copyright ©
-                                    <script>document.write(new Date().getFullYear());</script>2019 All rights reserved | This template is made with <i class="ti-heart" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
-                                    <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-                                </p>
-                            </div>
-                        </div>
-                        <div class="col-lg-4">
-                            <div class="footer_icon social_icon">
-                                <ul class="list-unstyled">
-                                    <li><a href="#" class="single_social_icon"><i class="fab fa-facebook-f"></i></a></li>
-                                    <li><a href="#" class="single_social_icon"><i class="fab fa-twitter"></i></a></li>
-                                    <li><a href="#" class="single_social_icon"><i class="fas fa-globe"></i></a></li>
-                                    <li><a href="#" class="single_social_icon"><i class="fab fa-behance"></i></a></li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </footer>
-        <!--::footer_part end::-->
-        <!-- jquery plugins here-->
-        <script src="js/jquery-1.12.1.min.js"></script>
-        <!-- popper js -->
-        <script src="js/popper.min.js"></script>
-        <!-- bootstrap js -->
-        <script src="js/bootstrap.min.js"></script>
-        <!-- easing js -->
-        <script src="js/jquery.magnific-popup.js"></script>
-        <!-- swiper js -->
-        <script src="js/swiper.min.js"></script>
-        <!-- swiper js -->
-        <script src="js/masonry.pkgd.js"></script>
-        <!-- particles js -->
-        <script src="js/owl.carousel.min.js"></script>
-        <script src="js/jquery.nice-select.min.js"></script>
-        <!-- slick js -->
-        <script src="js/slick.min.js"></script>
-        <script src="js/jquery.counterup.min.js"></script>
-        <script src="js/waypoints.min.js"></script>
-        <script src="js/contact.js"></script>
-        <script src="js/jquery.ajaxchimp.min.js"></script>
-        <script src="js/jquery.form.js"></script>
-        <script src="js/jquery.validate.min.js"></script>
-        <script src="js/mail-script.js"></script>
-        <script src="js/stellar.js"></script>
-        <script src="js/price_rangs.js"></script>
-        <!-- custom js -->
-        <script src="js/custom.js"></script>
+        var parent = document.querySelector(".price-slider");
+        if (!parent) return;
 
-        <div class="mallbery-ext-normal" style="z-index: 2147483647 !important; text-transform: none !important; position: fixed;"></div><div class="mallbery-caa" style="z-index: 2147483647 !important; text-transform: none !important; position: fixed;"></div>
-    </body>
+        var
+            rangeS = parent.querySelectorAll("input[type=range]"),
+            numberS = parent.querySelectorAll("input[type=number]");
+
+        rangeS.forEach(function (el) {
+            el.oninput = function () {
+                var slide1 = parseFloat(rangeS[0].value),
+                    slide2 = parseFloat(rangeS[1].value);
+
+                if (slide1 > slide2) {
+                    [slide1, slide2] = [slide2, slide1];
+                }
+
+                numberS[0].value = slide1;
+                numberS[1].value = slide2;
+            }
+        });
+
+        numberS.forEach(function (el) {
+            el.oninput = function () {
+                var number1 = parseFloat(numberS[0].value),
+                    number2 = parseFloat(numberS[1].value);
+
+                if (number1 > number2) {
+                    var tmp = number1;
+                    numberS[0].value = number2;
+                    numberS[1].value = tmp;
+                }
+
+                rangeS[0].value = number1;
+                rangeS[1].value = number2;
+
+            }
+        });
+
+    })();
+</script>
+ @*<script src="~/js/mega-price-slider.js"></script>*@
+ @*<script src="~/js/lightslider.min.js"></script>*@
+
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<!-- jquery plugins here-->
+<script src="js/jquery-1.12.1.min.js"></script>
+<!-- popper js -->
+<script src="js/popper.min.js"></script>
+<!-- bootstrap js -->
+<script src="js/bootstrap.min.js"></script>
+<!-- easing js -->
+<script src="js/jquery.magnific-popup.js"></script>
+<!-- swiper js -->
+<script src="js/swiper.min.js"></script>
+<!-- swiper js -->
+<script src="js/masonry.pkgd.js"></script>
+<!-- particles js -->
+<script src="js/owl.carousel.min.js"></script>
+<script src="js/jquery.nice-select.min.js"></script>
+<!-- slick js -->
+<script src="js/slick.min.js"></script>
+<script src="js/jquery.counterup.min.js"></script>
+<script src="js/waypoints.min.js"></script>
+<script src="js/contact.js"></script>
+<script src="js/jquery.ajaxchimp.min.js"></script>
+<script src="js/jquery.form.js"></script>
+<script src="js/jquery.validate.min.js"></script>
+<script src="js/mail-script.js"></script>
+<script src="js/stellar.js"></script>
+<script src="js/price_rangs.js"></script>
+<!-- custom js -->
+<script src="js/custom.js"></script>
+<div class="mallbery-ext-normal" style="z-index: 2147483647 !important; text-transform: none !important; position: fixed;"></div><div class="mallbery-caa" style="z-index: 2147483647 !important; text-transform: none !important; position: fixed;"></div>
+</body>
 </html>
 }
