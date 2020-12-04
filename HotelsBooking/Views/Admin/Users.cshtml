@@ -1,4 +1,5 @@
-﻿@model IEnumerable<HotelsBooking.Models.UsersViewModel>
+﻿@using ApplicationCore.DTOs
+@model HotelsBooking.Models.IEnumerableUsersViewModel
 <link href="~/css/Admin.css" rel="stylesheet" />
 <link href="~/css/ForTable.css" rel="stylesheet" />
 <link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
@@ -13,8 +14,7 @@
                         <div class="form-actions no-color form-group">
                             <p>
                                 <span style="font-weight:bold">Find by any option: </span>
-                                <input type="text" name="SearchString" value="@ViewData["currentFilter"]" />
-                                <input type="submit" value="Search" class="btn btn-success" /> |
+                                @Html.EditorFor(x => Model.PaginationDTO.KeyWord) | <input type="submit" value="Search" class="btn btn-success" /> |
                                 <a asp-action="Users" style="font-weight:500">Back to Full List</a>
 
                             </p>
@@ -25,20 +25,20 @@
                     <thead>
                         <tr><th>List of Users</th><th></th><th></th><th></th></tr>
                         <tr>
-                            <th data-breakpoints="mobile"><a asp-action="Users" asp-route-sortOrder="@ViewData["NameSortParm"]">Email</a></th>
-                            <th data-breakpoints="mobile tablet"><a asp-action="Users" asp-route-sortOrder="@ViewData["FirstNameSortParm"]">Firts Name</a></th>
-                            <th data-breakpoints="mobile tablet"><a asp-action="Users" asp-route-sortOrder="@ViewData["SecondNameSortParm"]">Last Name</a></th>
+                            <th data-breakpoints="mobile"><a asp-action="Users" asp-route-sortOrder="@ViewData["NameSortParm"]" asp-route-PaginationDTO.KeyWord="@ViewData["CurrentFilter"]">Email</a></th>
+                            <th data-breakpoints="mobile tablet"><a asp-action="Users" asp-route-sortOrder="@ViewData["FirstNameSortParm"]" asp-route-PaginationDTO.KeyWord="@ViewData["CurrentFilter"]">Firts Name</a></th>
+                            <th data-breakpoints="mobile tablet"><a asp-action="Users" asp-route-sortOrder="@ViewData["SecondNameSortParm"]" asp-route-PaginationDTO.KeyWord="@ViewData["CurrentFilter"]">Last Name</a></th>
                             <th data-breakpoints="mobile tablet">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @if (!Model.Any())
+                        @if (!Model.users.Any())
                         {
                             <tr><td colspan="4">No Users</td></tr>
                         }
                         else
                         {
-                            @foreach (var user in Model)
+                            @foreach (var user in Model.users)
                             {
                                 <tr>
                                     <td data-label="Email">@user.Email</td>
@@ -56,11 +56,58 @@
                         }
                     </tbody>
                 </table>
+                <div class="col-lg-12 center" style="padding-left:0">
+                    <nav aria-label="Page navigation example">
+                        <ul class="pagination justify-content-center">
+                            @if (Model.PaginationDTO != null)
+                            {
+                                @if (Model.PaginationDTO.HasPrevious)
+                                {
+                                    <li class="page-item">
+                                        @{
+                                            var prev = (AdminPaginationDTO)Model.PaginationDTO.Clone();
+                                            prev.CurrentPage = Model.PaginationDTO.CurrentPage - 1;
+                                            prev.KeyWord = @Convert.ToString(ViewData["currentFilter"]);
+                                        }
+                                        @Html.ActionLink("prev", "Users", "Admin", null, null, null,
+                                                  prev,
+                                                  null)
+                                    </li>
+                                }
 
-            </div>
-                <div class="center col-lg-6 col-lg-3">
-                    <a asp-action="CreateUser" class="btn btn-success">Add new user</a>
+                                @for (var i = 1; i <= Model.PaginationDTO.PagesCount; i++)
+                                {
+                                    var page_i = (AdminPaginationDTO)Model.PaginationDTO.Clone();
+                                    page_i.CurrentPage = i;
+                                    page_i.KeyWord = @Convert.ToString(ViewData["currentFilter"]);
+
+                                    <li class="page-item @( i == Model.PaginationDTO.CurrentPage ? "active" : "")">
+                                        @Html.ActionLink(i.ToString(), "Users", "Admin", null, null, null,
+                                            page_i,
+                                            null)
+                                    </li>
+                                }
+                                @if (Model.PaginationDTO.HasNext)
+                                {
+                                    <li class="page-item">
+                                        @{
+                                            var prev = (AdminPaginationDTO)Model.PaginationDTO.Clone();
+                                            prev.CurrentPage = Model.PaginationDTO.CurrentPage - 1;
+                                            prev.KeyWord = @Convert.ToString(ViewData["currentFilter"]);
+                                        }
+                                        @Html.ActionLink("prev", "Users", "Admin", null, null, null,
+                                                  prev,
+                                                  null)
+                                    </li>
+                                }
+                            }
+                        </ul>
+                    </nav>
                 </div>
             </div>
+            <div class="center col-lg-12">
+                <a asp-action="CreateUser" class="btn btn-success">Add new user</a>
+            </div>
         </div>
+    </div>
 </body>

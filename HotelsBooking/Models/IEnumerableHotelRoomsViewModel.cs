@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace HotelsBooking.Models
 {
-    public class HotelsViewModel
+    public class IEnumerableHotelRoomsViewModel
     {
-        public IEnumerable<CreateOrEditHotelViewModel> hotels { get; set; }
+        public IEnumerable<HotelRoomsViewModel> hotelRooms { get; set; }
         public AdminPaginationDTO PaginationDTO { get; set; }
     }
 }

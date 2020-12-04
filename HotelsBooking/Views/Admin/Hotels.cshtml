@@ -13,7 +13,7 @@
                         <div class="form-actions no-color form-group">
                             <p>
                                 <span style="font-weight:bold">Find by any option: </span>
-                                @Html.EditorFor(x => Model.HotelFilterDto.KeyWord) | <input type="submit" value="Search" class="btn btn-success" /> |
+                                @Html.EditorFor(x => Model.PaginationDTO.KeyWord) | <input type="submit" value="Search" class="btn btn-success" /> |
                                 <a asp-action="Hotels" style="font-weight:500">Back to Full List</a>
 
                             </p>
@@ -25,9 +25,9 @@
                     <thead>
                         <tr><th>List of Hotels</th><th></th><th></th><th></th></tr>
                         <tr>
-                            <th data-breakpoints="mobile"><a asp-action="Hotels" asp-route-sortOrder="@ViewData["NameSortParm"]" asp-route-HotelFilterDto.KeyWord="@ViewData["CurrentFilter"]">Name</a></th>
-                            <th data-breakpoints="mobile tablet"><a asp-action="Hotels" asp-route-sortOrder="@ViewData["LocationSortParm"]" asp-route-HotelFilterDto.KeyWord="@ViewData["CurrentFilter"]">Location</a></th>
-                            <th data-breakpoints="mobile tablet"><a asp-action="Hotels" asp-route-sortOrder="@ViewData["SeasonSortParm"]" asp-route-HotelFilterDto.KeyWord="@ViewData["CurrentFilter"]">Season</a></th>
+                            <th data-breakpoints="mobile"><a asp-action="Hotels" asp-route-sortOrder="@ViewData["NameSortParm"]" asp-route-PaginationDTO.KeyWord="@ViewData["CurrentFilter"]">Name</a></th>
+                            <th data-breakpoints="mobile tablet"><a asp-action="Hotels" asp-route-sortOrder="@ViewData["LocationSortParm"]" asp-route-PaginationDTO.KeyWord="@ViewData["CurrentFilter"]">Location</a></th>
+                            <th data-breakpoints="mobile tablet"><a asp-action="Hotels" asp-route-sortOrder="@ViewData["SeasonSortParm"]" asp-route-PaginationDTO.KeyWord="@ViewData["CurrentFilter"]">Season</a></th>
                             <th data-breakpoints="mobile tablet">Actions</th>
                         </tr>
                     </thead>
@@ -57,17 +57,17 @@
                         }
                     </tbody>
                 </table>
-                <div class="col-lg-12 center">
+                <div class="col-lg-12 left" style="padding-left:0">
                     <nav aria-label="Page navigation example">
                         <ul class="pagination justify-content-center">
-                            @if (Model.HotelFilterDto != null)
+                            @if (Model.PaginationDTO != null)
                             {
-                                @if (Model.HotelFilterDto.HasPrevious)
+                                @if (Model.PaginationDTO.HasPrevious)
                                 {
                                     <li class="page-item">
                                         @{
-                                            var prev = (HotelFilterDto)Model.HotelFilterDto.Clone();
-                                            prev.CurrentPage = Model.HotelFilterDto.CurrentPage - 1;
+                                            var prev = (AdminPaginationDTO)Model.PaginationDTO.Clone();
+                                            prev.CurrentPage = Model.PaginationDTO.CurrentPage - 1;
                                             prev.KeyWord = @Convert.ToString(ViewData["currentFilter"]);
                                         }
                                         @Html.ActionLink("prev", "Hotels", "Admin", null, null, null,
@@ -76,24 +76,24 @@
                                     </li>
                                 }
 
-                                @for (var i = 1; i <= Model.HotelFilterDto.PagesCount; i++)
+                                @for (var i = 1; i <= Model.PaginationDTO.PagesCount; i++)
                                 {
-                                    var page_i = (HotelFilterDto)Model.HotelFilterDto.Clone();
+                                    var page_i = (AdminPaginationDTO)Model.PaginationDTO.Clone();
                                     page_i.CurrentPage = i;
                                     page_i.KeyWord = @Convert.ToString(ViewData["currentFilter"]);
 
-                                    <li class="page-item @( i == Model.HotelFilterDto.CurrentPage ? "active" : "")">
+                                    <li class="page-item @( i == Model.PaginationDTO.CurrentPage ? "active" : "")">
                                         @Html.ActionLink(i.ToString(), "Hotels", "Admin", null, null, null,
                                             page_i,
                                             null)
                                     </li>
                                 }
-                                @if (Model.HotelFilterDto.HasNext)
+                                @if (Model.PaginationDTO.HasNext)
                                 {
                                     <li class="page-item">
                                         @{
-                                            var prev = (HotelFilterDto)Model.HotelFilterDto.Clone();
-                                            prev.CurrentPage = Model.HotelFilterDto.CurrentPage - 1;
+                                            var prev = (AdminPaginationDTO)Model.PaginationDTO.Clone();
+                                            prev.CurrentPage = Model.PaginationDTO.CurrentPage - 1;
                                             prev.KeyWord = @Convert.ToString(ViewData["currentFilter"]);
                                         }
                                         @Html.ActionLink("prev", "Hotels", "Admin", null, null, null,

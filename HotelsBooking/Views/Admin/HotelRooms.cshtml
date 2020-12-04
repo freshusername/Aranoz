@@ -1,4 +1,5 @@
-﻿@model IEnumerable<HotelsBooking.Models.HotelRoomsViewModel>
+﻿@using ApplicationCore.DTOs
+@model HotelsBooking.Models.IEnumerableHotelRoomsViewModel
 <link href="~/css/Admin.css" rel="stylesheet" />
 <link href="~/css/ForTable.css" rel="stylesheet" />
 <link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
@@ -12,53 +13,101 @@
                         <div class="form-actions no-color form-group">
                             <p>
                                 <span style="font-weight:bold">Find by any option: </span>
-                                <input type="text" name="SearchString" value="@ViewData["currentFilter"]" />
-                                <input type="submit" value="Search" class="btn btn-success" /> |
+                                @Html.EditorFor(x => Model.PaginationDTO.KeyWord) | <input type="submit" value="Search" class="btn btn-success" /> |
                                 <a asp-action="HotelRooms" style="font-weight:500">Back to Full List</a>
 
                             </p>
                         </div>
                     </form>
-                    </div>
-                    <table class="table table-striped table-dark">
-                        <thead>
-                            <tr><th>List of Rooms</th><th></th><th></th><th></th></tr>
-                            <tr>
-                                <th data-breakpoints="mobile"><a asp-action="HotelRooms" asp-route-sortOrder="@ViewData["NameSortParm"]">Number</a></th>
-                                <th data-breakpoints="mobile tablet"><a asp-action="HotelRooms" asp-route-sortOrder="@ViewData["PriceSortParm"]">Price</a></th>
-                                <th data-breakpoints="mobile tablet"><a asp-action="HotelRooms" asp-route-sortOrder="@ViewData["TypeSortParm"]">Type</a></th>
-                                <th data-breakpoints="mobile tablet">Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @if (!Model.Any())
+                </div>
+                <table class="table table-striped table-dark">
+                    <thead>
+                        <tr><th>List of Rooms</th><th></th><th></th><th></th></tr>
+                        <tr>
+                            <th data-breakpoints="mobile"><a asp-action="HotelRooms" asp-route-sortOrder="@ViewData["NameSortParm"]" asp-route-PaginationDTO.KeyWord="@ViewData["CurrentFilter"]">Number</a></th>
+                            <th data-breakpoints="mobile tablet"><a asp-action="HotelRooms" asp-route-sortOrder="@ViewData["PriceSortParm"]" asp-route-PaginationDTO.KeyWord="@ViewData["CurrentFilter"]">Price</a></th>
+                            <th data-breakpoints="mobile tablet"><a asp-action="HotelRooms" asp-route-sortOrder="@ViewData["TypeSortParm"]" asp-route-PaginationDTO.KeyWord="@ViewData["CurrentFilter"]">Type</a></th>
+                            <th data-breakpoints="mobile tablet">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (!Model.hotelRooms.Any())
+                        {
+                            <tr><th colspan="4">No Rooms</th></tr>
+                        }
+                        else
+                        {
+                            @foreach (var room in Model.hotelRooms)
                             {
-                                <tr><th colspan="4">No Rooms</th></tr>
+                                <tr>
+                                    <td data-label="Number">@room.Number</td>
+                                    <td data-label="Price">@Math.Round(room.Price, 2)</td>
+                                    <td data-label="Type">@room.Type</td>
+                                    <td data-label="Actions">
+                                        <form asp-action="DeleteHotelRoom" asp-controller="Admin">
+                                            <a class="btn btn-sm btn-outline-warning" asp-action="EditHotelRoom" asp-route-id="@room.Id">Edit</a>
+                                            <a class="btn btn-sm btn-outline-primary" asp-action="HotelRoomConvs" asp-route-id="@room.Id">Conveniences</a>
+                                            <button type="submit" class="btn btn-sm btn-outline-danger" asp-action="DeleteHotelRoom" asp-route-id="@room.Id" asp-route-HotelId="@room.HotelId">Delete</button>
+                                        </form>
+                                    </td>
+                                </tr>
                             }
-                            else
+                        }
+                    </tbody>
+                </table>
+                <div class="col-lg-12 center" style="padding-left:0">
+                    <nav aria-label="Page navigation example">
+                        <ul class="pagination justify-content-center">
+                            @if (Model.PaginationDTO != null)
                             {
-                                @foreach (var room in Model)
+                                @if (Model.PaginationDTO.HasPrevious)
                                 {
-                                    <tr>
-                                        <td data-label="Number">@room.Number</td>
-                                        <td data-label="Price">@Math.Round(room.Price, 2)</td>
-                                        <td data-label="Type">@room.Type</td>
-                                        <td data-label="Actions">
-                                            <form asp-action="DeleteHotelRoom" asp-controller="Admin">
-                                                <a class="btn btn-sm btn-outline-warning" asp-action="EditHotelRoom" asp-route-id="@room.Id">Edit</a>
-                                                <a class="btn btn-sm btn-outline-primary" asp-action="HotelRoomConvs" asp-route-id="@room.Id">Conveniences</a>
-                                                <button type="submit" class="btn btn-sm btn-outline-danger" asp-action="DeleteHotelRoom" asp-route-id="@room.Id" asp-route-HotelId="@room.HotelId">Delete</button>
-                                            </form>
-                                        </td>
-                                    </tr>
+                                    <li class="page-item">
+                                        @{
+                                            var prev = (AdminPaginationDTO)Model.PaginationDTO.Clone();
+                                            prev.CurrentPage = Model.PaginationDTO.CurrentPage - 1;
+                                            prev.KeyWord = @Convert.ToString(ViewData["currentFilter"]);
+                                        }
+                                        @Html.ActionLink("prev", "HotelRooms", "Admin", null, null, null,
+                                                  prev,
+                                                  null)
+                                    </li>
+                                }
+
+                                @for (var i = 1; i <= Model.PaginationDTO.PagesCount; i++)
+                                {
+                                    var page_i = (AdminPaginationDTO)Model.PaginationDTO.Clone();
+                                    page_i.CurrentPage = i;
+                                    page_i.KeyWord = @Convert.ToString(ViewData["currentFilter"]);
+
+                                    <li class="page-item @( i == Model.PaginationDTO.CurrentPage ? "active" : "")">
+                                        @Html.ActionLink(i.ToString(), "HotelRooms", "Admin", null, null, null,
+                                            page_i,
+                                            null)
+                                    </li>
+                                }
+                                @if (Model.PaginationDTO.HasNext)
+                                {
+                                    <li class="page-item">
+                                        @{
+                                            var next = (AdminPaginationDTO)Model.PaginationDTO.Clone();
+                                            next.CurrentPage = Model.PaginationDTO.CurrentPage + 1;
+                                            next.KeyWord = @Convert.ToString(ViewData["currentFilter"]);
+                                        }
+                                        @Html.ActionLink("next", "HotelRooms", "Admin", null, null, null,
+                                                  next,
+                                                  null)
+                                    </li>
                                 }
                             }
-                        </tbody>
-                    </table>
-                    <div class="button-center">
-                        <a asp-action="CreateHotelRoom" class="btn btn-success" asp-route-id="@ViewData["Id"]">Add new hotel room</a>
-                    </div>
+                        </ul>
+                    </nav>
                 </div>
             </div>
+                <div class="col-lg-12 center">
+                    <a asp-action="CreateHotelRoom" class="btn btn-success" asp-route-id="@ViewData["Id"]">Add new hotel room</a>
+                </div>
+            </div>
+        </div>
     </div>
 </body>
