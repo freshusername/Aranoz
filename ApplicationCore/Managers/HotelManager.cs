@@ -68,6 +68,8 @@ namespace ApplicationCore.Managers
             var roomPrices = hotelRooms.OrderByDescending(p => p.Price);
             HotelFilterDto.MaxAvailRoomPrice = roomPrices.First().Price;
             HotelFilterDto.MinAvailRoomPrice = roomPrices.Last().Price;
+            HotelFilterDto.MaxSearchPrice = (HotelFilterDto.MaxSearchPrice == 0)  ? HotelFilterDto.MaxAvailRoomPrice : HotelFilterDto.MaxSearchPrice;
+            HotelFilterDto.MinSearchPrice = (HotelFilterDto.MinSearchPrice == 0)  ? HotelFilterDto.MinAvailRoomPrice : HotelFilterDto.MinSearchPrice;
 
             HotelFilterDto.HotelsAmount = hotels.Count();
             hotels = hotels.Skip((HotelFilterDto.CurrentPage - 1) * HotelFilterDto.PageSize).Take(HotelFilterDto.PageSize);
