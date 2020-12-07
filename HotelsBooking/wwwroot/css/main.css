@@ -114,6 +114,10 @@
         margin-top :0 !important;
     }
 
+.no-padding-top {
+    padding-top: 0 !important;
+}
+
 .button-center {
     display: table;
     margin: 0 auto 0 auto;

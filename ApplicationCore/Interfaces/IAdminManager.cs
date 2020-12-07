@@ -11,7 +11,7 @@ namespace ApplicationCore.Interfaces
     public interface IAdminManager : IDisposable 
     {
         #region Users
-        IEnumerable<AdminUserDTO> GetUsers(string sortOrder, string searchString);
+        IEnumerable<AdminUserDTO> GetUsers(AdminPaginationDTO paginationDTO,string sortOrder);
         Task<OperationDetails> CreateUser(UserDTO userDTO);
         Task<OperationDetails> EditUser(UserDTO userDTO);
         Task<OperationDetails> ChangePassword(UserDTO userDTO);
@@ -20,7 +20,7 @@ namespace ApplicationCore.Interfaces
 
         #region Hotels
         Task<HotelDTO> GetHotelById(int Id);
-        IEnumerable<HotelDTO> GetHotels(HotelFilterDto hotelFilterDto,string sortOrder);
+        IEnumerable<HotelDTO> GetHotels(AdminPaginationDTO paginationDTO, string sortOrder);
         Task<OperationDetails> CreateHotel(HotelDTO hotelDTO);
         Task<OperationDetails> EditHotel(HotelDTO hotelDTO);
         Task DeleteHotel(int Id);
@@ -32,12 +32,12 @@ namespace ApplicationCore.Interfaces
         Task<OperationDetails> EditHotelConv(HotelConvDTO hotelConvDTO);
 
         HotelRoomDTO GetHotelRoomById(int Id);
-        IEnumerable<HotelRoomDTO> GetHotelRooms(string sortOrder, string searchString);
+        IEnumerable<HotelRoomDTO> GetHotelRooms(AdminPaginationDTO paginationDTO, string sortOrder);
         Task<OperationDetails> CreateHotelRoom(HotelRoomDTO hotelRoomDTO);
         Task<OperationDetails> EditHotelRoom(HotelRoomDTO hotelRoomDTO);
         Task DeleteHotelRoom(int Id);
 
-        IEnumerable<HotelRoomConvDTO> GetRoomConvs(int Id, string sortOrder, string searchString);
+        IEnumerable<HotelRoomConvDTO> GetRoomConvs(int Id, AdminPaginationDTO paginationDTO, string sortOrder);
         Task<OperationDetails> CreateRoomConv(HotelRoomConvDTO roomConv);
         Task DeleteHotelRoomConv(int Id);
         #endregion

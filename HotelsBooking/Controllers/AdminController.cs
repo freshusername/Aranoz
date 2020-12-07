@@ -31,16 +31,22 @@ namespace HotelsBooking.Controllers
         #region Users
 
         [HttpGet]
-        public IActionResult Users(string sortOrder, string searchString)
+        public IActionResult Users(AdminPaginationDTO paginationDTO, string sortOrder)
         {
             ViewData["NameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
             ViewData["FirstNameSortParm"] = sortOrder == "first" ? "first_desc" : "first";
             ViewData["SecondNameSortParm"] = sortOrder == "second" ? "second_desc" : "second";
-            ViewData["CurrentFilter"] = searchString;
+            ViewData["CurrentFilter"] = paginationDTO.KeyWord;
 
-            IEnumerable<UsersViewModel> users = _mapper.Map<IEnumerable<AdminUserDTO>, IEnumerable<UsersViewModel>>(_adminManager.GetUsers(sortOrder,searchString));
-            
-            return View(users);
+            IEnumerable<UsersViewModel> users = _mapper.Map<IEnumerable<AdminUserDTO>, IEnumerable<UsersViewModel>>(_adminManager.GetUsers(paginationDTO, sortOrder));
+
+            IEnumerableUsersViewModel model = new IEnumerableUsersViewModel
+            {
+                users = users,
+                PaginationDTO = paginationDTO
+            };
+
+            return View(model);
         }
 
         [HttpGet]
@@ -137,19 +143,19 @@ namespace HotelsBooking.Controllers
         #region Hotels
 
         [HttpGet]
-        public IActionResult Hotels(HotelFilterDto HotelFilterDto,string sortOrder = null)
+        public IActionResult Hotels(AdminPaginationDTO paginationDTO,string sortOrder = null)
         {
             ViewData["NameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
             ViewData["LocationSortParm"] = sortOrder == "location" ? "location_desc" : "location";
             ViewData["SeasonSortParm"] = sortOrder == "season" ? "season_desc" : "season";
-            ViewData["CurrentFilter"] = HotelFilterDto.KeyWord;
+            ViewData["CurrentFilter"] = paginationDTO.KeyWord;
 
-            IEnumerable<CreateOrEditHotelViewModel> hotels = _mapper.Map<IEnumerable<HotelDTO>, IEnumerable<CreateOrEditHotelViewModel>>(_adminManager.GetHotels(HotelFilterDto, sortOrder));
+            IEnumerable<CreateOrEditHotelViewModel> hotels = _mapper.Map<IEnumerable<HotelDTO>, IEnumerable<CreateOrEditHotelViewModel>>(_adminManager.GetHotels(paginationDTO, sortOrder));
 
             HotelsViewModel model = new HotelsViewModel
             {
                 hotels = hotels,
-                HotelFilterDto = HotelFilterDto
+                PaginationDTO = paginationDTO
             };
 
 
@@ -221,18 +227,25 @@ namespace HotelsBooking.Controllers
         #region HotelConvs
 
         [HttpGet]
-        public IActionResult HotelConvs(int Id, string sortOrder, string searchString)
+        public IActionResult HotelConvs(int Id, AdminPaginationDTO paginationDTO, string sortOrder)
         {
             ViewData["NameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
             ViewData["PriceSortParm"] = sortOrder == "price" ? "price_desc" : "price";
-            ViewData["CurrentFilter"] = searchString;
+            ViewData["CurrentFilter"] = paginationDTO.KeyWord;
             ViewData["Id"] = Id;
 
             IEnumerable<HotelConvsViewModel> hotelConvs = _mapper
-                .Map<IEnumerable<HotelConvDTO>, IEnumerable<HotelConvsViewModel>>(_adminManager.GetHotelConvs(sortOrder, searchString)
+                .Map<IEnumerable<HotelConvDTO>, IEnumerable<HotelConvsViewModel>>(_adminManager.GetHotelConvs(paginationDTO ,sortOrder)
                 .Where(hc => hc.HotelId == Id));
             
-            return View(hotelConvs);
+
+            IEnumerableHotelConvsViewModel model = new IEnumerableHotelConvsViewModel
+            {
+                hotelConvs = hotelConvs,
+                PaginationDTO = paginationDTO
+            };
+
+            return View(model);
         }
 
         [HttpPost]
@@ -320,19 +333,25 @@ namespace HotelsBooking.Controllers
         #endregion
         #region HotelRooms
         [HttpGet]
-        public IActionResult HotelRooms(int Id, string sortOrder, string searchString)
+        public IActionResult HotelRooms(int Id, AdminPaginationDTO paginationDTO, string sortOrder)
         {
             ViewData["NameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "number_desc" : "";
             ViewData["PriceSortParm"] = sortOrder == "price" ? "price_desc" : "price";
             ViewData["TypeSortParm"] = sortOrder == "type" ? "type_desc" : "type";
-            ViewData["CurrentFilter"] = searchString;
+            ViewData["CurrentFilter"] = paginationDTO.KeyWord;
             ViewData["Id"] = Id;
 
             IEnumerable<HotelRoomsViewModel> hotelRooms = _mapper
-                .Map<IEnumerable<HotelRoomDTO>, IEnumerable<HotelRoomsViewModel>>(_adminManager.GetHotelRooms(sortOrder, searchString)
+                .Map<IEnumerable<HotelRoomDTO>, IEnumerable<HotelRoomsViewModel>>(_adminManager.GetHotelRooms(paginationDTO,sortOrder)
                 .Where(hr => hr.HotelId == Id));
-            
-            return View(hotelRooms);
+
+            IEnumerableHotelRoomsViewModel model = new IEnumerableHotelRoomsViewModel
+            {
+                hotelRooms = hotelRooms,
+                PaginationDTO = paginationDTO
+            };
+
+            return View(model);
         }
 
         [HttpPost]
@@ -400,20 +419,26 @@ namespace HotelsBooking.Controllers
         #region HotelRoomConvs
 
         [HttpGet]
-        public IActionResult HotelRoomConvs(int Id, string sortOrder, string searchString)
+        public IActionResult HotelRoomConvs(int Id, AdminPaginationDTO paginationDTO, string sortOrder)
         {
             HotelRoomDTO room = _adminManager.GetHotelRoomById(Id);
 
             ViewData["NameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
             ViewData["PriceSortParm"] = sortOrder == "price" ? "price_desc" : "price";
-            ViewData["CurrentFilter"] = searchString;
+            ViewData["CurrentFilter"] = paginationDTO.KeyWord;
             ViewData["Id"] = Id;
             ViewData["HotelId"] = room.HotelId;
 
             IEnumerable<HotelRoomConvsViewModel> convs = _mapper
-                .Map<IEnumerable<HotelRoomConvDTO>, IEnumerable<HotelRoomConvsViewModel>>(_adminManager.GetRoomConvs(Id,sortOrder,searchString));
-            
-            return View(convs);
+                .Map<IEnumerable<HotelRoomConvDTO>, IEnumerable<HotelRoomConvsViewModel>>(_adminManager.GetRoomConvs(Id, paginationDTO,sortOrder));
+
+            IEnumerableHotelRoomConvsViewModel model = new IEnumerableHotelRoomConvsViewModel
+            {
+                roomConvs = convs,
+                PaginationDTO = paginationDTO
+            };
+
+            return View(model);
         }
 
         [HttpPost]
@@ -427,7 +452,7 @@ namespace HotelsBooking.Controllers
         public IActionResult AddConvForRoom(int Id, int HotelId)
         {
             IEnumerable<HotelConvsViewModel> hotelConvs = _mapper
-                .Map<IEnumerable<HotelConvDTO>, IEnumerable<HotelConvsViewModel>>(_adminManager.GetHotelConvs(null,null)
+                .Map<IEnumerable<HotelConvDTO>, IEnumerable<HotelConvsViewModel>>(_adminManager.GetHotelConvs(null, null)
                 .Where(hc => hc.HotelId == HotelId));
 
             IEnumerable<HotelRoomConvsViewModel> convs = _mapper
@@ -490,11 +515,11 @@ namespace HotelsBooking.Controllers
                 return RedirectToAction("HotelRoomConvs", new { Id = model.HotelRoomId });
             
             IEnumerable<HotelConvsViewModel> hotelConvs = _mapper
-                .Map<IEnumerable<HotelConvDTO>, IEnumerable<HotelConvsViewModel>>(_adminManager.GetHotelConvs(null,null)
+                .Map<IEnumerable<HotelConvDTO>, IEnumerable<HotelConvsViewModel>>(_adminManager.GetHotelConvs(new AdminPaginationDTO(), null)
                 .Where(hc => hc.HotelId == model.HotelId));
 
             IEnumerable<HotelRoomConvsViewModel> convs = _mapper
-                .Map<IEnumerable<HotelRoomConvDTO>, IEnumerable<HotelRoomConvsViewModel>>(_adminManager.GetRoomConvs(model.HotelRoomId,null,null));
+                .Map<IEnumerable<HotelRoomConvDTO>, IEnumerable<HotelRoomConvsViewModel>>(_adminManager.GetRoomConvs(model.HotelRoomId, new AdminPaginationDTO(), null));
 
             List<HotelRoomConvsViewModel> viewResult = new List<HotelRoomConvsViewModel>();
             int i = 0;
@@ -664,4 +689,5 @@ namespace HotelsBooking.Controllers
         }
         #endregion
     }
+
 }

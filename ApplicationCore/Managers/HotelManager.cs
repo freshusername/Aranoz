@@ -68,6 +68,8 @@ namespace ApplicationCore.Managers
             var roomPrices = hotelRooms.OrderByDescending(p => p.Price);
             HotelFilterDto.MaxAvailRoomPrice = roomPrices.First().Price;
             HotelFilterDto.MinAvailRoomPrice = roomPrices.Last().Price;
+            HotelFilterDto.MaxSearchPrice = (HotelFilterDto.MaxSearchPrice == 0)  ? HotelFilterDto.MaxAvailRoomPrice : HotelFilterDto.MaxSearchPrice;
+            HotelFilterDto.MinSearchPrice = (HotelFilterDto.MinSearchPrice == 0)  ? HotelFilterDto.MinAvailRoomPrice : HotelFilterDto.MinSearchPrice;
 
             HotelFilterDto.HotelsAmount = hotels.Count();
             hotels = hotels.Skip((HotelFilterDto.CurrentPage - 1) * HotelFilterDto.PageSize).Take(HotelFilterDto.PageSize);
@@ -76,9 +78,8 @@ namespace ApplicationCore.Managers
 
         }
 
-        public IEnumerable<HotelDTO> GetHotelsAdmin(HotelFilterDto hotelFilterDto, string sortOrder = null)
+        public IEnumerable<HotelDTO> GetHotelsAdmin(AdminPaginationDTO paginationDTO , string sortOrder = null)
         {
-            hotelFilterDto.PageSize = 10;
             var hotels = _context.Hotels.Include(h => h.HotelRooms)
                                             .ThenInclude(hr => hr.Room)
                                         .Include(h => h.HotelRooms)
@@ -86,11 +87,11 @@ namespace ApplicationCore.Managers
                                         .Include(h => h.HotelPhotos)
                                     .Select(h => h);
 
-            if (!String.IsNullOrEmpty(hotelFilterDto.KeyWord))
-                hotels = hotels.Where(u => u.Name.Contains(hotelFilterDto.KeyWord)
-                                    || u.Location.Contains(hotelFilterDto.KeyWord)
+            if (!String.IsNullOrEmpty(paginationDTO.KeyWord))
+                hotels = hotels.Where(u => u.Name.Contains(paginationDTO.KeyWord)
+                                    || u.Location.Contains(paginationDTO.KeyWord)
                                     || u.Season.ToString().ToUpper()
-                                    .Contains(hotelFilterDto.KeyWord.ToUpper()));
+                                    .Contains(paginationDTO.KeyWord.ToUpper()));
 
             switch (sortOrder)
             {
@@ -118,8 +119,8 @@ namespace ApplicationCore.Managers
                     break;
             }
 
-            hotelFilterDto.HotelsAmount = hotels.Count();
-            hotels = hotels.Skip((hotelFilterDto.CurrentPage - 1) * hotelFilterDto.PageSize).Take(hotelFilterDto.PageSize);
+            paginationDTO.Amount = hotels.Count();
+            hotels = hotels.Skip((paginationDTO.CurrentPage - 1) * paginationDTO.PageSize).Take(paginationDTO.PageSize);
 
             return _mapper.Map<IEnumerable<Hotel>, IEnumerable<HotelDTO>>(hotels.ToList());
         }
@@ -170,7 +171,7 @@ namespace ApplicationCore.Managers
             return _mapper.Map<HotelConv, HotelConvDTO>(hotelConv);
         }
 
-        public IEnumerable<HotelConvDTO> GetHotelConvs(string sortOrder=null, string searchString=null)
+        public IEnumerable<HotelConvDTO> GetHotelConvs(AdminPaginationDTO paginationDTO, string sortOrder = null)
         {
             List<HotelConv> hotelConvs = _context.HotelConvs.ToList();
             List<AdditionalConv> addConvs = _context.AdditionalConvs.ToList();
@@ -180,11 +181,6 @@ namespace ApplicationCore.Managers
                 ac => ac.Id,
                 (hc, ac) => new HotelConvDTO { Id = hc.Id, Name = ac.Name, HotelId = hc.HotelId, Price = hc.Price }
                 );
-
-            if (!String.IsNullOrEmpty(searchString))
-                query = query.Where(u => u.Name.Contains(searchString)
-                                    || Convert.ToString(Math.Round(u.Price,0))
-                                    .Equals(searchString));
 
             switch (sortOrder)
             {
@@ -203,7 +199,15 @@ namespace ApplicationCore.Managers
                     query = query.OrderBy(u => u.Name);
                     break;
             }
-
+            if (paginationDTO != null)
+            {
+                if (!String.IsNullOrEmpty(paginationDTO.KeyWord))
+                    query = query.Where(u => u.Name.Contains(paginationDTO.KeyWord)
+                                        || Convert.ToString(Math.Round(u.Price, 0))
+                                        .Equals(paginationDTO.KeyWord));
+                paginationDTO.Amount = query.Count();
+                query = query.Skip((paginationDTO.CurrentPage - 1) * paginationDTO.PageSize).Take(paginationDTO.PageSize);
+            }
             return query;
         }
 
@@ -263,7 +267,7 @@ namespace ApplicationCore.Managers
                                                     .FirstOrDefault(hr => hr.Id == Id);
             return _mapper.Map<HotelRoom, HotelRoomDTO>(hotelRoom);
         }
-        public IEnumerable<HotelRoomDTO> GetHotelRooms(string sortOrder = null, string searchString = null)
+        public IEnumerable<HotelRoomDTO> GetHotelRooms(AdminPaginationDTO paginationDTO, string sortOrder = null)
         {
             List<HotelRoom> hotelRooms = _context.HotelRooms.ToList();
             List<Room> rooms = _context.Rooms.ToList();
@@ -272,12 +276,8 @@ namespace ApplicationCore.Managers
                 r => r.Id,
                 (hr, r) => new HotelRoomDTO { Id = hr.Id, HotelId = hr.HotelId, Price = hr.Price, RoomId = r.Id, Type = r.RoomType, Number = hr.Number }
                 );
-            if (!String.IsNullOrEmpty(searchString))
-                query = query.Where(u => Convert.ToString(u.Number).Contains(searchString)
-                                    || Convert.ToString(Math.Round(u.Price, 0))
-                                    .Equals(searchString)
-                                    || u.Type.ToString().ToUpper()
-                                    .Contains(searchString.ToUpper()));
+
+            
             switch (sortOrder)
             {
                 case "number_desc":
@@ -303,7 +303,17 @@ namespace ApplicationCore.Managers
                     query = query.OrderBy(u => u.Number);
                     break;
             }
-
+            if (paginationDTO != null)
+            {
+                if (!String.IsNullOrEmpty(paginationDTO.KeyWord))
+                    query = query.Where(u => Convert.ToString(u.Number).Contains(paginationDTO.KeyWord)
+                                        || Convert.ToString(Math.Round(u.Price, 0))
+                                        .Equals(paginationDTO.KeyWord)
+                                        || u.Type.ToString().ToUpper()
+                                        .Contains(paginationDTO.KeyWord.ToUpper()));
+                paginationDTO.Amount = query.Count();
+                query = query.Skip((paginationDTO.CurrentPage - 1) * paginationDTO.PageSize).Take(paginationDTO.PageSize);
+            }
             return query;
         }
 
@@ -356,7 +366,7 @@ namespace ApplicationCore.Managers
         }
         #endregion
         #region HotelRoomConvs
-        public IEnumerable<HotelRoomConvDTO> GetHotelRoomConvs(int Id, string sortOrder = null, string searchString=null)
+        public IEnumerable<HotelRoomConvDTO> GetHotelRoomConvs(int Id, AdminPaginationDTO paginationDTO, string sortOrder = null)
         {
             IEnumerable<RoomConv> roomConvs = _context.RoomConvs.ToList().Where(rc => rc.HotelRoomId == Id);
             List<AdditionalConv> convs = _context.AdditionalConvs.ToList();
@@ -366,11 +376,6 @@ namespace ApplicationCore.Managers
                 c => c.Id,
                 (rc, c) => new HotelRoomConvDTO { Id = rc.Id, Price = rc.Price, HotelRoomId = rc.HotelRoomId, ConvName = c.Name }
                 );
-
-            if (!String.IsNullOrEmpty(searchString))
-                query = query.Where(u => u.ConvName.Contains(searchString)
-                                    || Convert.ToString(Math.Round(u.Price, 0))
-                                    .Equals(searchString));
 
             switch (sortOrder)
             {
@@ -388,6 +393,15 @@ namespace ApplicationCore.Managers
                 default:
                     query = query.OrderBy(u => u.ConvName);
                     break;
+            }
+            if (paginationDTO != null)
+            {
+                if (!String.IsNullOrEmpty(paginationDTO?.KeyWord))
+                    query = query.Where(u => u.ConvName.Contains(paginationDTO.KeyWord)
+                                        || Convert.ToString(Math.Round(u.Price, 0))
+                                        .Equals(paginationDTO.KeyWord));
+                paginationDTO.Amount = query.Count();
+                query = query.Skip((paginationDTO.CurrentPage - 1) * paginationDTO.PageSize).Take(paginationDTO.PageSize);
             }
             return query;
         }
