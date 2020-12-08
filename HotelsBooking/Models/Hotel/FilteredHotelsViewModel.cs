@@ -11,5 +11,7 @@ namespace HotelsBooking.Models.Hotel
 
         public IEnumerable<HotelDTO> Hotels { get; set; }
         public HotelFilterDto HotelFilterDto { get; set; }
+        public IEnumerable<HotelConvDTO> HotelConvs { get; set; }
+        public IEnumerable<AdditionalConvDTO> RoomConvs { get; set; }
     }
 }

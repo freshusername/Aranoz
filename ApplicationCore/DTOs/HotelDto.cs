@@ -25,6 +25,6 @@ namespace ApplicationCore.DTOs
 
         public ICollection<HotelRoom> HotelRooms { get; set; }
         public ICollection<HotelPhoto> HotelPhotos { get; set; }
-
+        public ICollection<HotelConv> HotelConvs { get; set; }
     }
 }

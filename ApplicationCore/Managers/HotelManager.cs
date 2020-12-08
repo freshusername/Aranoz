@@ -33,52 +33,102 @@ namespace ApplicationCore.Managers
                                         .Include(h => h.HotelRooms)
                                                 .ThenInclude(hr => hr.RoomConvs)
                                                 .ThenInclude(rc => rc.AdditionalConv)
+                                        .Include(h => h.HotelRooms)
+                                                .ThenInclude(hr => hr.OrderDetails)
                                         .Include(h => h.HotelPhotos)
                                         .FirstOrDefault(h => h.Id == Id);
             return _mapper.Map<Hotel, HotelDTO>(hotel);
         }
-        public IEnumerable<HotelDTO> GetHotels(HotelFilterDto HotelFilterDto)
+
+        public async Task<HotelDTO> GetHotelDetails(FilterHotelDetailDTO filterHotelDetailDTO)
+        {
+            HotelDTO hotelDTO = await GetHotelById(filterHotelDetailDTO.HotelId);
+
+            if (filterHotelDetailDTO?.FromDate != null && filterHotelDetailDTO?.ToDate != null)
+            {
+                hotelDTO.HotelRooms = hotelDTO.HotelRooms.Where(hr => hr.OrderDetails
+                                                            .Any(od => CheckIfAvailable(od.CheckInDate, od.CheckOutDate, filterHotelDetailDTO.FromDate, filterHotelDetailDTO.ToDate))
+                                                            || !hr.OrderDetails.Any()).ToList();
+            }
+
+            return hotelDTO;
+        }
+
+        public IEnumerable<HotelDTO> GetHotels(HotelFilterDto HotelFilterDto = null)
         {
             var hotels = _context.Hotels.Include(h => h.HotelRooms)
                                             .ThenInclude(hr => hr.Room)
                                         .Include(h => h.HotelRooms)
-                                                .ThenInclude(hr => hr.RoomConvs)
+                                            .ThenInclude(hr => hr.RoomConvs)
+                                        .Include(h => h.HotelRooms)
+                                            .ThenInclude(hr => hr.OrderDetails)
                                         .Include(h => h.HotelPhotos)
                                     .Select(h => h);
-
-            var hotelRooms = _context.HotelRooms.Select(hr => hr);
-
             if (!String.IsNullOrEmpty(HotelFilterDto?.KeyWord))
             {
                 hotels = hotels.Where(h => h.Name.Contains(HotelFilterDto.KeyWord)
+                                    || h.Description.Contains(HotelFilterDto.KeyWord)
                                     || h.Location.Contains(HotelFilterDto.KeyWord));
             }
-            
-            if (HotelFilterDto?.MinSearchPrice >= 0)
+
+            if (!String.IsNullOrEmpty(HotelFilterDto?.Location))
             {
-                hotels = hotels.Where(h => h.HotelRooms.Any(p => p.Price >= HotelFilterDto.MinSearchPrice));
+                hotels = hotels.Where(h => h.Location.Contains(HotelFilterDto.Location));
             }
 
-            if (HotelFilterDto?.MaxSearchPrice > 0)
+            if (HotelFilterDto.Season.HasValue)
             {
-                hotels = hotels.Where(h => h.HotelRooms.Any(p => p.Price <= HotelFilterDto.MaxSearchPrice));
+                hotels = hotels.Where(h => h.Season.Equals(Enum.Parse(typeof(Season), HotelFilterDto.Season.ToString())));
             }
-            
 
-            var roomPrices = hotelRooms.OrderByDescending(p => p.Price);
-            HotelFilterDto.MaxAvailRoomPrice = roomPrices.First().Price;
-            HotelFilterDto.MinAvailRoomPrice = roomPrices.Last().Price;
-            HotelFilterDto.MaxSearchPrice = (HotelFilterDto.MaxSearchPrice == 0)  ? HotelFilterDto.MaxAvailRoomPrice : HotelFilterDto.MaxSearchPrice;
-            HotelFilterDto.MinSearchPrice = (HotelFilterDto.MinSearchPrice == 0)  ? HotelFilterDto.MinAvailRoomPrice : HotelFilterDto.MinSearchPrice;
+            if (HotelFilterDto?.FromDate != null && HotelFilterDto?.ToDate != null)
+            {
+                hotels = hotels.Where(h => h.HotelRooms
+                                                .Any(hr => hr.OrderDetails
+                                                            .Any(od => CheckIfAvailable(od.CheckInDate, od.CheckOutDate, HotelFilterDto.FromDate, HotelFilterDto.ToDate))
+                                                            || !hr.OrderDetails.Any()));
+            }
 
+            if (HotelFilterDto.MaxAdults.HasValue)
+            {
+                hotels = hotels.Where(h => h.HotelRooms
+                                                .Any(hr => (HotelFilterDto.MaxAdults <= hr.MaxAdults && HotelFilterDto.MaxChildren <= hr.MaxChildren)
+                                                            || (HotelFilterDto.MaxAdults + HotelFilterDto.MaxChildren) <= hr.MaxAdults));
+            }
+
+            if (HotelFilterDto?.MinPrice >= 0)
+            {
+                hotels = hotels.Where(h => h.HotelRooms.Any(p => p.Price >= HotelFilterDto.MinPrice));
+            }
+
+            if (HotelFilterDto?.MaxPrice > 0)
+            {
+                hotels = hotels.Where(h => h.HotelRooms.Any(p => p.Price <= HotelFilterDto.MaxPrice));
+            }
+
+            if (HotelFilterDto.HotelConvs.Any())
+            {
+                hotels = hotels.Where(h => HotelFilterDto.HotelConvs.All(x => h.HotelConvs.Select(hc => hc.Id).Contains(x)));
+            }
+
+            if (HotelFilterDto.RoomConvs.Any())
+            {
+                hotels = hotels.Where(h => h.HotelRooms.Where(r => HotelFilterDto.RoomConvs.All(x => r.RoomConvs.Select(rc => rc.AdditionalConvId).Contains(x))).Any());
+            }
+            //TODO: Count, Skip, Take
             HotelFilterDto.HotelsAmount = hotels.Count();
             hotels = hotels.Skip((HotelFilterDto.CurrentPage - 1) * HotelFilterDto.PageSize).Take(HotelFilterDto.PageSize);
 
             return _mapper.Map<IEnumerable<Hotel>, IEnumerable<HotelDTO>>(hotels.ToList());
-
+        }
+        private bool CheckIfAvailable(DateTimeOffset CheckInDate, DateTimeOffset CheckOutDate, DateTimeOffset FromDate, DateTimeOffset ToDate)
+        {
+            if ((FromDate < CheckInDate && ToDate <= CheckInDate) || (FromDate >= CheckOutDate && ToDate > CheckOutDate))
+                return true;
+            return false;
         }
 
-        public IEnumerable<HotelDTO> GetHotelsAdmin(AdminPaginationDTO paginationDTO , string sortOrder = null)
+        public IEnumerable<HotelDTO> GetHotelsAdmin(string sortOrder = null, string searchString=null)
         {
             var hotels = _context.Hotels.Include(h => h.HotelRooms)
                                             .ThenInclude(hr => hr.Room)
@@ -87,11 +137,11 @@ namespace ApplicationCore.Managers
                                         .Include(h => h.HotelPhotos)
                                     .Select(h => h);
 
-            if (!String.IsNullOrEmpty(paginationDTO.KeyWord))
-                hotels = hotels.Where(u => u.Name.Contains(paginationDTO.KeyWord)
-                                    || u.Location.Contains(paginationDTO.KeyWord)
+            if (!String.IsNullOrEmpty(searchString))
+                hotels = hotels.Where(u => u.Name.Contains(searchString)
+                                    || u.Location.Contains(searchString)
                                     || u.Season.ToString().ToUpper()
-                                    .Contains(paginationDTO.KeyWord.ToUpper()));
+                                    .Contains(searchString.ToUpper()));
 
             switch (sortOrder)
             {
@@ -118,9 +168,6 @@ namespace ApplicationCore.Managers
                     hotels = hotels.OrderBy(u => u.Name);
                     break;
             }
-
-            paginationDTO.Amount = hotels.Count();
-            hotels = hotels.Skip((paginationDTO.CurrentPage - 1) * paginationDTO.PageSize).Take(paginationDTO.PageSize);
 
             return _mapper.Map<IEnumerable<Hotel>, IEnumerable<HotelDTO>>(hotels.ToList());
         }
@@ -171,7 +218,24 @@ namespace ApplicationCore.Managers
             return _mapper.Map<HotelConv, HotelConvDTO>(hotelConv);
         }
 
-        public IEnumerable<HotelConvDTO> GetHotelConvs(AdminPaginationDTO paginationDTO, string sortOrder = null)
+        public IEnumerable<HotelConvDTO> GetHotelConvs()
+        {
+            List<HotelConv> hotelConvs = _context.HotelConvs.ToList();
+            List<AdditionalConv> addConvs = _context.AdditionalConvs.ToList();
+            var query = hotelConvs.Join(addConvs,
+                hc => hc.AdditionalConvId,
+                ac => ac.Id,
+                (hc, ac) => new HotelConvDTO { Id = hc.Id, Name = ac.Name, HotelId = hc.HotelId, Price = hc.Price }
+                );
+            return query;
+        }
+        public IEnumerable<AdditionalConvDTO> GetRoomConvs()
+        {
+            var add_roomconvs = _context.RoomConvs.Select(rc => rc.AdditionalConv).Distinct().ToList();
+            return _mapper.Map<IEnumerable<AdditionalConv>, IEnumerable<AdditionalConvDTO>>(add_roomconvs);
+        }
+
+        public IEnumerable<HotelConvDTO> GetHotelConvs(string sortOrder=null, string searchString=null)
         {
             List<HotelConv> hotelConvs = _context.HotelConvs.ToList();
             List<AdditionalConv> addConvs = _context.AdditionalConvs.ToList();
@@ -181,6 +245,11 @@ namespace ApplicationCore.Managers
                 ac => ac.Id,
                 (hc, ac) => new HotelConvDTO { Id = hc.Id, Name = ac.Name, HotelId = hc.HotelId, Price = hc.Price }
                 );
+
+            if (!String.IsNullOrEmpty(searchString))
+                query = query.Where(u => u.Name.Contains(searchString)
+                                    || Convert.ToString(Math.Round(u.Price,0))
+                                    .Equals(searchString));
 
             switch (sortOrder)
             {
@@ -199,15 +268,7 @@ namespace ApplicationCore.Managers
                     query = query.OrderBy(u => u.Name);
                     break;
             }
-            if (paginationDTO != null)
-            {
-                if (!String.IsNullOrEmpty(paginationDTO.KeyWord))
-                    query = query.Where(u => u.Name.Contains(paginationDTO.KeyWord)
-                                        || Convert.ToString(Math.Round(u.Price, 0))
-                                        .Equals(paginationDTO.KeyWord));
-                paginationDTO.Amount = query.Count();
-                query = query.Skip((paginationDTO.CurrentPage - 1) * paginationDTO.PageSize).Take(paginationDTO.PageSize);
-            }
+
             return query;
         }
 
@@ -267,7 +328,7 @@ namespace ApplicationCore.Managers
                                                     .FirstOrDefault(hr => hr.Id == Id);
             return _mapper.Map<HotelRoom, HotelRoomDTO>(hotelRoom);
         }
-        public IEnumerable<HotelRoomDTO> GetHotelRooms(AdminPaginationDTO paginationDTO, string sortOrder = null)
+        public IEnumerable<HotelRoomDTO> GetHotelRooms(string sortOrder = null, string searchString = null)
         {
             List<HotelRoom> hotelRooms = _context.HotelRooms.ToList();
             List<Room> rooms = _context.Rooms.ToList();
@@ -276,8 +337,12 @@ namespace ApplicationCore.Managers
                 r => r.Id,
                 (hr, r) => new HotelRoomDTO { Id = hr.Id, HotelId = hr.HotelId, Price = hr.Price, RoomId = r.Id, Type = r.RoomType, Number = hr.Number }
                 );
-
-            
+            if (!String.IsNullOrEmpty(searchString))
+                query = query.Where(u => Convert.ToString(u.Number).Contains(searchString)
+                                    || Convert.ToString(Math.Round(u.Price, 0))
+                                    .Equals(searchString)
+                                    || u.Type.ToString().ToUpper()
+                                    .Contains(searchString.ToUpper()));
             switch (sortOrder)
             {
                 case "number_desc":
@@ -303,17 +368,7 @@ namespace ApplicationCore.Managers
                     query = query.OrderBy(u => u.Number);
                     break;
             }
-            if (paginationDTO != null)
-            {
-                if (!String.IsNullOrEmpty(paginationDTO.KeyWord))
-                    query = query.Where(u => Convert.ToString(u.Number).Contains(paginationDTO.KeyWord)
-                                        || Convert.ToString(Math.Round(u.Price, 0))
-                                        .Equals(paginationDTO.KeyWord)
-                                        || u.Type.ToString().ToUpper()
-                                        .Contains(paginationDTO.KeyWord.ToUpper()));
-                paginationDTO.Amount = query.Count();
-                query = query.Skip((paginationDTO.CurrentPage - 1) * paginationDTO.PageSize).Take(paginationDTO.PageSize);
-            }
+
             return query;
         }
 
@@ -366,7 +421,7 @@ namespace ApplicationCore.Managers
         }
         #endregion
         #region HotelRoomConvs
-        public IEnumerable<HotelRoomConvDTO> GetHotelRoomConvs(int Id, AdminPaginationDTO paginationDTO, string sortOrder = null)
+        public IEnumerable<HotelRoomConvDTO> GetHotelRoomConvs(int Id, string sortOrder = null, string searchString=null)
         {
             IEnumerable<RoomConv> roomConvs = _context.RoomConvs.ToList().Where(rc => rc.HotelRoomId == Id);
             List<AdditionalConv> convs = _context.AdditionalConvs.ToList();
@@ -376,6 +431,11 @@ namespace ApplicationCore.Managers
                 c => c.Id,
                 (rc, c) => new HotelRoomConvDTO { Id = rc.Id, Price = rc.Price, HotelRoomId = rc.HotelRoomId, ConvName = c.Name }
                 );
+
+            if (!String.IsNullOrEmpty(searchString))
+                query = query.Where(u => u.ConvName.Contains(searchString)
+                                    || Convert.ToString(Math.Round(u.Price, 0))
+                                    .Equals(searchString));
 
             switch (sortOrder)
             {
@@ -393,15 +453,6 @@ namespace ApplicationCore.Managers
                 default:
                     query = query.OrderBy(u => u.ConvName);
                     break;
-            }
-            if (paginationDTO != null)
-            {
-                if (!String.IsNullOrEmpty(paginationDTO?.KeyWord))
-                    query = query.Where(u => u.ConvName.Contains(paginationDTO.KeyWord)
-                                        || Convert.ToString(Math.Round(u.Price, 0))
-                                        .Equals(paginationDTO.KeyWord));
-                paginationDTO.Amount = query.Count();
-                query = query.Skip((paginationDTO.CurrentPage - 1) * paginationDTO.PageSize).Take(paginationDTO.PageSize);
             }
             return query;
         }
