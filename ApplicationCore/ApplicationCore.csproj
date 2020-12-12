@@ -5,7 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="DTOs\Validation\**" />
     <EmbeddedResource Remove="DTOs\Validation\**" />
     <None Remove="DTOs\Validation\**" />
   </ItemGroup>
