@@ -54,7 +54,7 @@ namespace ApplicationCore.Managers
             return hotelDTO;
         }
 
-        public IEnumerable<HotelDTO> GetHotels(HotelFilterDto HotelFilterDto = null)
+        public IEnumerable<HotelDTO> GetHotels(HotelFilterDTO HotelFilterDto = null)
         {
             var hotels = _context.Hotels.Include(h => h.HotelRooms)
                                             .ThenInclude(hr => hr.Room)
