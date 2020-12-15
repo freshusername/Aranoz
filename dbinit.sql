@@ -6,15 +6,11 @@ INSERT INTO dbo.additionalconvs
 (Name)
 VALUES('Parking'), ('Mountain view'), ('Sea view'), ('City view'), ('Mini bar'), ('Cinema'), ('Conference Hall'), ('Swimming pool'), ('Safe box');
 
-SET IDENTITY_INSERT dbo.rooms OFF
+SET IDENTITY_INSERT dbo.rooms ON
 
 INSERT INTO dbo.rooms
 (Id, RoomType)
 VALUES(1, 0), (2, 1), (3, 2), (4, 3), (5, 4), (6, 5), (7, 6), (8, 7), (9, 8), (10, 9), (11, 10), (12, 11), (13, 12);
-
-SET IDENTITY_INSERT dbo.rooms OFF
-
-SET IDENTITY_INSERT dbo.hotelrooms OFF
 
 INSERT INTO dbo.hotelrooms
 (HotelId, RoomId, Price, Number, MaxAdults, MaxChildren)
@@ -24,7 +20,7 @@ Select * from dbo.HotelRooms
 
 INSERT INTO dbo.roomconvs
 (AdditionalConvId, HotelRoomId, Price)
-VALUES(4, 7, 100), (2, 8, 100), (7, 9, 100), (2, 10, 100), (9, 11, 100);
+VALUES(4, 1, 100), (2, 2, 100), (7, 3, 100), (2, 4, 100), (9, 5, 100);
 
 INSERT INTO dbo.hotelconvs
 (AdditionalConvId, HotelId, Price)
