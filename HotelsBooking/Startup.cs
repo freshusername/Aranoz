@@ -38,7 +38,7 @@ namespace HotelsBooking
         {
             // Add framework services.
             services.AddDbContext<ApplicationDbContext>(options =>
-                    options.UseMySql(Configuration.GetConnectionString("DefaultConnection"), x => x.MigrationsAssembly("Infrastructure")));
+                    options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddIdentity<AppUser, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders();
 

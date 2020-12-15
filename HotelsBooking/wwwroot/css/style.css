@@ -7856,14 +7856,14 @@ h6 {
 -----------------------*/
 
 .search-filter {
-    margin-top: 100px;
+    /*margin-top: 100px;*/
     /*position: absolute;*/
     width: 100%;
     z-index: 99;
 }
 
     .search-filter.other-page-filter {
-        margin-top: -172px;
+        /*margin-top: -172px;*/
     }
 
 .check-form {
