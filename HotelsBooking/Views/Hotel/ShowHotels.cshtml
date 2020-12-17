@@ -357,7 +357,7 @@
                                     {
                                         <li class="page-item">
                                             @{
-                                                var prev = (HotelFilterDto)Model.HotelFilterDto.Clone();
+                                                var prev = (HotelFilterDTO)Model.HotelFilterDto.Clone();
                                                 prev.CurrentPage = Model.HotelFilterDto.CurrentPage - 1;
                                             }
 
@@ -369,7 +369,7 @@
 
                                     @for (var i = 1; i <= Model.HotelFilterDto.PagesCount; i++)
                                     {
-                                        var page_i = (HotelFilterDto)Model.HotelFilterDto.Clone();
+                                        var page_i = (HotelFilterDTO)Model.HotelFilterDto.Clone();
                                         page_i.CurrentPage = i;
 
                                         <li class="page-item @( i == Model.HotelFilterDto.CurrentPage ? "active" : "")">
@@ -382,7 +382,7 @@
                                     {
                                         <li class="page-item">
                                             @{
-                                                var next = (HotelFilterDto)Model.HotelFilterDto.Clone();
+                                                var next = (HotelFilterDTO)Model.HotelFilterDto.Clone();
                                                 next.CurrentPage = Model.HotelFilterDto.CurrentPage + 1;
                                             }
 

@@ -4,7 +4,7 @@
     <meta name="keywords" content="Hotel, unica, creative, html">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Europa Hotel & Spa | Template!!!!!!!!!!!!!!!</title>
+    <title>Aranoz</title>
 
     <!-- Google Font -->
     <link href="https://fonts.googleapis.com/css?family=Montserrat+Alternates:100,200,300,400,500,600,700,800,900&display=swap" rel="stylesheet">
@@ -19,9 +19,11 @@
     <link rel="stylesheet" href="~/css/slicknav.min.css" type="text/css">
     <link rel="stylesheet" href="~/css/style.css" type="text/css">
 </head>
+@{
+    ViewData["Title"] = "Aranoz";
+}
 @using ApplicationCore.DTOs
-@model HotelFilterDto
-
+@model HotelFilterDTO
 <!-- Search Filter Section Begin -->
 <section class="search-filter">
     <div class="container">
@@ -53,9 +55,9 @@
                             </div>
                         </div>
                         @*<div class="single-quantity last">
-                            <p>Rooms</p>
-                            <div class="pro-qty"><input type="text" value="0"></div>
-                        </div>*@
+                                <p>Rooms</p>
+                                <div class="pro-qty"><input type="text" value="0"></div>
+                            </div>*@
                     </div>
                     <div class="room-selector">
                         <p>Location</p>
@@ -74,7 +76,6 @@
     </div>
 </section>
 <!-- Search Filter Section End -->
-
 <section class="feature_part padding_top">
     <div class="container">
         <div class="row align-items-center justify-content-between">

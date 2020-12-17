@@ -3,10 +3,8 @@
     float: left;
     overflow: hidden;
     margin: 10px 1%;
-    min-width: 253px;
     max-width: 300px;
-    max-height: 150px;
-    width: 40%;
+    max-height: 300px;
     background: #3085a3;
     text-align: center;
 }
