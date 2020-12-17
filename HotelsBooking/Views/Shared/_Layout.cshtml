@@ -1,12 +1,21 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Identity
+@using Infrastructure.Entities
+@using System.Security.Claims
+@inject SignInManager<AppUser> SignInManager
+
+
+
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] HotelsBooking</title>
-   <!-- Bootstrap CSS -->
+    <title>@ViewData["Title"] - HotelsBooking</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" asp-append-version="true">
+    <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="~/css/bootstrap.min.css" asp-append-version="true">
-	<link rel="stylesheet" href="~/css/main.css" asp-append-version="true">
+    <link rel="stylesheet" href="~/css/main.css" asp-append-version="true">
     <!-- animate CSS -->
     <link rel="stylesheet" href="~/css/animate.css" asp-append-version="true">
     <!-- owl carousel CSS -->
@@ -42,7 +51,7 @@
 
                     <div class="collapse navbar-collapse main-menu-item" id="navbarSupportedContent">
                         <ul class="navbar-nav">
-                            <li class="nav-item">
+                            @*<li class="nav-item">
                                 <a class="nav-link" href="index.html">Home</a>
                             </li>
                             <li class="nav-item dropdown">
@@ -83,6 +92,15 @@
 
                             <li class="nav-item">
                                 <a class="nav-link" href="contact.html">Contact</a>
+                            </li>*@
+                            <li class="nav-item">
+                                <a asp-controller="Profile" asp-action="Index" class="nav-link">Profile</a>
+                            </li>
+                            @*<li class="nav-item">
+                                <a asp-controller="Home" asp-action="Contact" class="nav-link">Contact</a>
+                            </li>*@
+                            <li class="nav-item">
+                                <a asp-controller="Hotel" asp-action="ShowHotels" class="nav-link">Hotels</a>
                             </li>
                         </ul>
                     </div>
@@ -99,7 +117,6 @@
                 </nav>
             </div>
         </div>
-        </div>
         <div class="search_input" id="search_input_box">
             <div class="container ">
                 <form class="d-flex justify-content-between search-inner">
@@ -110,8 +127,10 @@
             </div>
         </div>
     </header>
-
-    @RenderBody()
+@*<div class="container body-content">
+        @RenderBody()
+    </div>*@
+@RenderBody()
     <partial name="_CookieConsentPartial" />
 
     <!-- jquery plugins here-->
