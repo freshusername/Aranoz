@@ -27,7 +27,7 @@ namespace ApplicationCore.Managers
         public async Task<byte[]> UploadProfileImageAsync(IFormFile image)
         {
 
-            var newimage = await GetPhotoFromFile(image, 300, 300);
+            var newimage = await GetPhotoFromFile(image, 450, 450);
 
             return newimage;
         }
@@ -40,7 +40,7 @@ namespace ApplicationCore.Managers
                 foreach (var image in images)
                 {
                     HotelPhoto photo = new HotelPhoto();
-                    photo.Image = await GetPhotoFromFile(image, 300, 300);
+                    photo.Image = await GetPhotoFromFile(image, 450, 450);
                     photo.HotelId = hotelId;
                     photos.Add(photo);
                 }

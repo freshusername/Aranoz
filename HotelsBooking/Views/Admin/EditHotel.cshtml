@@ -11,7 +11,7 @@
             <div class="text-center">
                 <label style="font-size:20px">Edit hotel with name : @Model.Name</label>
             </div>
-            <form asp-action="EditHotel" asp-controller="Admin" method="post">
+            <form asp-action="EditHotel" asp-controller="Admin" method="post" enctype="multipart/form-data">
 
                 <div asp-validation-summary="All" class="text-danger text-center" style="margin-top:10px;"></div>
                 <div class="form-group">
@@ -32,6 +32,12 @@
                     <div style="margin-bottom:70px">
                         <select asp-for="Season" asp-items="Html.GetEnumSelectList<@Infrastructure.Enums.Season>()" class="col-lg-4 col-md-5 col-sm-6 col-xs-12"></select>
                     </div>
+                </div>
+                <div>
+                    <div class="form-group">
+                        <input asp-for="HotelPhotos" class="form-control" type="file" multiple />
+                    </div>
+
                 </div>
 
                 <div class="form-group text-center">

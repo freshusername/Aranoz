@@ -27,7 +27,7 @@ namespace HotelsBooking
                 {
                     var userManager = services.GetRequiredService<UserManager<AppUser>>();
                     var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
-                    DbInitializer.SeedData(userManager,roleManager);
+                    DbInitializer.SeedData(userManager, roleManager);
                 }
                 catch (Exception ex)
                 {

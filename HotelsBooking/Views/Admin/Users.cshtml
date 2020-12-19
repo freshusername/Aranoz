@@ -46,9 +46,9 @@
                                     <td data-label="Last Name">@user.LastName</td>
                                     <td data-label="Actions">
                                         <form asp-action="DeleteUser" asp-controller="Admin" asp-route-id="@user.Id">
-                                            <a class="btn btn-sm btn-warning" asp-action="EditUser" asp-route-id="@user.Id">Edit</a>
-                                            <a class="btn btn-sm btn-primary" asp-action="ChangePassword" asp-route-id="@user.Id">Change password</a>
-                                            <button type="submit" class="btn btn-sm btn-danger" asp-action="DeleteUser" asp-route-id="@user.Id">Delete</button>
+                                            <a class="btn btn-sm btn-outline-warning" asp-action="EditUser" asp-route-id="@user.Id">Edit</a>
+                                            <a class="btn btn-sm btn-outline-primary" asp-action="ChangePassword" asp-route-id="@user.Id">Change password</a>
+                                            <button type="submit" class="btn btn-sm btn-outline-danger" asp-action="DeleteUser" asp-route-id="@user.Id">Delete</button>
                                         </form>
                                     </td>
                                 </tr>
@@ -91,12 +91,12 @@
                                 {
                                     <li class="page-item">
                                         @{
-                                            var prev = (AdminPaginationDTO)Model.PaginationDTO.Clone();
-                                            prev.CurrentPage = Model.PaginationDTO.CurrentPage - 1;
-                                            prev.KeyWord = @Convert.ToString(ViewData["currentFilter"]);
+                                            var next = (AdminPaginationDTO)Model.PaginationDTO.Clone();
+                                            next.CurrentPage = Model.PaginationDTO.CurrentPage + 1;
+                                            next.KeyWord = @Convert.ToString(ViewData["currentFilter"]);
                                         }
-                                        @Html.ActionLink("prev", "Users", "Admin", null, null, null,
-                                                  prev,
+                                        @Html.ActionLink("next", "Users", "Admin", null, null, null,
+                                                  next,
                                                   null)
                                     </li>
                                 }
