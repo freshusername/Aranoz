@@ -7,8 +7,9 @@ namespace Infrastructure.Entities
 {
     public class HotelRoom
     {
-        public int Id { get; set; }             
+        public int Id { get; set; }
         public decimal Price { get; set; }
+        public int Number { get; set; }
         public int MaxAdults { get; set; }
         public int MaxChildren { get; set; }
 

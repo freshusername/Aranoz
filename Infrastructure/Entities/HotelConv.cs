@@ -8,7 +8,7 @@ namespace Infrastructure.Entities
     public class HotelConv
     {
         public int Id { get; set; }
-       
+
         public decimal Price { get; set; }
 
         public int AdditionalConvId { get; set; }

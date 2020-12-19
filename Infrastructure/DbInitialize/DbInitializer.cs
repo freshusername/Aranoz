@@ -8,7 +8,7 @@ namespace Infrastructure.DbInitialize
 {
     public static class DbInitializer
     {
-        public static void SeedData(UserManager<AppUser> userManager , RoleManager<IdentityRole> roleManager)
+        public static void SeedData(UserManager<AppUser> userManager, RoleManager<IdentityRole> roleManager)
         {
             SeedRoles(roleManager);
             SeedUsers(userManager);
@@ -18,7 +18,7 @@ namespace Infrastructure.DbInitialize
         {
             if (!roleManager.RoleExistsAsync("Admin").Result)
             {
-                 roleManager.CreateAsync(new IdentityRole("Admin"));
+                roleManager.CreateAsync(new IdentityRole("Admin"));
             }
 
             if (!roleManager.RoleExistsAsync("Owner").Result)
@@ -68,9 +68,9 @@ namespace Infrastructure.DbInitialize
             {
                 IdentityResult result;
                 result = userManager.CreateAsync(admin, "admin12345").Result;
-                
-                if (result.Succeeded)              
-                    userManager.AddToRoleAsync(admin, "Admin").Wait();             
+
+                if (result.Succeeded)
+                    userManager.AddToRoleAsync(admin, "Admin").Wait();
             }
 
             if (userManager.FindByNameAsync(owner.Email).Result == null)

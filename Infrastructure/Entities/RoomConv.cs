@@ -15,6 +15,6 @@ namespace Infrastructure.Entities
 
         public int HotelRoomId { get; set; }
         public HotelRoom HotelRoom { get; set; }
-    
+
     }
 }
