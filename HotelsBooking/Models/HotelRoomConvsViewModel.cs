@@ -6,16 +6,16 @@ using System.Threading.Tasks;
 
 namespace HotelsBooking.Models
 {
-    public class HotelConvsViewModel
+    public class HotelRoomConvsViewModel
     {
-        public string Id { get; set; }
+        public int Id { get; set; }
 
         [Required]
-        public string Name { get; set; }
+        public string ConvName { get; set; }
 
         [Required]
         public decimal Price { get; set; }
 
-        public int HotelId { get; set; }
+        public int HotelRoomId { get; set; }
     }
 }

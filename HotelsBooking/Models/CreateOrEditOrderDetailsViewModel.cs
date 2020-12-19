@@ -7,7 +7,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace HotelsBooking.Models
 {
-    public class CreateOrEditOrderDetailsViewModel:IValidatableObject
+    public class CreateOrEditOrderDetailsViewModel : IValidatableObject
     {
         public int Id { get; set; }
         [Required]

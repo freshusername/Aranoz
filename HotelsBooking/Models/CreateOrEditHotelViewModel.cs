@@ -1,8 +1,6 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
 using static Infrastructure.Enums;
 
 namespace HotelsBooking.Models
@@ -11,10 +9,11 @@ namespace HotelsBooking.Models
     {
         public int Id { get; set; }
         [Required]
-        public string Name{ get; set; }
+        public string Name { get; set; }
         [Required]
         public string Location { get; set; }
         [Required]
         public Season Season { get; set; }
+        public List<IFormFile> HotelPhotos { get; set; }
     }
 }

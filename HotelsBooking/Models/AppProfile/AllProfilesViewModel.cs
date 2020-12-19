@@ -6,8 +6,8 @@ using ApplicationCore.DTOs;
 
 namespace HotelsBooking.Models.AppProfile
 {
-  public class AllProfilesViewModel
-  {
-    public IEnumerable<ProfileViewModel> ProfilesList { get; set; }
-  }
+    public class AllProfilesViewModel
+    {
+        public IEnumerable<ProfileViewModel> ProfilesList { get; set; }
+    }
 }

@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace HotelsBooking.Models.AppProfile
 {
-  public class ProfileUpdateViewModel
-  {
-    public string FirstName { get; set; }
-    public string LastName { get; set; }
-    public string Email { get; set; }
-    public IFormFile ProfileImage { get; set; }
-  }
+    public class ProfileUpdateViewModel
+    {
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string Email { get; set; }
+        public IFormFile ProfileImage { get; set; }
+    }
 }
