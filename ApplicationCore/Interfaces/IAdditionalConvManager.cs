@@ -7,8 +7,9 @@ using System.Threading.Tasks;
 
 namespace ApplicationCore.Interfaces
 {
-    public interface IAdditionalConvManager :IDisposable
+    public interface IAdditionalConvManager : IDisposable
     {
+        IEnumerable<AdditionalConvDTO> GetConvs();
         Task<OperationDetails> Create(AdditionalConvDTO additionalConvDTO);
     }
 }

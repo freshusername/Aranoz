@@ -10,15 +10,15 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ApplicationCore.Services
 {
-  public interface IProfileService
-  {
-    Task<ProfileDto> GetByIdAsync(string id);
-    Task<ProfileDto> GetByEmailAsync(string email);
-    
+    public interface IProfileService
+    {
+        Task<ProfileDto> GetByIdAsync(string id);
+        Task<ProfileDto> GetByEmailAsync(string email);
 
-    Task<IEnumerable<ProfileDto>> GetAllProfilesAsync();
-    Task<OperationDetails> UpdateProfile(ProfileDto model);
 
-    Task<List<string>> GetRoles(string id);
-  }
+        Task<IEnumerable<ProfileDto>> GetAllProfilesAsync();
+        Task<OperationDetails> UpdateProfile(ProfileDto model);
+
+        Task<List<string>> GetRoles(string id);
+    }
 }

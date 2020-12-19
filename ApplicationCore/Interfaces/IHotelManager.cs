@@ -21,7 +21,7 @@ namespace ApplicationCore.Interfaces
         IEnumerable<HotelConvDTO> GetHotelConvs(AdminPaginationDTO paginationDTO, string sortOrder);
         IEnumerable<HotelConvDTO> GetHotelConvs();
         IEnumerable<AdditionalConvDTO> GetRoomConvs();
-        
+
         Task<OperationDetails> CreateHotelConv(HotelConvDTO hotelConvDTO);
         Task DeleteHotelConv(int Id);
         HotelConvDTO GetHotelConvById(int Id);
