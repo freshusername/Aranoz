@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ApplicationCore.Managers
 {
-    public class ConvsManager :  IConvsManager
+    public class ConvsManager : IConvsManager
     {
         private readonly ApplicationDbContext _context;
         private readonly IMapper _mapper;
@@ -31,11 +31,11 @@ namespace ApplicationCore.Managers
                 addConv = _mapper.Map<AdditionalConvDTO, AdditionalConv>(convDTO);
                 await _context.AdditionalConvs.AddAsync(addConv);
                 await _context.SaveChangesAsync();
-                return new OperationDetails(true, "Convenience is successfully added","AddConv");
+                return new OperationDetails(true, "Convenience is successfully added", "AddConv");
             }
             else
             {
-                return new OperationDetails(false, "The convenience is already exist","AddConv");
+                return new OperationDetails(false, "The convenience is already exist", "AddConv");
             }
         }
 

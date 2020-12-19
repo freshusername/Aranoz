@@ -8,6 +8,7 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -21,6 +22,32 @@ namespace ApplicationCore.Managers
             ApplicationDbContext context)
         {
             db = context;
+        }
+
+        public async Task<byte[]> UploadProfileImageAsync(IFormFile image)
+        {
+
+            var newimage = await GetPhotoFromFile(image, 300, 300);
+
+            return newimage;
+        }
+
+        public async Task<List<HotelPhoto>> InsertHotelPhotoAsync(List<IFormFile> images, int hotelId)
+        {
+            List<HotelPhoto> photos = new List<HotelPhoto>();
+            if (images.Any())
+            {
+                foreach (var image in images)
+                {
+                    HotelPhoto photo = new HotelPhoto();
+                    photo.Image = await GetPhotoFromFile(image, 300, 300);
+                    photo.HotelId = hotelId;
+                    photos.Add(photo);
+                }
+                await db.HotelPhotos.AddRangeAsync(photos);
+                await db.SaveChangesAsync();
+            }
+            return photos;
         }
 
         public async Task<byte[]> GetPhotoFromFile(IFormFile uploadedFile, int width, int height)

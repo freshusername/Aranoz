@@ -24,18 +24,10 @@ namespace ApplicationCore.Managers
             context = _context;
         }
 
-        public async Task<byte[]> UploadProfileImageAsync(IFormFile image)
-        {
-
-            var newimage = await photoManager.GetPhotoFromFile(image, 450, 450);
-
-            return newimage;
-        }
-
         public async Task<OperationDetails> UpdateProfileInfoAsync(ProfileUpdateDTO profileDTO)
         {
             AppUser user = context.Users.FirstOrDefault(u => u.Email == profileDTO.Email);
-            user.ProfileImage = await UploadProfileImageAsync(profileDTO.ProfileImage);
+            user.ProfileImage = await photoManager.UploadProfileImageAsync(profileDTO.ProfileImage);
             context.Users.Update(user);
             await context.SaveChangesAsync();
             return new OperationDetails(true, "User update", "Name");

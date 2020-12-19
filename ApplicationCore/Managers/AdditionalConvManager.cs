@@ -17,21 +17,25 @@ namespace ApplicationCore.Managers
     {
         private readonly ApplicationDbContext _context;
         private IMapper _mapper;
-        private readonly DbSet<AdditionalConv> _additionalConvs;
         public AdditionalConvManager(ApplicationDbContext context, IMapper mapper)
         {
             _context = context;
-            _additionalConvs = _context.AdditionalConvs;
             _mapper = mapper;
+        }
+
+        public IEnumerable<AdditionalConvDTO> GetConvs()
+        {
+            IEnumerable<AdditionalConvDTO> convs = _mapper.Map<IEnumerable<AdditionalConv>, IEnumerable<AdditionalConvDTO>>(_context.AdditionalConvs.ToList());
+            return convs;
         }
         public async Task<OperationDetails> Create(AdditionalConvDTO additionalConvDTO)
         {
-            AdditionalConv check = _additionalConvs.FirstOrDefault(x => x.Name == additionalConvDTO.Name);
+            AdditionalConv check = _context.AdditionalConvs.FirstOrDefault(x => x.Name == additionalConvDTO.Name);
             if (check == null)
             {
                 AdditionalConv conv = _mapper.Map<AdditionalConvDTO, AdditionalConv>(additionalConvDTO);
-                
-                await _additionalConvs.AddAsync(conv);
+
+                await _context.AdditionalConvs.AddAsync(conv);
                 await _context.SaveChangesAsync();
                 return new OperationDetails(true, "Additional convenience added", "Name");
             }

@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace ApplicationCore.Managers
 {
-    public class AdminRoomManager:IAdminRoomManager
+    public class AdminRoomManager : IAdminRoomManager
     {
         private readonly ApplicationDbContext _context;
         private readonly IMapper _mapper;

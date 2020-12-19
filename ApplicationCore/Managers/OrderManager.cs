@@ -26,7 +26,7 @@ namespace ApplicationCore.Managers
         }
         #region Order
 
-        public AdminOrderDTO GetOrderById(int Id) 
+        public AdminOrderDTO GetOrderById(int Id)
         {
             Order orderFind = _context.Orders.Include(p => p.User).FirstOrDefault(p => p.Id == Id);
             if (orderFind != null)
@@ -41,7 +41,7 @@ namespace ApplicationCore.Managers
             }
             else
                 return null;
-        } 
+        }
         public List<AdminOrderDTO> GetOrders()
         {
             List<AdminOrderDTO> orderDTOs = new List<AdminOrderDTO>();
@@ -75,7 +75,7 @@ namespace ApplicationCore.Managers
                 orderDTOs.Add(new AdminOrderDTO
                 {
                     Id = s.Id,
-                    IsActive=Isactive,
+                    IsActive = Isactive,
                     FirstName = s.User.FirstName,
                     LastName = s.User.LastName
                 });
@@ -107,7 +107,7 @@ namespace ApplicationCore.Managers
                 LastName = order.User.LastName
             };
             return orderDTO;
-            
+
         }
         public async Task<OperationDetails> CreateOrder(AdminOrderDTO orderDTO)
         {
@@ -120,7 +120,7 @@ namespace ApplicationCore.Managers
         public async Task<OperationDetails> EditOrder(AdminOrderDTO orderDTO)
         {
             Order orderCheck = _context.Orders.FirstOrDefault(x => x.Id == orderDTO.Id);
-            if (orderCheck==null)
+            if (orderCheck == null)
             {
                 return new OperationDetails(false, "Order is not exists", "ID");
             }
@@ -156,7 +156,7 @@ namespace ApplicationCore.Managers
                     Id = orderFind.Id,
                     CheckInDate = orderFind.CheckInDate,
                     CheckOutDate = orderFind.CheckOutDate,
-                    
+
                     HotelName = orderFind.HotelRoom.Hotel.Name,
                     RoomId = orderFind.HotelRoom.Room.Id
                 };
@@ -183,7 +183,7 @@ namespace ApplicationCore.Managers
                     CheckOutDate = s.CheckOutDate,
                     HotelName = s.HotelRoom.Hotel.Name,
                     RoomId = s.HotelRoom.Room.Id,
-                    OrderDate=s.OrderDate
+                    OrderDate = s.OrderDate
                 });
             }
             return orderDTOs;
@@ -195,15 +195,15 @@ namespace ApplicationCore.Managers
                 OrderDate = DateTimeOffset.Now,
                 CheckInDate = orderDTO.CheckInDate,
                 CheckOutDate = orderDTO.CheckOutDate,
-                OrderId=orderDTO.OrderID
+                OrderId = orderDTO.OrderID
             };
             Hotel hotel = _context.Hotels.Include(p => p.HotelRooms)
                                             .ThenInclude(p => p.Room)
                                             .Include(p => p.HotelRooms)
                                             .ThenInclude(p => p.Hotel)
                                             .FirstOrDefault(p => p.Name == orderDTO.HotelName);
-            
-            
+
+
             Room room = _context.Rooms.FirstOrDefault(p => p.Id == orderDTO.RoomId);
             if (hotel == null || room == null)
             {
@@ -242,7 +242,7 @@ namespace ApplicationCore.Managers
             await _context.OrderDetails.AddAsync(order);
             await _context.SaveChangesAsync();
             return new OperationDetails(true, "Order details are added", "Id");
-            
+
         }
         public async Task<OperationDetails> EditOrderDetails(AdminOrderDetailDTO orderDetailDTO)
         {
@@ -258,7 +258,7 @@ namespace ApplicationCore.Managers
             if (hotel == null)
             {
                 orderDetailCheck.HotelRoomId = 0;
-                return new OperationDetails(false, "Hotel is not found","HotelRoom");
+                return new OperationDetails(false, "Hotel is not found", "HotelRoom");
             }
             if (hotel == null)
             {

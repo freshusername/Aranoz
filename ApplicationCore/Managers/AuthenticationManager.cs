@@ -40,7 +40,7 @@ namespace ApplicationCore.Managers
 
             {
                 var userIdentity = _mapper.Map<UserDTO, AppUser>(userDTO);
-               var result = await UserManager.CreateAsync(userIdentity, userDTO.Password);
+                var result = await UserManager.CreateAsync(userIdentity, userDTO.Password);
 
                 if (result.Errors.Count() > 0)
                     return new OperationDetails(false, result.Errors.FirstOrDefault().ToString(), "");
@@ -48,7 +48,7 @@ namespace ApplicationCore.Managers
                 await UserManager.AddToRoleAsync(userIdentity, "User");
                 await _context.SaveChangesAsync();
 
-                  
+
                 return new OperationDetails(true, "Congratulations! Your account has been created.", "");
             }
             else
@@ -67,17 +67,17 @@ namespace ApplicationCore.Managers
 
             var auth = await SignInManager.PasswordSignInAsync(userDTO.UserName, userDTO.Password, userDTO.RememberMe, lockoutOnFailure: false);
 
-            return new OperationDetails(auth.Succeeded , " " , " ");
+            return new OperationDetails(auth.Succeeded, " ", " ");
         }
 
         public async Task<ConfirmDTO> GetEmailConfirmationToken(string userName)
         {
-         var user = await UserManager.FindByNameAsync(userName);
+            var user = await UserManager.FindByNameAsync(userName);
             if (user == null || (await UserManager.IsEmailConfirmedAsync(user)))
                 return (null);
-                    
-              var code =  await UserManager.GenerateEmailConfirmationTokenAsync(user);
-            return new ConfirmDTO { Code = code,UserId = user.Id };
+
+            var code = await UserManager.GenerateEmailConfirmationTokenAsync(user);
+            return new ConfirmDTO { Code = code, UserId = user.Id };
         }
 
         public async Task<ConfirmDTO> GetPasswordConfirmationToken(string userName)
@@ -92,16 +92,16 @@ namespace ApplicationCore.Managers
 
         private async Task<ClaimsIdentity> GetClaimsIdentity(string userName, string password)
         {
-          if (string.IsNullOrEmpty(userName) || string.IsNullOrEmpty(password))
-             return await Task.FromResult<ClaimsIdentity>(null);
-          
-          var userToVerify = await UserManager.FindByNameAsync(userName);
-            if (userToVerify == null) return await Task.FromResult<ClaimsIdentity>(null);
-           
-          if(await UserManager.CheckPasswordAsync(userToVerify,password))
-             return await Task.FromResult(new ClaimsIdentity());
+            if (string.IsNullOrEmpty(userName) || string.IsNullOrEmpty(password))
+                return await Task.FromResult<ClaimsIdentity>(null);
 
-             return await Task.FromResult<ClaimsIdentity>(null);
+            var userToVerify = await UserManager.FindByNameAsync(userName);
+            if (userToVerify == null) return await Task.FromResult<ClaimsIdentity>(null);
+
+            if (await UserManager.CheckPasswordAsync(userToVerify, password))
+                return await Task.FromResult(new ClaimsIdentity());
+
+            return await Task.FromResult<ClaimsIdentity>(null);
         }
         public async Task Logout()
         {
