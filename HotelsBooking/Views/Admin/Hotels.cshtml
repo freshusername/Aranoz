@@ -92,12 +92,12 @@
                                 {
                                     <li class="page-item">
                                         @{
-                                            var prev = (AdminPaginationDTO)Model.PaginationDTO.Clone();
-                                            prev.CurrentPage = Model.PaginationDTO.CurrentPage - 1;
-                                            prev.KeyWord = @Convert.ToString(ViewData["currentFilter"]);
+                                            var next = (AdminPaginationDTO)Model.PaginationDTO.Clone();
+                                            next.CurrentPage = Model.PaginationDTO.CurrentPage + 1;
+                                            next.KeyWord = @Convert.ToString(ViewData["currentFilter"]);
                                         }
-                                        @Html.ActionLink("prev", "Hotels", "Admin", null, null, null,
-                                                  prev,
+                                        @Html.ActionLink("next", "Hotels", "Admin", null, null, null,
+                                                  next,
                                                   null)
                                     </li>
                                 }

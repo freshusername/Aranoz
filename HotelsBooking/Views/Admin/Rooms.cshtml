@@ -3,11 +3,11 @@
 <link href="~/css/ForTable.css" rel="stylesheet" />
 <link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
 
-<body>
+<body class="no-padding-top">
     <div id="viewport">
         @await Html.PartialAsync("_AdminPartial")
 
-        <div id="content">
+        <div id="content" class="no-margin-top">
             <div class="row">
                 <p class="text-black-50 text-center">List of rooms</p>
                 <table class="table table-dark rwd-table text-center table-hover">
