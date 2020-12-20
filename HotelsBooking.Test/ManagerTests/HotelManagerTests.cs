@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Infrastructure;
@@ -7,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Xunit;
 using Assert = Xunit.Assert;
 
-namespace HotelsBooking.Test
+namespace HotelsBooking.Test.ManagerTests
 {
     public class HotelManagerTests
     {
@@ -22,9 +23,7 @@ namespace HotelsBooking.Test
                 Description = "Lorem Ipsum Description",
                 Location = "New-York",
                 Name = "Trump Hotel",
-                Season = Enums.Season.Demiseason,
-                HotelConvs = new List<HotelConv>() { new HotelConv() { Id = 1, Price = 3400, HotelId = 1 } }
-            
+                Season = Enums.Season.Demiseason
             };
             
             var options = new DbContextOptionsBuilder<ApplicationDbContext>()
@@ -61,7 +60,7 @@ namespace HotelsBooking.Test
             ClearDbContext();
         }
         
-        [Fact]
+        [Fact] 
         public void DeleteByIdAsync_ReturnTrue()
         {
             // Seed data
@@ -107,10 +106,76 @@ namespace HotelsBooking.Test
             ClearDbContext();
         }
 
+        [Fact]
+        public void GetHotelConvs_ReturnTrue()
+        {
+            // Seed data
+            _dbContext.Hotels.Add(_hotel);
+            _dbContext.SaveChanges();
+            
+            _dbContext.HotelConvs.AddRange(GenerateHotelConvs(3, _hotel.Id));
+            _dbContext.SaveChanges();
+            
+            //assert
+            Assert.NotNull(_dbContext.HotelConvs.FirstOrDefault(x => x.HotelId == _hotel.Id));
+            Assert.Equal(3, _dbContext.HotelConvs.Count());
+            
+            ClearDbContext();
+        }
+        
+        [Fact]
+        public void GetAdditionalConvs_ReturnTrue()
+        {
+            // Seed data
+            _dbContext.Hotels.Add(_hotel);
+            _dbContext.SaveChanges();
+            
+            _dbContext.AdditionalConvs.AddRange(GenerateAdditionalConvs(3));
+            _dbContext.SaveChanges();
+            
+            //assert
+            Assert.NotNull(_dbContext.AdditionalConvs.FirstOrDefault(x => x.Name.Contains("Additional Conv")));
+            Assert.Equal(3, _dbContext.AdditionalConvs.Count());
+            
+            ClearDbContext();
+        }
+
         private void ClearDbContext()
         {
-            _dbContext.Hotels.Remove(_hotel);
+            if(_dbContext.Hotels.FirstOrDefault().Id == _hotel.Id)
+                _dbContext.Hotels.Remove(_hotel);
+            
+            if(3 == _dbContext.HotelConvs.Count(x => x.HotelId == _hotel.Id))
+                foreach (var c in _dbContext.HotelConvs)
+                    _dbContext.HotelConvs.Remove(c);
+            
+            if(3 == _dbContext.AdditionalConvs.Count(x => x.Name.Contains("Additional Conv")))
+                foreach (var c in _dbContext.HotelConvs)
+                    _dbContext.HotelConvs.Remove(c);
+            
             _dbContext.SaveChanges();
+        }
+        
+        private List<HotelConv> GenerateHotelConvs(int count, int hotelId)
+        {
+            var convs = new List<HotelConv>();
+            Random rand = new Random();
+            
+            for (int i = 0; i < count; i++)
+                convs.Add(new HotelConv() { Price = rand.Next(250, 1500), HotelId = _hotel.Id });
+
+            return convs;
+        }
+        
+        private List<AdditionalConv> GenerateAdditionalConvs(int count)
+        {
+            var convs = new List<AdditionalConv>();
+            Random rand = new Random();
+            
+            for (int i = 0; i < count; i++)
+                convs.Add(new AdditionalConv() { Name = $"Additional Conv {i}"});
+
+            return convs;
         }
     }
 }
